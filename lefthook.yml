@@ -4,15 +4,15 @@ pre-commit:
     # chmod +x .lefthook/pre-commit/check_unpulled.sh
     - run: .lefthook/pre-commit/check_unpulled.sh
     - run: |
-        npx eslint {staged_files} --fix && \
-        npx stylelint {staged_files} --fix && \
-        npx prettier --write {staged_files}
-      glob: '**/*.{ts,tsx,js,jsx}'
+        yarn eslint {staged_files} --fix && \
+        yarn stylelint {staged_files} --fix && \
+        yarn prettier {staged_files} --write
+      glob: '**/*.{ts,tsx,js,jsx,css}'
       stage_fixed: true
     - run: npx eslint {staged_files}
       glob: '**/*.{ts,tsx,js,jsx}'
-    - run: npx stylelint {staged_files}
-      glob: '**/*.{ts,tsx,js,jsx}'
+    - run: yarn stylelint {staged_files}
+      glob: '**/*.{css}'
 
 commit-msg:
   jobs:
