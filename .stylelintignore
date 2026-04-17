@@ -1,0 +1,7 @@
+**/*.*
+
+!*.css
+
+dist
+node_modules
+.yarn

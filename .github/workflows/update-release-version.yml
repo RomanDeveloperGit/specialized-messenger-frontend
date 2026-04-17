@@ -1,0 +1,38 @@
+name: Update release version
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  update-release-version:
+    name: Update release version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25.9.0'
+          cache: yarn
+      - name: Prepare production environment
+        run: cp .env.example .env.production
+      - name: Install dependencies
+        run: yarn
+      - name: Run TypeScript and ESLint checks
+        run: |
+          yarn ts:check
+          yarn lint:check
+          yarn stylelint:check
+      - name: Update release version with semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release

@@ -1,0 +1,11 @@
+{
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "typescriptreact", "typescript"],
+  "stylelint.validate": ["css", "scss"],
+  "git.autofetch": true,
+  "git.enableSmartCommit": true
+}
