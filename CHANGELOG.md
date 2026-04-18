@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.0.0...v1.1.0) (2026-04-18)
+
+
+### Features
+
+* init deps and router ([4067019](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/406701931bfaece279f2d2679b5d29b9a6a64e0d))
+
 # 1.0.0 (2026-04-17)
 
 
