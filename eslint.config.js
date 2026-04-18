@@ -12,6 +12,7 @@ export default defineConfig([
   globalIgnores(['dist', '.yarn', 'node_modules', 'commitlint.config.js']),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['**/*.css.d.ts'],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,

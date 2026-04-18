@@ -22,6 +22,7 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     sassDts({
       enabledMode: ['development'],
+      legacyFileFormat: true,
     }),
   ],
   resolve: {

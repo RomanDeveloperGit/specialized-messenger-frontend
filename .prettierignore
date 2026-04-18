@@ -2,4 +2,6 @@ dist
 node_modules
 .yarn
 
+*.css.d.ts
+
 commitlint.config.js

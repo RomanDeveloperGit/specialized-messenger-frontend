@@ -1,11 +1,15 @@
 {
   "js/ts.updateImportsOnFileMove.enabled": "always",
+  "js/ts.updateImportsOnPaste.enabled": true,
+  "markdown.updateLinksOnFileMove.enabled": "always",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll": "always",
+    "source.addMissingImports.ts": "always",
+    "source.removeUnusedImports": "always"
   },
   "eslint.validate": ["javascript", "javascriptreact", "typescriptreact", "typescript"],
-  "stylelint.validate": ["css", "scss"],
+  "stylelint.validate": ["css"],
   "git.autofetch": true,
   "git.enableSmartCommit": true
 }
