@@ -5,7 +5,7 @@ pre-commit:
     - run: .lefthook/pre-commit/check_unpulled.sh
     - run: |
         yarn eslint {staged_files} --fix && \
-        yarn stylelint {staged_files} --fix && \
+        yarn stylelint {staged_files} --fix --allow-empty-input && \
         yarn prettier {staged_files} --write
       glob: '**/*.{ts,tsx,js,jsx,css}'
       stage_fixed: true
