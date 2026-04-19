@@ -27,7 +27,14 @@ export default {
         },
         {
           emptyLineBefore: 'always',
-          properties: ['width', 'min-width', 'max-width', 'height', 'min-height', 'max-height'],
+          properties: [
+            'width',
+            'min-width',
+            'max-width',
+            'height',
+            'min-height',
+            'max-height',
+          ],
         },
         {
           emptyLineBefore: 'always',

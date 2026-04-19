@@ -1,20 +1,24 @@
-import { ConfigProvider, theme } from 'antd';
+import type { FC, ReactNode } from 'react';
 
-import { AppRouter } from '../router/app-router';
-import { ErrorBoundary } from './error-boundary/error-boundary';
+import { useUnit } from 'effector-react';
 
-import './app.module.css';
+import { LoadingOverlay, MantineProvider } from '@mantine/core';
 
-export const App = () => {
+import { $isAppVisible } from '../model';
+import { ErrorBoundary } from './error-boundary';
+import { theme } from './theme';
+
+import '@mantine/core/styles.css';
+import './styles.module.css';
+
+export const App: FC<{ routerProvider: ReactNode }> = ({ routerProvider }) => {
+  const isAppVisible = useUnit($isAppVisible);
+
   return (
-    <ErrorBoundary>
-      <ConfigProvider
-        theme={{
-          algorithm: theme.darkAlgorithm,
-        }}
-      >
-        <AppRouter />
-      </ConfigProvider>
-    </ErrorBoundary>
+    <MantineProvider defaultColorScheme="dark" theme={theme}>
+      <ErrorBoundary>
+        {isAppVisible ? routerProvider : <LoadingOverlay visible={true} />}
+      </ErrorBoundary>
+    </MantineProvider>
   );
 };

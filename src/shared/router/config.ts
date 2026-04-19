@@ -1,7 +1,9 @@
 import { createConfiguredRoute } from './create-configured-route';
 
 export const signInRoute = createConfiguredRoute('/sign-in');
-export const invitationRoute = createConfiguredRoute<{ id: string }>('/invitation/:id');
+export const invitationRoute = createConfiguredRoute<{ id: string }>(
+  '/invitation/:id',
+);
 export const messengerRoute = createConfiguredRoute('/messenger');
 
 export const ALL_ROUTES = [signInRoute, invitationRoute, messengerRoute];

@@ -2,7 +2,7 @@
 
 An application for professionals that allows them to communicate with their consumers
 
-Main Stack: TS, React,
+Main Stack: TS, React, Effector, Atomic Router, Mantine UI
 
 ## [From Vite README]
 

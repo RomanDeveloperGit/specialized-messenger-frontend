@@ -8,7 +8,12 @@
     "source.addMissingImports.ts": "always",
     "source.removeUnusedImports": "always"
   },
-  "eslint.validate": ["javascript", "javascriptreact", "typescriptreact", "typescript"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescriptreact",
+    "typescript"
+  ],
   "stylelint.validate": ["css"],
   "git.autofetch": true,
   "git.enableSmartCommit": true

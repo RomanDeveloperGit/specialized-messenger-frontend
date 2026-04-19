@@ -1,4 +1,8 @@
-import { createRoute, type RouteInstance, type RouteParams } from 'atomic-router';
+import {
+  createRoute,
+  type RouteInstance,
+  type RouteParams,
+} from 'atomic-router';
 
 export interface Route<Params extends RouteParams = RouteParams> {
   route: RouteInstance<Params>;

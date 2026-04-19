@@ -10,7 +10,9 @@ import dotenv from 'dotenv';
 import { validatePreBuildEnv } from './src/app/env';
 
 dotenv.config({
-  path: `${__dirname}/.env.${process.env.NODE_ENV === 'production' ? 'production' : 'development'}`,
+  path: `${__dirname}/.env.${
+    process.env.NODE_ENV === 'production' ? 'production' : 'development'
+  }`,
 });
 
 validatePreBuildEnv();
@@ -33,7 +35,9 @@ export default defineConfig({
   css: {
     modules: {
       generateScopedName:
-        process.env.NODE_ENV === 'development' ? '[local]_[hash:base64:5]' : '[hash:base64:12]',
+        process.env.NODE_ENV === 'development'
+          ? '[local]_[hash:base64:5]'
+          : '[hash:base64:12]',
       localsConvention: 'camelCaseOnly',
     },
   },
