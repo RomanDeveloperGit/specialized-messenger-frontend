@@ -4,7 +4,7 @@ import { getCredentialsFromLocalStorage } from '@/shared/lib/auth';
 import { isPathnameInArray } from '@/shared/lib/is-pathname-in-array';
 import { DEFAULT_PUBLIC_ROUTE, PUBLIC_ROUTES } from '@/shared/router';
 
-import { signIn, signInFx } from '@/pages/sign-in/model/model';
+import { signIn, signInFx } from '@/entities/auth/model/sign-in/action';
 
 import { showApp } from './model';
 

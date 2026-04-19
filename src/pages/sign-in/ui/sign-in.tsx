@@ -19,8 +19,14 @@ import {
   ThemeIcon,
 } from '@mantine/core';
 
-import { signIn as _signIn, signInFx } from '../model/model';
-import { type SignInSchema, signInSchema } from '../model/schema';
+import {
+  signIn as _signIn,
+  signInFx,
+} from '@/entities/auth/model/sign-in/action';
+import {
+  type SignInSchema,
+  signInSchema,
+} from '@/entities/auth/model/sign-in/schema';
 
 export const SignInPage: FC = () => {
   const [isPending, signIn] = useUnit([signInFx.pending, _signIn]);

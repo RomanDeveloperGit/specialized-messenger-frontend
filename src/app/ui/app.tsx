@@ -6,6 +6,7 @@ import { LoadingOverlay, MantineProvider } from '@mantine/core';
 
 import { $isAppVisible } from '../model';
 import { ErrorBoundary } from './error-boundary';
+import { NotificationManager } from './notification-manager';
 import { theme } from './theme';
 
 import '@mantine/core/styles.css';
@@ -18,6 +19,7 @@ export const App: FC<{ routerProvider: ReactNode }> = ({ routerProvider }) => {
     <MantineProvider defaultColorScheme="dark" theme={theme}>
       <ErrorBoundary>
         {isAppVisible ? routerProvider : <LoadingOverlay visible={true} />}
+        <NotificationManager />
       </ErrorBoundary>
     </MantineProvider>
   );

@@ -1,9 +1,8 @@
 # [1.2.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.1.0...v1.2.0) (2026-04-19)
 
-
 ### Features
 
-* **auth/sign-in:** add sign in feature ([6e1574d](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/6e1574de01077bae9899a021b594919454741cc8))
+- **auth/sign-in:** add sign in feature ([6e1574d](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/6e1574de01077bae9899a021b594919454741cc8))
 
 # [1.1.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.0.0...v1.1.0) (2026-04-18)
 

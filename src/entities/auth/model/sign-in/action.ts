@@ -5,7 +5,7 @@ import type { OperationInfo } from '@specialized-messenger/api/specs';
 import { api } from '@/shared/api';
 import { saveCredentialsInLocalStorage } from '@/shared/lib/auth';
 import {
-  showDefaultErrorNotificationFx,
+  showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/lib/notifications';
 import { DEFAULT_PROTECTED_ROUTE } from '@/shared/router';
@@ -14,24 +14,24 @@ import { setAuthorizedUser } from '@/entities/auth';
 
 import type { SignInSchema } from './schema';
 
-type SignInController = OperationInfo<'AuthController_signIn_v1'>;
+type Controller = OperationInfo<'AuthController_signIn_v1'>;
+type Path = Controller['path'];
+type Body = Controller['body'];
+type Response = Controller['response'];
 
 export const signIn = createEvent<SignInSchema & { isSilentMode?: boolean }>();
 export const signInFx = createEffect<
   {
-    requestBody: SignInController['body'];
+    requestBody: Body;
     isSilentMode: boolean;
   },
-  unknown
+  void
 >(async ({ requestBody, isSilentMode }) => {
   try {
     const user = await api
-      .post<SignInController['response']>(
-        '/api/v1/auth/sign-in' satisfies SignInController['path'],
-        {
-          json: requestBody,
-        },
-      )
+      .post<Response>('/api/v1/auth/sign-in' satisfies Path, {
+        json: requestBody,
+      })
       .json();
 
     saveCredentialsInLocalStorage({
@@ -48,7 +48,7 @@ export const signInFx = createEffect<
       });
     }
   } catch (error) {
-    showDefaultErrorNotificationFx({ message: 'Authorization error' });
+    showErrorNotificationFx({ message: 'Authorization error' });
 
     throw error;
   }
