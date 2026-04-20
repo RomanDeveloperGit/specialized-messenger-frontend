@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -21,20 +19,27 @@ import {
   ThemeIcon,
 } from '@mantine/core';
 
-import {
-  acceptInvitation as _acceptInvitation,
-  acceptInvitationFx,
-} from '../model/accept-invitation/action';
+import type { ReactPageWithSideEffect } from '@/shared/lib/react-page-with-side-effect';
+
+import { acceptInvitationFx } from '../model/accept-invitation/accept-invitation.effect';
 import {
   type AcceptInvitationSchema,
   acceptInvitationSchema,
-} from '../model/accept-invitation/schema';
-import { $invitation } from '../model/invitation';
+} from '../model/accept-invitation/accept-invitation.schema';
+import { getInvitationFx } from '../model/get-invitation.effect';
+import { $invitation } from '../model/invitation.store';
+import { registerPageSideEffect } from '../model/register-side-effect';
 
-export const InvitationPage: FC = () => {
-  const [isPending, acceptInvitation, invitation] = useUnit([
+export const InvitationPage: ReactPageWithSideEffect<{ a: 1 }> = () => {
+  const [
+    isGetInvitationPending,
+    isAcceptInvitationPending,
+    acceptInvitation,
+    invitation,
+  ] = useUnit([
+    getInvitationFx.pending,
     acceptInvitationFx.pending,
-    _acceptInvitation,
+    acceptInvitationFx,
     $invitation,
   ]);
 
@@ -47,7 +52,19 @@ export const InvitationPage: FC = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    acceptInvitation(data);
+    if (!invitation) return;
+
+    acceptInvitation({
+      id: invitation.publicId,
+      query: {
+        firstName: invitation.firstName,
+        lastName: invitation.lastName,
+      },
+      requestBody: {
+        login: data.login,
+        password: data.password,
+      },
+    });
   });
 
   const fullName = [invitation?.firstName, invitation?.lastName]
@@ -82,7 +99,11 @@ export const InvitationPage: FC = () => {
               </Group>
               <Group gap={10}>
                 <Avatar size={36} radius="xl" color="green">
-                  {invitation ? initials : <Loader size="xs" color="green" />}
+                  {isGetInvitationPending ? (
+                    <Loader size="xs" color="green" />
+                  ) : (
+                    initials
+                  )}
                 </Avatar>
                 <Text fw={600} size="md">
                   {fullName}
@@ -99,21 +120,21 @@ export const InvitationPage: FC = () => {
                 {...register('login')}
                 label="Логин"
                 placeholder="Придумайте логин"
-                disabled={isPending || !invitation}
+                disabled={isAcceptInvitationPending || !invitation}
                 error={errors.login?.message}
               />
               <PasswordInput
                 {...register('password')}
                 label="Пароль"
                 placeholder="Придумайте пароль"
-                disabled={isPending || !invitation}
+                disabled={isAcceptInvitationPending || !invitation}
                 error={errors.password?.message}
               />
               <PasswordInput
                 {...register('passwordConfirm')}
                 label="Подтверждение пароля"
                 placeholder="Повторите пароль"
-                disabled={isPending || !invitation}
+                disabled={isAcceptInvitationPending || !invitation}
                 error={errors.passwordConfirm?.message}
               />
               {
@@ -122,7 +143,7 @@ export const InvitationPage: FC = () => {
                   fullWidth
                   mt="xs"
                   color="green"
-                  loading={isPending}
+                  loading={isAcceptInvitationPending}
                   disabled={!invitation}
                 >
                   Принять приглашение
@@ -135,3 +156,5 @@ export const InvitationPage: FC = () => {
     </Center>
   );
 };
+
+InvitationPage.registerPageSideEffect = registerPageSideEffect;

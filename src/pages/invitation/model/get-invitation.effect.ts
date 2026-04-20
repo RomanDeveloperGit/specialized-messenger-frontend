@@ -1,19 +1,20 @@
-import { createEffect, createEvent, sample } from 'effector';
+import { createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { api } from '@/shared/api';
 import { showErrorNotificationFx } from '@/shared/lib/notifications';
-import { DEFAULT_PUBLIC_ROUTE, invitationRoute } from '@/shared/router';
+import { DEFAULT_PUBLIC_ROUTE_CONFIG } from '@/shared/router';
 
-import { setInvitation } from '../invitation';
+import { $isAuthorized } from '@/entities/auth';
+
+import { setInvitation } from './invitation.store';
 
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
 type Path = Controller['path'];
 type Query = Controller['search'];
 type Response = Controller['response'];
 
-export const getInvitation = createEvent<Query & { id: string }>();
 export const getInvitationFx = createEffect<
   {
     id: string;
@@ -35,32 +36,14 @@ export const getInvitationFx = createEffect<
 });
 
 sample({
-  clock: invitationRoute.route.opened,
-  fn: (clock) => ({
-    ...(clock.query as Query),
-    ...clock.params,
-  }),
-  target: getInvitation,
-});
-
-sample({
-  clock: getInvitation,
-  fn: (clock) => ({
-    id: clock.id,
-    query: {
-      firstName: clock.firstName,
-      lastName: clock.lastName,
-    },
-  }),
-  target: getInvitationFx,
-});
-
-sample({
   clock: getInvitationFx.doneData,
   target: setInvitation,
 });
 
+// TODO: Убрать этот фильтр, ведь он будет недействителен в новой логике (при входе на публичный роут разлогинивать)
 sample({
   clock: getInvitationFx.fail,
-  target: DEFAULT_PUBLIC_ROUTE.route.open,
+  source: $isAuthorized,
+  filter: (isAuthorized) => !isAuthorized,
+  target: DEFAULT_PUBLIC_ROUTE_CONFIG.route.open,
 });

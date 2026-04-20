@@ -1,1 +1,1 @@
-export * from './model/authorized-user';
+export * from './model/authorized-user.store';

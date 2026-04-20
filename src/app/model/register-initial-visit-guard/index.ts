@@ -1,2 +1,1 @@
-export * from './is-app-visible.store';
 export * from './register-initial-visit-guard';

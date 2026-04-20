@@ -3,16 +3,25 @@ import { createRoutesView } from 'atomic-router-react';
 
 import { createBrowserHistory } from 'history';
 
-import { routeFullConfigs } from './config';
+import { isReactPageWithSideEffect } from '@/shared/lib/react-page-with-side-effect';
+
+import { allRouteFullConfigs } from './config';
 import { AppRouterProvider } from './ui/app-router-provider';
 import { PageNotFound } from './ui/page-not-found';
 
 export const createRouter = () => {
-  const historyRouter = createHistoryRouter({ routes: routeFullConfigs });
+  // Регистрируем сайд эффекты страниц перед инициализацией роутера
+  allRouteFullConfigs.forEach(({ view }) => {
+    if (isReactPageWithSideEffect(view)) {
+      view.registerPageSideEffect();
+    }
+  });
+
+  const historyRouter = createHistoryRouter({ routes: allRouteFullConfigs });
   historyRouter.setHistory(createBrowserHistory());
 
   const RoutesView = createRoutesView({
-    routes: routeFullConfigs,
+    routes: allRouteFullConfigs,
     otherwise: PageNotFound,
   });
 

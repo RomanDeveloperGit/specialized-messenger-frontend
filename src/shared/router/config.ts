@@ -1,15 +1,19 @@
-import { createConfiguredRoute } from './create-configured-route';
+import { createRouteConfig } from './create-route-config';
 
-export const signInRoute = createConfiguredRoute('/sign-in');
-export const invitationRoute = createConfiguredRoute<{ id: string }>(
+export const signInRouteConfig = createRouteConfig('/sign-in');
+export const invitationRouteConfig = createRouteConfig<{ id: string }>(
   '/invitation/:id',
 );
-export const messengerRoute = createConfiguredRoute('/messenger');
+export const messengerRouteConfig = createRouteConfig('/messenger');
 
-export const ALL_ROUTES = [signInRoute, invitationRoute, messengerRoute];
+export const PUBLIC_ROUTE_CONFIGS = [signInRouteConfig, invitationRouteConfig];
 
-export const PUBLIC_ROUTES = [signInRoute, invitationRoute];
-export const PROTECTED_ROUTES = [messengerRoute];
+export const PROTECTED_ROUTE_CONFIGS = [messengerRouteConfig];
 
-export const DEFAULT_PUBLIC_ROUTE = signInRoute;
-export const DEFAULT_PROTECTED_ROUTE = messengerRoute;
+export const ALL_ROUTE_CONFIGS = [
+  ...PUBLIC_ROUTE_CONFIGS,
+  ...PROTECTED_ROUTE_CONFIGS,
+];
+
+export const DEFAULT_PUBLIC_ROUTE_CONFIG = signInRouteConfig;
+export const DEFAULT_PROTECTED_ROUTE_CONFIG = messengerRouteConfig;

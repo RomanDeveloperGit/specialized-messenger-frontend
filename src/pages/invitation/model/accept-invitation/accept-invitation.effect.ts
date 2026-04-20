@@ -1,4 +1,4 @@
-import { createEffect, createEvent, sample } from 'effector';
+import { attach, createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
@@ -7,12 +7,14 @@ import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/lib/notifications';
-import { DEFAULT_PUBLIC_ROUTE } from '@/shared/router';
+import {
+  DEFAULT_PROTECTED_ROUTE_CONFIG,
+  DEFAULT_PUBLIC_ROUTE_CONFIG,
+} from '@/shared/router';
 
-import { signIn } from '@/entities/auth/model/sign-in/action';
+import { baseSignInFx } from '@/entities/auth/model/base-sign-in.effect';
 
-import { $invitation, clearInvitation } from '../invitation';
-import type { AcceptInvitationSchema } from './schema';
+import { clearInvitation } from '../invitation.store';
 
 type Controller = OperationInfo<'InvitationController_acceptByPublicId_v1'>;
 type Path = Controller['path'];
@@ -20,7 +22,6 @@ type Query = Controller['search'];
 type Body = Controller['body'];
 type Response = Controller['response'];
 
-export const acceptInvitation = createEvent<AcceptInvitationSchema>();
 export const acceptInvitationFx = createEffect<
   {
     id: string;
@@ -50,27 +51,22 @@ export const acceptInvitationFx = createEffect<
   }
 });
 
-sample({
-  clock: acceptInvitation,
-  source: $invitation,
-  fn: (invitation, clock) => ({
-    id: invitation!.publicId,
-    query: {
-      firstName: invitation!.firstName,
-      lastName: invitation!.lastName,
-    },
-    requestBody: clock,
-  }),
-  target: acceptInvitationFx,
+const acceptedInvitationSignInFx = attach({
+  effect: baseSignInFx,
 });
 
 sample({
   clock: acceptInvitationFx.doneData,
-  fn: (clock) => ({ ...clock, isSilentMode: true }),
-  target: [signIn, clearInvitation],
+  fn: (clock) => ({ requestBody: clock }),
+  target: [acceptedInvitationSignInFx, clearInvitation],
 });
 
 sample({
-  clock: acceptInvitationFx.fail,
-  target: DEFAULT_PUBLIC_ROUTE.route.open,
+  clock: acceptedInvitationSignInFx.done,
+  target: DEFAULT_PROTECTED_ROUTE_CONFIG.route.open,
+});
+
+sample({
+  clock: acceptedInvitationSignInFx.fail,
+  target: DEFAULT_PUBLIC_ROUTE_CONFIG.route.open,
 });

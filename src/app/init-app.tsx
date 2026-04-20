@@ -3,11 +3,11 @@ import { createRoot } from 'react-dom/client';
 
 import { attachReduxDevTools } from '@effector/redux-devtools-adapter';
 
-import { registerFirstVisitGuard } from './model';
+import { registerInitialVisitGuard } from './model';
 import { createRouter } from './router';
 import { App } from './ui/app';
 
-export const initApp = async () => {
+export const initApp = () => {
   if (import.meta.env.DEV) {
     attachReduxDevTools({
       name: 'Messenger',
@@ -19,7 +19,8 @@ export const initApp = async () => {
     historyRouter,
     UI: { AppRouterProvider, RoutesView },
   } = createRouter();
-  registerFirstVisitGuard();
+
+  registerInitialVisitGuard();
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>

@@ -20,16 +20,14 @@ import {
 } from '@mantine/core';
 
 import {
-  signIn as _signIn,
-  signInFx,
-} from '@/entities/auth/model/sign-in/action';
-import {
   type SignInSchema,
   signInSchema,
-} from '@/entities/auth/model/sign-in/schema';
+} from '@/pages/sign-in/model/sign-in.schema';
+
+import { signInFx } from '../model/sign-in.effect';
 
 export const SignInPage: FC = () => {
-  const [isPending, signIn] = useUnit([signInFx.pending, _signIn]);
+  const [isPending, signIn] = useUnit([signInFx.pending, signInFx]);
 
   const {
     handleSubmit,
@@ -40,7 +38,9 @@ export const SignInPage: FC = () => {
   });
 
   const onSubmit = handleSubmit((data) => {
-    signIn(data);
+    signIn({
+      requestBody: data,
+    });
   });
 
   return (

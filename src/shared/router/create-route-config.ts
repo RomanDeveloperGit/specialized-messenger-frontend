@@ -4,15 +4,15 @@ import {
   type RouteParams,
 } from 'atomic-router';
 
-export interface Route<Params extends RouteParams = RouteParams> {
+export interface RouteConfig<Params extends RouteParams = RouteParams> {
   route: RouteInstance<Params>;
   path: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export const createConfiguredRoute = <Params extends RouteParams = {}>(
+export const createRouteConfig = <Params extends RouteParams = {}>(
   path: string,
-): Route<Params> => {
+): RouteConfig<Params> => {
   return {
     route: createRoute<Params>(),
     path,
