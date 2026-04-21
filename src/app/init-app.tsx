@@ -17,10 +17,14 @@ export const initApp = () => {
 
   const {
     historyRouter,
+    registerPageSideEffects,
+    applyBrowserHistory,
     UI: { AppRouterProvider, RoutesView },
   } = createRouter();
 
   startInitialVisitGuard();
+  registerPageSideEffects();
+  applyBrowserHistory();
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>

@@ -10,15 +10,19 @@ import { AppRouterProvider } from './ui/app-router-provider';
 import { PageNotFound } from './ui/page-not-found';
 
 export const createRouter = () => {
-  // Регистрируем сайд эффекты страниц перед инициализацией роутера
-  allRouteFullConfigs.forEach(({ view }) => {
-    if (isReactPageWithSideEffect(view)) {
-      view.registerPageSideEffect();
-    }
-  });
-
   const historyRouter = createHistoryRouter({ routes: allRouteFullConfigs });
-  historyRouter.setHistory(createBrowserHistory());
+
+  const registerPageSideEffects = () => {
+    allRouteFullConfigs.forEach(({ view }) => {
+      if (isReactPageWithSideEffect(view)) {
+        view.registerPageSideEffect();
+      }
+    });
+  };
+
+  const applyBrowserHistory = () => {
+    historyRouter.setHistory(createBrowserHistory());
+  };
 
   const RoutesView = createRoutesView({
     routes: allRouteFullConfigs,
@@ -27,6 +31,8 @@ export const createRouter = () => {
 
   return {
     historyRouter,
+    registerPageSideEffects,
+    applyBrowserHistory,
     UI: {
       AppRouterProvider,
       RoutesView,
