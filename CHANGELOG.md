@@ -1,9 +1,8 @@
 # [1.4.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.3.0...v1.4.0) (2026-04-20)
 
-
 ### Features
 
-* add correct flow from init to render ([d3bbb5f](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/d3bbb5f5ceedfad9f716d3f4b0b59a45246d400e))
+- add correct flow from init to render ([d3bbb5f](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/d3bbb5f5ceedfad9f716d3f4b0b59a45246d400e))
 
 # [1.3.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.2.0...v1.3.0) (2026-04-19)
 

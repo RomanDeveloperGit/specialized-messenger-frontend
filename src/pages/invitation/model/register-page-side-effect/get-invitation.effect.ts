@@ -6,8 +6,6 @@ import { api } from '@/shared/api';
 import { showErrorNotificationFx } from '@/shared/lib/notifications';
 import { DEFAULT_PUBLIC_ROUTE_CONFIG } from '@/shared/router';
 
-import { $isAuthorized } from '@/entities/auth';
-
 import { setInvitation } from '../invitation.store';
 
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
@@ -42,7 +40,5 @@ sample({
 
 sample({
   clock: getInvitationFx.fail,
-  source: $isAuthorized,
-  filter: (isAuthorized) => !isAuthorized,
   target: DEFAULT_PUBLIC_ROUTE_CONFIG.route.open,
 });

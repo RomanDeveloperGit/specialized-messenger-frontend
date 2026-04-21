@@ -3,6 +3,8 @@ import { createRoot } from 'react-dom/client';
 
 import { attachReduxDevTools } from '@effector/redux-devtools-adapter';
 
+import { LoadingOverlay } from '@mantine/core';
+
 import { startInitialVisitGuard } from './model';
 import { createRouter } from './router';
 import { App } from './ui/app';
@@ -15,27 +17,36 @@ export const initApp = () => {
     });
   }
 
-  const {
-    historyRouter,
-    registerPageSideEffects,
-    applyBrowserHistory,
-    UI: { AppRouterProvider, RoutesView },
-  } = createRouter();
+  const root = createRoot(document.getElementById('root')!);
 
-  startInitialVisitGuard();
-  registerPageSideEffects();
-  applyBrowserHistory();
-
-  createRoot(document.getElementById('root')!).render(
+  root.render(
     <StrictMode>
-      <App
-        routerProvider={
+      <App>
+        <LoadingOverlay visible={true} />
+      </App>
+    </StrictMode>,
+  );
+
+  startInitialVisitGuard().then(() => {
+    const {
+      historyRouter,
+      registerPageSideEffects,
+      applyBrowserHistory,
+      UI: { AppRouterProvider, RoutesView },
+    } = createRouter();
+
+    registerPageSideEffects();
+    applyBrowserHistory();
+
+    root.render(
+      <StrictMode>
+        <App>
           <AppRouterProvider
             router={historyRouter}
             routesView={<RoutesView />}
           />
-        }
-      />
-    </StrictMode>,
-  );
+        </App>
+      </StrictMode>,
+    );
+  });
 };
