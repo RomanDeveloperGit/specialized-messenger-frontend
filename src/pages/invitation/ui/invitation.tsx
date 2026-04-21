@@ -26,9 +26,9 @@ import {
   type AcceptInvitationSchema,
   acceptInvitationSchema,
 } from '../model/accept-invitation/accept-invitation.schema';
-import { getInvitationFx } from '../model/get-invitation.effect';
 import { $invitation } from '../model/invitation.store';
-import { registerPageSideEffect } from '../model/register-side-effect';
+import { getInvitationFx } from '../model/register-page-side-effect/get-invitation.effect';
+import { registerPageSideEffect } from '../model/register-page-side-effect/register-page-side-effect';
 
 export const InvitationPage: ReactPageWithSideEffect<{ a: 1 }> = () => {
   const [

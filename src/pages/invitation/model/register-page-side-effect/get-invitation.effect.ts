@@ -8,7 +8,7 @@ import { DEFAULT_PUBLIC_ROUTE_CONFIG } from '@/shared/router';
 
 import { $isAuthorized } from '@/entities/auth';
 
-import { setInvitation } from './invitation.store';
+import { setInvitation } from '../invitation.store';
 
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
 type Path = Controller['path'];
@@ -40,7 +40,6 @@ sample({
   target: setInvitation,
 });
 
-// TODO: Убрать этот фильтр, ведь он будет недействителен в новой логике (при входе на публичный роут разлогинивать)
 sample({
   clock: getInvitationFx.fail,
   source: $isAuthorized,

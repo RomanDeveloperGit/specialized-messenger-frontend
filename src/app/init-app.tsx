@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { attachReduxDevTools } from '@effector/redux-devtools-adapter';
 
-import { registerInitialVisitGuard } from './model';
+import { startInitialVisitGuard } from './model';
 import { createRouter } from './router';
 import { App } from './ui/app';
 
@@ -20,7 +20,7 @@ export const initApp = () => {
     UI: { AppRouterProvider, RoutesView },
   } = createRouter();
 
-  registerInitialVisitGuard();
+  startInitialVisitGuard();
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>

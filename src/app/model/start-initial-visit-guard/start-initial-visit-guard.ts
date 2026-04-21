@@ -9,7 +9,7 @@ import { showApp } from '../is-app-visible.store';
 import { initialVisitSignInFx } from './initial-visit-sign-in.effect';
 import { setIsInitialVisitToPublicRoute } from './is-initial-visit-to-public-route.store';
 
-export const registerInitialVisitGuard = () => {
+export const startInitialVisitGuard = () => {
   const isPublicRoute = isPathnameInArray(
     PUBLIC_ROUTE_CONFIGS.map((route) => route.path),
     globalThis.location.pathname,
