@@ -26,21 +26,27 @@ import {
   type AcceptInvitationSchema,
   acceptInvitationSchema,
 } from '../model/accept-invitation/accept-invitation.schema';
-import { $invitation } from '../model/invitation.store';
+import {
+  $invitation,
+  $isAcceptInvitationPending,
+  $isGetInvitationError,
+} from '../model/invitation.store';
 import { getInvitationFx } from '../model/register-page-side-effect/get-invitation.effect';
 import { registerPageSideEffect } from '../model/register-page-side-effect/register-page-side-effect';
 
-export const InvitationPage: ReactPageWithSideEffect<{ a: 1 }> = () => {
+export const InvitationPage: ReactPageWithSideEffect = () => {
   const [
+    invitation,
     isGetInvitationPending,
+    isGetInvitationError,
     isAcceptInvitationPending,
     acceptInvitation,
-    invitation,
   ] = useUnit([
-    getInvitationFx.pending,
-    acceptInvitationFx.pending,
-    acceptInvitationFx,
     $invitation,
+    getInvitationFx.pending,
+    $isGetInvitationError,
+    $isAcceptInvitationPending,
+    acceptInvitationFx,
   ]);
 
   const {
@@ -74,6 +80,28 @@ export const InvitationPage: ReactPageWithSideEffect<{ a: 1 }> = () => {
   const initials = [invitation?.firstName?.[0], invitation?.lastName?.[0]]
     .filter(Boolean)
     .join('');
+
+  if (isGetInvitationError) {
+    return (
+      <Center h="100vh" bg="dark.9" p={10}>
+        <Paper w={360} p="xl" radius="lg">
+          <Stack gap="lg" align="center">
+            <ThemeIcon size={48} radius="md" color="red">
+              <IconMailOpened size={26} />
+            </ThemeIcon>
+            <Stack gap={4} align="center">
+              <Text size="lg" fw={600}>
+                Приглашение недействительно
+              </Text>
+              <Text size="sm" c="dimmed" ta="center">
+                Обратитесь к администратору системы за новым приглашением
+              </Text>
+            </Stack>
+          </Stack>
+        </Paper>
+      </Center>
+    );
+  }
 
   return (
     <Center h="100vh" bg="dark.9" p={10}>

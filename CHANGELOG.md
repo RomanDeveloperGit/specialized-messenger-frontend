@@ -1,9 +1,8 @@
 ## [1.4.1](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.0...v1.4.1) (2026-04-21)
 
-
 ### Bug Fixes
 
-* fix app flow from start point ([38f1386](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/38f1386cd3956bbb347fbc4d6c5b34fb95585c2b))
+- fix app flow from start point ([38f1386](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/38f1386cd3956bbb347fbc4d6c5b34fb95585c2b))
 
 # [1.4.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.3.0...v1.4.0) (2026-04-20)
 

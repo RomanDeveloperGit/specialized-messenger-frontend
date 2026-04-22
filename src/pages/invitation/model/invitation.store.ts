@@ -1,14 +1,21 @@
-import { createEvent, createStore } from 'effector';
+import { createStore, restore } from 'effector';
 
-import type { OperationInfo } from '@specialized-messenger/api/specs';
+import { acceptInvitationFx } from './accept-invitation/accept-invitation.effect';
+import { acceptedInvitationSignInFx } from './accept-invitation/accepted-invitation-sign-in.effect';
+import { getInvitationFx } from './register-page-side-effect/get-invitation.effect';
 
-type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
-type Response = Controller['response'];
+export const $invitation = restore(getInvitationFx.doneData, null).reset(
+  acceptedInvitationSignInFx.done,
+  acceptedInvitationSignInFx.fail,
+);
+export const $isGetInvitationError = createStore(false)
+  .on(getInvitationFx.done, () => false)
+  .on(getInvitationFx.fail, () => true);
 
-export const $invitation = createStore<Response | null>(null);
-export const setInvitation = createEvent<Response>();
-export const clearInvitation = createEvent();
-
-$invitation
-  .on(setInvitation, (_, payload) => payload)
-  .on(clearInvitation, () => null);
+export const $isAcceptInvitationPending = createStore(false)
+  .on(acceptInvitationFx, () => true)
+  .reset(
+    acceptInvitationFx.fail,
+    acceptedInvitationSignInFx.done,
+    acceptedInvitationSignInFx.fail,
+  );

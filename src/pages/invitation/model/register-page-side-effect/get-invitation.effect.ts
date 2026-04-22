@@ -4,9 +4,6 @@ import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { api } from '@/shared/api';
 import { showErrorNotificationFx } from '@/shared/lib/notifications';
-import { DEFAULT_PUBLIC_ROUTE_CONFIG } from '@/shared/router';
-
-import { setInvitation } from '../invitation.store';
 
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
 type Path = Controller['path'];
@@ -20,25 +17,15 @@ export const getInvitationFx = createEffect<
   },
   Response
 >(async ({ id, query }) => {
-  try {
-    return await api
-      .get<Response>(`/api/v1/invitations/${id}` satisfies Path, {
-        searchParams: query,
-      })
-      .json();
-  } catch (error) {
-    showErrorNotificationFx({ message: 'Get invitation error' });
-
-    throw error;
-  }
-});
-
-sample({
-  clock: getInvitationFx.doneData,
-  target: setInvitation,
+  return await api
+    .get<Response>(`/api/v1/invitations/${id}` satisfies Path, {
+      searchParams: query,
+    })
+    .json();
 });
 
 sample({
   clock: getInvitationFx.fail,
-  target: DEFAULT_PUBLIC_ROUTE_CONFIG.route.open,
+  fn: () => ({ message: 'Get invitation error' }),
+  target: showErrorNotificationFx,
 });

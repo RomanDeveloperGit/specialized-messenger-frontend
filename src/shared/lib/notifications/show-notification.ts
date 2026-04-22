@@ -31,13 +31,9 @@ export const showErrorNotificationFx = createEffect<
   });
 });
 
-export const showDefaultErrorNotificationFx = createEffect<
-  ShortNotificationData,
-  void
->((notificationData) => {
+export const showDefaultErrorNotificationFx = createEffect<void, void>(() => {
   showNotification({
-    ...notificationData,
-    message: 'Something went wrong',
+    message: 'Что-то пошло не так',
     color: 'red',
   });
 });

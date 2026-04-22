@@ -1,4 +1,4 @@
-import { attach, createEffect, sample } from 'effector';
+import { createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
@@ -7,14 +7,8 @@ import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/lib/notifications';
-import {
-  DEFAULT_PROTECTED_ROUTE_CONFIG,
-  DEFAULT_PUBLIC_ROUTE_CONFIG,
-} from '@/shared/router';
 
-import { baseSignInFx } from '@/entities/auth/model/base-sign-in.effect';
-
-import { clearInvitation } from '../invitation.store';
+import { acceptedInvitationSignInFx } from './accepted-invitation-sign-in.effect';
 
 type Controller = OperationInfo<'InvitationController_acceptByPublicId_v1'>;
 type Path = Controller['path'];
@@ -28,45 +22,30 @@ export const acceptInvitationFx = createEffect<
     query: Query;
     requestBody: Body;
   },
-  Body
+  { credentials: Body }
 >(async ({ id, query, requestBody }) => {
-  try {
-    await api.post<Response>(
-      `/api/v1/invitations/${id}/accept` satisfies Path,
-      {
-        searchParams: query,
-        json: requestBody,
-      },
-    );
+  await api.post<Response>(`/api/v1/invitations/${id}/accept` satisfies Path, {
+    searchParams: query,
+    json: requestBody,
+  });
 
-    showSuccessNotificationFx({
-      message: 'Вы успешно приняли приглашение',
-    });
-
-    return requestBody;
-  } catch (error) {
-    showErrorNotificationFx({ message: 'Accept invitation error' });
-
-    throw error;
-  }
+  return { credentials: requestBody };
 });
 
-const acceptedInvitationSignInFx = attach({
-  effect: baseSignInFx,
+sample({
+  clock: acceptInvitationFx.done,
+  fn: () => ({ message: 'Вы успешно приняли приглашение' }),
+  target: showSuccessNotificationFx,
 });
 
 sample({
   clock: acceptInvitationFx.doneData,
-  fn: (clock) => ({ requestBody: clock }),
-  target: [acceptedInvitationSignInFx, clearInvitation],
+  fn: (clock) => ({ requestBody: clock.credentials }),
+  target: acceptedInvitationSignInFx,
 });
 
 sample({
-  clock: acceptedInvitationSignInFx.done,
-  target: DEFAULT_PROTECTED_ROUTE_CONFIG.route.open,
-});
-
-sample({
-  clock: acceptedInvitationSignInFx.fail,
-  target: DEFAULT_PUBLIC_ROUTE_CONFIG.route.open,
+  clock: acceptInvitationFx.fail,
+  fn: () => ({ message: 'Accept invitation error' }),
+  target: showErrorNotificationFx,
 });
