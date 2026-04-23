@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.2...v1.4.3) (2026-04-23)
+
+
+### Bug Fixes
+
+* mini-redesign ([2f2373b](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/2f2373bd0efb71350eba5f0e16a4f5ac93693996))
+
 ## [1.4.2](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.1...v1.4.2) (2026-04-22)
 
 
