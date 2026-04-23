@@ -87,13 +87,13 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
         <Paper w={360} p="xl" radius="lg">
           <Stack gap="lg" align="center">
             <ThemeIcon size={48} radius="md" color="red">
-              <IconMailOpened size={26} />
+              <IconMailOpened size={24} />
             </ThemeIcon>
-            <Stack gap={4} align="center">
-              <Text size="lg" fw={600}>
+            <Stack gap="xs" align="center">
+              <Text size="lg" fw={500}>
                 Приглашение недействительно
               </Text>
-              <Text size="sm" c="dimmed" ta="center">
+              <Text size="xs" c="dimmed" ta="center">
                 Обратитесь к администратору системы за новым приглашением
               </Text>
             </Stack>
@@ -107,25 +107,26 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
     <Center h="100vh" bg="dark.9" p={10}>
       <Paper w={360} p="xl" radius="lg">
         <Stack gap="lg">
-          <Group justify="center" gap={12}>
-            <ThemeIcon size={40} radius="md" color="green">
-              <IconMessage2 size={22} />
+          <Group justify="center" gap="sm">
+            <ThemeIcon size={36} radius="md" color="green">
+              <IconMessage2 size={18} />
             </ThemeIcon>
             <Text size="xl" fw={500}>
               Приглашение
             </Text>
           </Group>
+
           <Paper bg="dark.6" p="md" radius="md">
             <Stack gap="xs" align="center">
-              <Group gap={8}>
+              <Group gap="xs">
                 <ThemeIcon size={16} radius="xl" color="green" variant="light">
-                  <IconMailOpened size={10} />
+                  <IconMailOpened size={8} />
                 </ThemeIcon>
                 <Text size="xs" c="dimmed">
                   Вас пригласили в систему
                 </Text>
               </Group>
-              <Group gap={10}>
+              <Group gap="xs">
                 <Avatar size={36} radius="xl" color="green">
                   {isGetInvitationPending ? (
                     <Loader size="xs" color="green" />
@@ -133,7 +134,7 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
                     initials
                   )}
                 </Avatar>
-                <Text fw={600} size="md">
+                <Text fw={500} size="lg">
                   {fullName}
                 </Text>
               </Group>
@@ -165,18 +166,16 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
                 disabled={isAcceptInvitationPending || !invitation}
                 error={errors.passwordConfirm?.message}
               />
-              {
-                <Button
-                  type="submit"
-                  fullWidth
-                  mt="xs"
-                  color="green"
-                  loading={isAcceptInvitationPending}
-                  disabled={!invitation}
-                >
-                  Принять приглашение
-                </Button>
-              }
+              <Button
+                type="submit"
+                fullWidth
+                mt="xs"
+                color="green"
+                loading={isAcceptInvitationPending}
+                disabled={!invitation}
+              >
+                Принять приглашение
+              </Button>
             </Stack>
           </form>
         </Stack>

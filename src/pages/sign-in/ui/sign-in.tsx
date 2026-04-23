@@ -47,9 +47,9 @@ export const SignInPage: FC = () => {
     <Center h="100vh" bg="dark.9" p={10}>
       <Paper w={360} p="xl" radius="lg">
         <Stack gap="lg">
-          <Group justify="center" gap={12}>
+          <Group justify="center" gap="sm">
             <ThemeIcon size={40} radius="md" color="green">
-              <IconMessage2 size={22} />
+              <IconMessage2 size={20} />
             </ThemeIcon>
             <Text size="xl" fw={500}>
               Авторизация
