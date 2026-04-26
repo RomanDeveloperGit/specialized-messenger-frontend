@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { IconLink, IconMessage2, IconPencil } from '@tabler/icons-react';
+import { IconMessage2, IconPencil } from '@tabler/icons-react';
 
 import {
   Box,
@@ -15,7 +15,9 @@ import {
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { getConversationFullName } from '@/shared/lib/get-conversation-full-name';
 
-import { $authorizedUserId } from '@/entities/auth';
+import { $authorizedUserId, $isAdmin } from '@/entities/auth';
+
+import { CreateInvitation } from '@/features/create-invitation';
 
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
 import { getLastMessageText } from '@/pages/messenger/lib/get-last-message-text';
@@ -26,8 +28,6 @@ import {
 } from '../model/active-conversation/active-conversation.store';
 import { $conversations } from '../model/conversations.store';
 import { $isInitMessengerPending } from '../model/is-init-messenger-pending.store';
-
-const IS_ADMIN = true;
 
 const SkeletonItem = ({
   widths,
@@ -126,12 +126,14 @@ export const ConversationsSidebar = () => {
     conversations,
     activeConversation,
     authorizedUserId,
+    isAdmin,
     setActiveConversationByPublicId,
   ] = useUnit([
     $isInitMessengerPending,
     $conversations,
     $activeConversation,
     $authorizedUserId,
+    $isAdmin,
     _setActiveConversationByPublicId,
   ]);
 
@@ -185,26 +187,7 @@ export const ConversationsSidebar = () => {
             </Box>
           </Group>
           <Group gap={2}>
-            {IS_ADMIN && (
-              <Tooltip label="Создать приглашение" position="bottom" withArrow>
-                <UnstyledButton
-                  p={7}
-                  style={(theme) => ({
-                    'borderRadius': theme.radius.md,
-                    'color': theme.colors.dark[2],
-                    'display': 'flex',
-                    'alignItems': 'center',
-                    'transition': 'background 0.15s, color 0.15s',
-                    '&:hover': {
-                      background: theme.colors.dark[6],
-                      color: theme.colors.green[5],
-                    },
-                  })}
-                >
-                  <IconLink size={16} stroke={1.7} />
-                </UnstyledButton>
-              </Tooltip>
-            )}
+            {isAdmin && <CreateInvitation />}
             <Tooltip label="Новое сообщение" position="bottom" withArrow>
               <UnstyledButton
                 p={7}

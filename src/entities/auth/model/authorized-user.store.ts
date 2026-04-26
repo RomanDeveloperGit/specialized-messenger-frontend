@@ -9,3 +9,6 @@ export const $authorizedUserId = $authorizedUser.map(
   (user) => user?.id || null,
 );
 export const $isAuthorized = $authorizedUser.map(Boolean);
+export const $isAdmin = $authorizedUser.map(
+  (user) => user?.role.name === 'ADMIN',
+);

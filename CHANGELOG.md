@@ -1,16 +1,14 @@
 # [1.6.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.5.0...v1.6.0) (2026-04-26)
 
-
 ### Features
 
-* add dirty sending and receiving messages ([9e1de44](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/9e1de448d99837c577c735c71f0cf694d1ae07cd))
+- add dirty sending and receiving messages ([9e1de44](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/9e1de448d99837c577c735c71f0cf694d1ae07cd))
 
 # [1.5.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.3...v1.5.0) (2026-04-26)
 
-
 ### Features
 
-* add dirty version of release sidebar and active chat ([cf234d3](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/cf234d360eb5b6fdffc9c33c5c74c0ca8f3fc69e))
+- add dirty version of release sidebar and active chat ([cf234d3](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/cf234d360eb5b6fdffc9c33c5c74c0ca8f3fc69e))
 
 ## [1.4.3](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.2...v1.4.3) (2026-04-23)
 
