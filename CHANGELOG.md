@@ -1,16 +1,14 @@
 ## [1.4.3](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.2...v1.4.3) (2026-04-23)
 
-
 ### Bug Fixes
 
-* mini-redesign ([2f2373b](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/2f2373bd0efb71350eba5f0e16a4f5ac93693996))
+- mini-redesign ([2f2373b](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/2f2373bd0efb71350eba5f0e16a4f5ac93693996))
 
 ## [1.4.2](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.1...v1.4.2) (2026-04-22)
 
-
 ### Bug Fixes
 
-* **invitation:** add error plate ([60b59f0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/60b59f016024a34e6e093e5c138a996bd5cbe8e0))
+- **invitation:** add error plate ([60b59f0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/60b59f016024a34e6e093e5c138a996bd5cbe8e0))
 
 ## [1.4.1](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.4.0...v1.4.1) (2026-04-21)
 

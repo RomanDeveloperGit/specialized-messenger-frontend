@@ -2,7 +2,7 @@ import { createEffect } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-import { api } from '@/shared/api';
+import { unauthorizedApi } from '@/shared/api';
 import { saveCredentialsInLocalStorage } from '@/shared/lib/auth';
 import type { Credentials } from '@/shared/lib/auth/credentials';
 
@@ -20,7 +20,7 @@ export const baseSignInFx = createEffect<
     credentials: Credentials;
   }
 >(async ({ requestBody }) => {
-  const user = await api
+  const user = await unauthorizedApi
     .post<Response>('/api/v1/auth/sign-in' satisfies Path, {
       json: requestBody,
     })

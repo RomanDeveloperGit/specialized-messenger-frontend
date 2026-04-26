@@ -19,6 +19,8 @@ import {
   ThemeIcon,
 } from '@mantine/core';
 
+import { getUserFullName } from '@/shared/lib/get-user-full-name';
+import { getUserInitials } from '@/shared/lib/get-user-initials';
 import type { ReactPageWithSideEffect } from '@/shared/lib/react-page-with-side-effect';
 
 import { acceptInvitationFx } from '../model/accept-invitation/accept-invitation.effect';
@@ -73,13 +75,10 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
     });
   });
 
-  const fullName = [invitation?.firstName, invitation?.lastName]
-    .filter(Boolean)
-    .join(' ');
-
-  const initials = [invitation?.firstName?.[0], invitation?.lastName?.[0]]
-    .filter(Boolean)
-    .join('');
+  const firstName = invitation?.firstName ?? '';
+  const lastName = invitation?.lastName ?? '';
+  const fullName = getUserFullName({ firstName, lastName });
+  const initials = getUserInitials({ firstName, lastName });
 
   if (isGetInvitationError) {
     return (

@@ -2,11 +2,11 @@ import { createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-import { api } from '@/shared/api';
+import { unauthorizedApi } from '@/shared/api';
 import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
-} from '@/shared/lib/notifications';
+} from '@/shared/lib/show-notification';
 
 import { acceptedInvitationSignInFx } from './accepted-invitation-sign-in.effect';
 
@@ -24,10 +24,13 @@ export const acceptInvitationFx = createEffect<
   },
   { credentials: Body }
 >(async ({ id, query, requestBody }) => {
-  await api.post<Response>(`/api/v1/invitations/${id}/accept` satisfies Path, {
-    searchParams: query,
-    json: requestBody,
-  });
+  await unauthorizedApi.post<Response>(
+    `/api/v1/invitations/${id}/accept` satisfies Path,
+    {
+      searchParams: query,
+      json: requestBody,
+    },
+  );
 
   return { credentials: requestBody };
 });

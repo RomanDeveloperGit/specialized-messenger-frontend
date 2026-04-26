@@ -4,7 +4,7 @@ import { redirect } from 'atomic-router';
 import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
-} from '@/shared/lib/notifications';
+} from '@/shared/lib/show-notification';
 import {
   DEFAULT_PROTECTED_ROUTE_CONFIG,
   DEFAULT_PUBLIC_ROUTE_CONFIG,
