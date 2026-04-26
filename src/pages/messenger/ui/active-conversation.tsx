@@ -27,7 +27,7 @@ import { getConversationFullName } from '@/shared/lib/get-conversation-full-name
 import { getUserFullName } from '@/shared/lib/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/get-user-initials';
 
-import { $authorizedUserId } from '@/entities/auth';
+import { $authorizedUserId } from '@/entities/auth/model';
 
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
 

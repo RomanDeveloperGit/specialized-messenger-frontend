@@ -3,6 +3,8 @@ import { chainRoute } from 'atomic-router';
 
 import { messengerRouteConfig } from '@/shared/router';
 
+import { getUsersFx } from '@/features/create-conversation/model/users.store';
+
 import { setIsInitMessengerPending } from '../is-init-messenger-pending.store';
 import { connected, connectSocketFx } from './connect-socket.effect';
 import { getConversationsFx } from './get-conversations.effect';
@@ -31,5 +33,10 @@ export const registerPageSideEffect = () => {
   chainRoute({
     route: wsConnectedRoute,
     beforeOpen: getConversationsFx,
+  });
+
+  chainRoute({
+    route: wsConnectedRoute,
+    beforeOpen: getUsersFx,
   });
 };

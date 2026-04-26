@@ -1,5 +1,5 @@
 import { useUnit } from 'effector-react';
-import { IconMessage2, IconPencil } from '@tabler/icons-react';
+import { IconMessage2 } from '@tabler/icons-react';
 
 import {
   Box,
@@ -8,15 +8,15 @@ import {
   Skeleton,
   Stack,
   Text,
-  Tooltip,
   UnstyledButton,
 } from '@mantine/core';
 
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { getConversationFullName } from '@/shared/lib/get-conversation-full-name';
 
-import { $authorizedUserId, $isAdmin } from '@/entities/auth';
+import { $authorizedUserId, $isAdmin } from '@/entities/auth/model';
 
+import { CreateConversation } from '@/features/create-conversation';
 import { CreateInvitation } from '@/features/create-invitation';
 
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
@@ -188,24 +188,7 @@ export const ConversationsSidebar = () => {
           </Group>
           <Group gap={2}>
             {isAdmin && <CreateInvitation />}
-            <Tooltip label="Новое сообщение" position="bottom" withArrow>
-              <UnstyledButton
-                p={7}
-                style={(theme) => ({
-                  'borderRadius': theme.radius.md,
-                  'color': theme.colors.dark[2],
-                  'display': 'flex',
-                  'alignItems': 'center',
-                  'transition': 'background 0.15s, color 0.15s',
-                  '&:hover': {
-                    background: theme.colors.dark[6],
-                    color: theme.colors.green[5],
-                  },
-                })}
-              >
-                <IconPencil size={16} stroke={1.7} />
-              </UnstyledButton>
-            </Tooltip>
+            {isAdmin && <CreateConversation />}
           </Group>
         </Group>
       </Box>
@@ -293,7 +276,9 @@ export const ConversationsSidebar = () => {
                         {fullName}
                       </Text>
                       <Text size="xs" c="dark.3" style={{ flexShrink: 0 }}>
-                        {new Date(conv.createdAt).toLocaleDateString('ru-RU', {
+                        {new Date(
+                          conv.messages.at(-1)!.createdAt,
+                        ).toLocaleDateString('ru-RU', {
                           day: 'numeric',
                           month: 'numeric',
                           year: 'numeric',
