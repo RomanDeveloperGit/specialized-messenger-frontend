@@ -310,7 +310,13 @@ export const ConversationsSidebar = () => {
                         {fullName}
                       </Text>
                       <Text size="xs" c="dark.3" style={{ flexShrink: 0 }}>
-                        {conv.createdAt}
+                        {new Date(conv.createdAt).toLocaleDateString('ru-RU', {
+                          day: 'numeric',
+                          month: 'numeric',
+                          year: 'numeric',
+                          hour: 'numeric',
+                          minute: 'numeric',
+                        })}
                       </Text>
                     </Group>
                     <Group justify="space-between" wrap="nowrap" gap={4}>

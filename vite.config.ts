@@ -47,6 +47,12 @@ export default defineConfig({
       '/api': {
         target: process.env.APP_API_ORIGIN,
       },
+      // '/socket-io': {
+      //   target: process.env.APP_WS_ORIGIN,
+      //   ws: true,
+      //   changeOrigin: true,
+      //   rewriteWsOrigin: true
+      // },
     },
   },
   build: {

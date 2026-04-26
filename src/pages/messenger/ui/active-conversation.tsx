@@ -25,20 +25,25 @@ import {
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { getConversationFullName } from '@/shared/lib/get-conversation-full-name';
 import { getUserFullName } from '@/shared/lib/get-user-full-name';
+import { getUserInitials } from '@/shared/lib/get-user-initials';
 
 import { $authorizedUserId } from '@/entities/auth';
 
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
 
+import { getMessageText } from '../lib/get-message-text';
+import { isSystemMessage } from '../lib/is-system-message';
 import {
   $activeConversation,
   resetActiveConversation,
+  sendMessage as _sendMessage,
 } from '../model/active-conversation/active-conversation.store';
 
 export const ActiveConversation = () => {
-  const [conversation, authorizedUserId] = useUnit([
+  const [conversation, authorizedUserId, sendMessage] = useUnit([
     $activeConversation,
     $authorizedUserId,
+    _sendMessage,
   ]);
 
   const [message, setMessage] = useState('');
@@ -67,6 +72,10 @@ export const ActiveConversation = () => {
     if (!message.trim()) return;
     // TODO: dispatch send message event
     setMessage('');
+
+    sendMessage({
+      content: message,
+    });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -189,10 +198,70 @@ export const ActiveConversation = () => {
             const sender = conversation.participants.find(
               (p) => p.user.id === msg.author?.id,
             );
-            const senderName = sender
+            const senderFullName = sender
               ? getUserFullName(sender.user).trim()
-              : '';
-            const senderColor = getColorSchemaByText(senderName);
+              : 'Служебное сообщение';
+            const senderInitials = sender ? getUserInitials(sender.user) : 'CC';
+            const senderColor = getColorSchemaByText(senderFullName);
+
+            if (isSystemMessage(msg)) {
+              const dateLabel = new Date(msg.createdAt).toLocaleDateString(
+                'ru-RU',
+                {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric',
+                },
+              );
+
+              return (
+                <Box
+                  key={msg.id}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 6,
+                    marginTop: 12,
+                    marginBottom: 4,
+                  }}
+                >
+                  {/* Дата */}
+                  <Text
+                    size="xs"
+                    c="dark.3"
+                    style={{ fontSize: 11, letterSpacing: '0.3px' }}
+                  >
+                    {dateLabel}
+                  </Text>
+
+                  {/* Системный текст-пилюля */}
+                  <Box
+                    style={{
+                      background: 'rgba(0, 0, 0, 0.25)',
+                      backdropFilter: 'blur(6px)',
+                      borderRadius: 999,
+                      padding: '4px 14px',
+                      maxWidth: '75%',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Text
+                      size="xs"
+                      c="dark.1"
+                      style={{ fontSize: 12, lineHeight: 1.4 }}
+                    >
+                      {getMessageText({
+                        message: msg,
+                        participants: conversation.participants,
+                      })}
+                    </Text>
+                  </Box>
+                </Box>
+              );
+            }
 
             return (
               <Box
@@ -212,16 +281,13 @@ export const ActiveConversation = () => {
                     flexDirection: isOwn ? 'row-reverse' : 'row',
                   }}
                 >
-                  {/* Avatar for others, only on last in group */}
                   {!isOwn && (
                     <Box
                       style={{
                         width: 28,
                         height: 28,
                         borderRadius: '50%',
-                        background: isLastInGroup
-                          ? senderColor.backgroundColor
-                          : 'transparent',
+                        background: senderColor.backgroundColor,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -232,34 +298,10 @@ export const ActiveConversation = () => {
                         letterSpacing: '0.4px',
                       }}
                     >
-                      {isLastInGroup
-                        ? senderName
-                            .split(' ')
-                            .map((w) => w[0])
-                            .join('')
-                            .toUpperCase()
-                            .slice(0, 2)
-                        : ''}
+                      {senderInitials}
                     </Box>
                   )}
-
                   <Box>
-                    {/* Sender name (group chats, first in group) */}
-                    {!isOwn &&
-                      isFirstInGroup &&
-                      conversation.participants.length > 2 && (
-                        <Text
-                          size="xs"
-                          fw={500}
-                          mb={2}
-                          ml={4}
-                          style={{ color: senderColor.backgroundColor }}
-                        >
-                          {senderName}
-                        </Text>
-                      )}
-
-                    {/* Bubble */}
                     <Box
                       style={{
                         padding: '7px 11px',
@@ -275,12 +317,24 @@ export const ActiveConversation = () => {
                         position: 'relative',
                       }}
                     >
+                      {!isOwn && (
+                        <Text
+                          size="sm"
+                          c={senderColor.color}
+                          style={{ lineHeight: 1.5, wordBreak: 'break-word' }}
+                        >
+                          {senderFullName}
+                        </Text>
+                      )}
                       <Text
                         size="sm"
                         c={isOwn ? 'green.1' : 'gray.2'}
                         style={{ lineHeight: 1.5, wordBreak: 'break-word' }}
                       >
-                        {JSON.stringify(msg.content)}
+                        {getMessageText({
+                          message: msg,
+                          participants: conversation.participants,
+                        })}
                       </Text>
                       <Text
                         size="xs"
@@ -289,7 +343,10 @@ export const ActiveConversation = () => {
                         mt={2}
                         style={{ fontSize: 10, lineHeight: 1 }}
                       >
-                        {msg.createdAt}
+                        {new Date(msg.createdAt).toLocaleTimeString('ru-RU', {
+                          hour: 'numeric',
+                          minute: 'numeric',
+                        })}
                       </Text>
                     </Box>
                   </Box>
