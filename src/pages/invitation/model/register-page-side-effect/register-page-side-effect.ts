@@ -9,7 +9,7 @@ import { getInvitationFx } from './get-invitation.effect';
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
 type Query = Controller['search'];
 
-export const registerPageSideEffect = () => {
+export const registerPageSideEffects = () => {
   chainRoute({
     route: invitationRouteConfig.route,
     beforeOpen: {

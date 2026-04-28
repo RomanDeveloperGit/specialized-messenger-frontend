@@ -9,7 +9,7 @@ import { setIsInitMessengerPending } from '../is-init-messenger-pending.store';
 import { connected, connectSocketFx } from './connect-socket.effect';
 import { getConversationsFx } from './get-conversations.effect';
 
-export const registerPageSideEffect = () => {
+export const registerPageSideEffects = () => {
   // Процесс:
   // 1. Лоадер...
   // 2. Подключаемся к сокетам и подписываемся на события

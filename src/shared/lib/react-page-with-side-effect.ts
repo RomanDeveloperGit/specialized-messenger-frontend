@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type ReactPageWithSideEffect<Props = {}> = FC<Props> & {
-  registerPageSideEffect: () => void;
+export type ReactPageWithSideEffects<Props = {}> = FC<Props> & {
+  registerPageSideEffects: () => void;
 };
 
-export const isReactPageWithSideEffect = (
+export const isReactPageWithSideEffects = (
   page: FC,
-): page is ReactPageWithSideEffect => 'registerPageSideEffect' in page;
+): page is ReactPageWithSideEffects => 'registerPageSideEffects' in page;

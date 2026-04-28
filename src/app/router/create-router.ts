@@ -3,7 +3,7 @@ import { createRoutesView } from 'atomic-router-react';
 
 import { createBrowserHistory } from 'history';
 
-import { isReactPageWithSideEffect } from '@/shared/lib/react-page-with-side-effect';
+import { isReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
 import { allRouteFullConfigs } from './config';
 import { AppRouterProvider } from './ui/app-router-provider';
@@ -12,10 +12,10 @@ import { PageNotFound } from './ui/page-not-found';
 export const createRouter = () => {
   const historyRouter = createHistoryRouter({ routes: allRouteFullConfigs });
 
-  const registerPageSideEffects = () => {
+  const registerPagesSideEffects = () => {
     allRouteFullConfigs.forEach(({ view }) => {
-      if (isReactPageWithSideEffect(view)) {
-        view.registerPageSideEffect();
+      if (isReactPageWithSideEffects(view)) {
+        view.registerPageSideEffects();
       }
     });
   };
@@ -31,7 +31,7 @@ export const createRouter = () => {
 
   return {
     historyRouter,
-    registerPageSideEffects,
+    registerPagesSideEffects,
     applyBrowserHistory,
     UI: {
       AppRouterProvider,

@@ -21,7 +21,7 @@ import {
 
 import { getUserFullName } from '@/shared/lib/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/get-user-initials';
-import type { ReactPageWithSideEffect } from '@/shared/lib/react-page-with-side-effect';
+import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
 import { acceptInvitationFx } from '../model/accept-invitation/accept-invitation.effect';
 import {
@@ -34,9 +34,9 @@ import {
   $isGetInvitationError,
 } from '../model/invitation.store';
 import { getInvitationFx } from '../model/register-page-side-effect/get-invitation.effect';
-import { registerPageSideEffect } from '../model/register-page-side-effect/register-page-side-effect';
+import { registerPageSideEffects } from '../model/register-page-side-effect/register-page-side-effect';
 
-export const InvitationPage: ReactPageWithSideEffect = () => {
+export const InvitationPage: ReactPageWithSideEffects = () => {
   const [
     invitation,
     isGetInvitationPending,
@@ -183,4 +183,4 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
   );
 };
 
-InvitationPage.registerPageSideEffect = registerPageSideEffect;
+InvitationPage.registerPageSideEffects = registerPageSideEffects;

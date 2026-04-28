@@ -3,14 +3,14 @@ import { useUnit } from 'effector-react';
 import { Box, Center, Stack, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 
-import type { ReactPageWithSideEffect } from '@/shared/lib/react-page-with-side-effect';
+import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
 import { $activeConversation } from '../model/active-conversation/active-conversation.store';
-import { registerPageSideEffect } from '../model/register-page-side-effect/register-page-side-effect';
+import { registerPageSideEffects } from '../model/register-page-side-effect/register-page-side-effect';
 import { ActiveConversation } from './active-conversation';
 import { ConversationsSidebar } from './conversations-sidebar';
 
-export const MessengerPage: ReactPageWithSideEffect = () => {
+export const MessengerPage: ReactPageWithSideEffects = () => {
   const [activeConversation] = useUnit([$activeConversation]);
   const isMobile = useMediaQuery('(max-width: 767px)');
 
@@ -78,4 +78,4 @@ export const MessengerPage: ReactPageWithSideEffect = () => {
   );
 };
 
-MessengerPage.registerPageSideEffect = registerPageSideEffect;
+MessengerPage.registerPageSideEffects = registerPageSideEffects;

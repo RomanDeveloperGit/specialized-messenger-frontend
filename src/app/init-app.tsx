@@ -31,12 +31,12 @@ export const initApp = () => {
     .then(() => {
       const {
         historyRouter,
-        registerPageSideEffects,
+        registerPagesSideEffects,
         applyBrowserHistory,
         UI: { AppRouterProvider, RoutesView },
       } = createRouter();
 
-      registerPageSideEffects();
+      registerPagesSideEffects();
       applyBrowserHistory();
 
       root.render(
