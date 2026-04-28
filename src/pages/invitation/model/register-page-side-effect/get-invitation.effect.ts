@@ -2,7 +2,7 @@ import { createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-import { unauthorizedApi } from '@/shared/api';
+import { unauthorizedHttpClient } from '@/shared/api';
 import { showErrorNotificationFx } from '@/shared/lib/show-notification';
 
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
@@ -17,7 +17,7 @@ export const getInvitationFx = createEffect<
   },
   Response
 >(async ({ id, query }) => {
-  return await unauthorizedApi
+  return await unauthorizedHttpClient
     .get<Response>(`/api/v1/invitations/${id}` satisfies Path, {
       searchParams: query,
     })

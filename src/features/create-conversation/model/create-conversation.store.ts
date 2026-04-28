@@ -2,7 +2,7 @@ import { createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-import { authorizedApi } from '@/shared/api';
+import { authorizedHttpClient } from '@/shared/api';
 import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
@@ -19,7 +19,7 @@ export const createConversationFx = createEffect<
   },
   Response
 >(async ({ requestBody }) => {
-  return await authorizedApi
+  return await authorizedHttpClient
     .post<Response>(`/api/v1/chat/conversations` satisfies Path, {
       json: requestBody,
     })

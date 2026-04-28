@@ -4,7 +4,7 @@ import { redirect } from 'atomic-router';
 import { showSuccessNotificationFx } from '@/shared/lib/show-notification';
 import { DEFAULT_PROTECTED_ROUTE_CONFIG } from '@/shared/router';
 
-import { baseSignInFx } from '@/entities/auth/model/base-sign-in.effect';
+import { baseSignInFx } from '@/entities/auth/model';
 
 export const signInFx = attach({
   effect: baseSignInFx,

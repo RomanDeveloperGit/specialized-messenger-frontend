@@ -2,7 +2,7 @@ import { combine, createEffect, restore, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-import { authorizedApi } from '@/shared/api';
+import { authorizedHttpClient } from '@/shared/api';
 import { showErrorNotificationFx } from '@/shared/lib/show-notification';
 
 import { $authorizedUser } from '@/entities/auth/model';
@@ -12,7 +12,7 @@ type Path = Controller['path'];
 type Response = Controller['response'];
 
 export const getUsersFx = createEffect<void, Response>(async () => {
-  return await authorizedApi
+  return await authorizedHttpClient
     .get<Response>(`/api/v1/users` satisfies Path)
     .json();
 });

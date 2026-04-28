@@ -199,7 +199,7 @@ export const ActiveConversation = () => {
               (p) => p.user.id === msg.author?.id,
             );
             const senderFullName = sender
-              ? getUserFullName(sender.user).trim()
+              ? getUserFullName(sender.user)
               : 'Служебное сообщение';
             const senderInitials = sender ? getUserInitials(sender.user) : 'CC';
             const senderColor = getColorSchemaByText(senderFullName);

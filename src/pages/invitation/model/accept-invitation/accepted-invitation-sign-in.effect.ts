@@ -10,7 +10,7 @@ import {
   DEFAULT_PUBLIC_ROUTE_CONFIG,
 } from '@/shared/router';
 
-import { baseSignInFx } from '@/entities/auth/model/base-sign-in.effect';
+import { baseSignInFx } from '@/entities/auth/model';
 
 export const acceptedInvitationSignInFx = attach({
   effect: baseSignInFx,

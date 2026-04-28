@@ -2,7 +2,7 @@ import { createEffect, sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-import { unauthorizedApi } from '@/shared/api';
+import { unauthorizedHttpClient } from '@/shared/api';
 import {
   showErrorNotificationFx,
   showSuccessNotificationFx,
@@ -24,7 +24,7 @@ export const acceptInvitationFx = createEffect<
   },
   { credentials: Body }
 >(async ({ id, query, requestBody }) => {
-  await unauthorizedApi.post<Response>(
+  await unauthorizedHttpClient.post<Response>(
     `/api/v1/invitations/${id}/accept` satisfies Path,
     {
       searchParams: query,

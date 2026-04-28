@@ -1,10 +1,11 @@
-import { restore } from 'effector';
+import { createApi, createStore } from 'effector';
 
-import { baseSignInFx } from './base-sign-in.effect';
+import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-export const $authorizedUser = restore(baseSignInFx.doneData, null).map(
-  (data) => data?.user || null,
-);
+type Controller = OperationInfo<'AuthController_signIn_v1'>;
+type Response = Controller['response'];
+
+export const $authorizedUser = createStore<Response | null>(null);
 export const $authorizedUserId = $authorizedUser.map(
   (user) => user?.id || null,
 );
@@ -12,3 +13,7 @@ export const $isAuthorized = $authorizedUser.map(Boolean);
 export const $isAdmin = $authorizedUser.map(
   (user) => user?.role.name === 'ADMIN',
 );
+
+export const authorizedUserApi = createApi($authorizedUser, {
+  userAuthorized: (_, user: Response) => user,
+});
