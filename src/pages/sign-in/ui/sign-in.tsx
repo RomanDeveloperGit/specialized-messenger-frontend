@@ -39,7 +39,7 @@ export const SignInPage: FC = () => {
 
   const onSubmit = handleSubmit((data) => {
     signIn({
-      requestBody: data,
+      body: data,
     });
   });
 

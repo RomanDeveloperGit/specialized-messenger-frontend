@@ -15,13 +15,13 @@ type Response = Controller['response'];
 
 export const createInvitationFx = createEffect<
   {
-    requestBody: Body;
+    body: Body;
   },
   Response
->(async ({ requestBody }) => {
+>(async ({ body }) => {
   return await authorizedHttpClient
     .post<Response>(`/api/v1/invitations` satisfies Path, {
-      json: requestBody,
+      json: body,
     })
     .json();
 });

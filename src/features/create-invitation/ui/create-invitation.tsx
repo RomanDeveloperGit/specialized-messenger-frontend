@@ -84,7 +84,7 @@ export const CreateInvitation = () => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const invitation = await createInvitation({
-        requestBody: data,
+        body: data,
       });
 
       setInviteLink(createInvitationLink(invitation));

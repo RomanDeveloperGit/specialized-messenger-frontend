@@ -20,19 +20,19 @@ export const acceptInvitationFx = createEffect<
   {
     id: string;
     query: Query;
-    requestBody: Body;
+    body: Body;
   },
   { credentials: Body }
->(async ({ id, query, requestBody }) => {
+>(async ({ id, query, body }) => {
   await unauthorizedHttpClient.post<Response>(
     `/api/v1/invitations/${id}/accept` satisfies Path,
     {
       searchParams: query,
-      json: requestBody,
+      json: body,
     },
   );
 
-  return { credentials: requestBody };
+  return { credentials: body };
 });
 
 sample({
@@ -43,7 +43,7 @@ sample({
 
 sample({
   clock: acceptInvitationFx.doneData,
-  fn: (clock) => ({ requestBody: clock.credentials }),
+  fn: (clock) => ({ body: clock.credentials }),
   target: acceptedInvitationSignInFx,
 });
 

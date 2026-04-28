@@ -1,4 +1,4 @@
-import { attach, sample } from 'effector';
+import { sample } from 'effector';
 import { redirect } from 'atomic-router';
 
 import {
@@ -10,30 +10,36 @@ import {
   DEFAULT_PUBLIC_ROUTE_CONFIG,
 } from '@/shared/router';
 
-import { baseSignInFx } from '@/entities/auth/model';
+import { baseSignInEffectsFactory } from '@/entities/auth/model';
 
-export const acceptedInvitationSignInFx = attach({
-  effect: baseSignInFx,
+export const {
+  baseSignInFx: acceptedInvitationSignInFx,
+  baseSignInDoneFx: acceptedInvitationSignInDoneFx,
+} = baseSignInEffectsFactory();
+
+sample({
+  clock: acceptedInvitationSignInFx.doneData,
+  target: acceptedInvitationSignInDoneFx,
 });
 
 redirect({
-  clock: acceptedInvitationSignInFx.done,
+  clock: acceptedInvitationSignInDoneFx.done,
   route: DEFAULT_PROTECTED_ROUTE_CONFIG.route,
 });
 
 sample({
-  clock: acceptedInvitationSignInFx.done,
+  clock: acceptedInvitationSignInDoneFx.done,
   fn: () => ({ message: 'Вы успешно вошли в аккаунт' }),
   target: showSuccessNotificationFx,
 });
 
 redirect({
-  clock: acceptedInvitationSignInFx.fail,
+  clock: acceptedInvitationSignInDoneFx.fail,
   route: DEFAULT_PUBLIC_ROUTE_CONFIG.route,
 });
 
 sample({
-  clock: acceptedInvitationSignInFx.fail,
+  clock: acceptedInvitationSignInDoneFx.fail,
   fn: () => ({ message: 'Authorization error' }),
   target: showErrorNotificationFx,
 });

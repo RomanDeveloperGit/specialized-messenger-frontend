@@ -105,14 +105,14 @@ export const CreateConversation = () => {
     // добавить еще свитчер - группа это или нет
     if (!data.isGroup) {
       await createConversation({
-        requestBody: {
+        body: {
           type: 'DIRECT' as never,
           participantUserIds: [data.selectedUserIds[0]],
         },
       });
     } else {
       await createConversation({
-        requestBody: {
+        body: {
           type: 'GROUP' as never,
           name: data.groupName,
           participantUserIds: data.selectedUserIds,

@@ -68,7 +68,7 @@ export const InvitationPage: ReactPageWithSideEffect = () => {
         firstName: invitation.firstName,
         lastName: invitation.lastName,
       },
-      requestBody: {
+      body: {
         login: data.login,
         password: data.password,
       },
