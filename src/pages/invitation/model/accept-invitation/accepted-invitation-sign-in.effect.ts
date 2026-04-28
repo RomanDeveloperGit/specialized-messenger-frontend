@@ -1,5 +1,4 @@
-import { sample } from 'effector';
-import { redirect } from 'atomic-router';
+import { createEffect, sample } from 'effector';
 
 import {
   showErrorNotificationFx,
@@ -8,38 +7,49 @@ import {
 import {
   DEFAULT_PROTECTED_ROUTE_CONFIG,
   DEFAULT_PUBLIC_ROUTE_CONFIG,
+  getRouteByConfig,
 } from '@/shared/router';
 
-import { baseSignInEffectsFactory } from '@/entities/auth/model';
+import {
+  signInEffectsFactory,
+  type SignInSuccessFxParams,
+  type SignInSuccessFxResult,
+} from '@/entities/auth/model';
 
-export const {
-  baseSignInFx: acceptedInvitationSignInFx,
-  baseSignInDoneFx: acceptedInvitationSignInDoneFx,
-} = baseSignInEffectsFactory();
+import { invitationApi } from '../invitation.store';
+import { isInvitationAcceptancePendingApi } from './accept-invitation.store';
+
+const factory = signInEffectsFactory();
+
+export const acceptedInvitationSignInFx = factory.signInFx;
+
+const acceptedInvitationSignInSuccessFx = createEffect<
+  SignInSuccessFxParams,
+  SignInSuccessFxResult
+>(async (params) => {
+  await factory.signInSuccessFx(params);
+
+  getRouteByConfig(DEFAULT_PROTECTED_ROUTE_CONFIG).open();
+  showSuccessNotificationFx({ message: 'Вы успешно вошли в аккаунт' });
+
+  isInvitationAcceptancePendingApi.reset();
+  invitationApi.reset();
+});
+
+const acceptedInvitationSignInFailFx = createEffect<void, void>(() => {
+  getRouteByConfig(DEFAULT_PUBLIC_ROUTE_CONFIG).open();
+  showErrorNotificationFx({ message: 'Authorization error' });
+
+  isInvitationAcceptancePendingApi.reset();
+  invitationApi.reset();
+});
 
 sample({
   clock: acceptedInvitationSignInFx.doneData,
-  target: acceptedInvitationSignInDoneFx,
-});
-
-redirect({
-  clock: acceptedInvitationSignInDoneFx.done,
-  route: DEFAULT_PROTECTED_ROUTE_CONFIG.route,
+  target: acceptedInvitationSignInSuccessFx,
 });
 
 sample({
-  clock: acceptedInvitationSignInDoneFx.done,
-  fn: () => ({ message: 'Вы успешно вошли в аккаунт' }),
-  target: showSuccessNotificationFx,
-});
-
-redirect({
-  clock: acceptedInvitationSignInDoneFx.fail,
-  route: DEFAULT_PUBLIC_ROUTE_CONFIG.route,
-});
-
-sample({
-  clock: acceptedInvitationSignInDoneFx.fail,
-  fn: () => ({ message: 'Authorization error' }),
-  target: showErrorNotificationFx,
+  clock: acceptedInvitationSignInFx.fail,
+  target: acceptedInvitationSignInFailFx,
 });

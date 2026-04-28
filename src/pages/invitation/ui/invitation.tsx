@@ -28,26 +28,23 @@ import {
   type AcceptInvitationSchema,
   acceptInvitationSchema,
 } from '../model/accept-invitation/accept-invitation.schema';
-import {
-  $invitation,
-  $isAcceptInvitationPending,
-  $isGetInvitationError,
-} from '../model/invitation.store';
-import { getInvitationFx } from '../model/register-page-side-effect/get-invitation.effect';
-import { registerPageSideEffects } from '../model/register-page-side-effect/register-page-side-effect';
+import { $isInvitationAcceptancePending } from '../model/accept-invitation/accept-invitation.store';
+import { $hasInvitationError, $invitation } from '../model/invitation.store';
+import { getInvitationFx } from '../model/register-page-side-effects/get-invitation.effect';
+import { registerPageSideEffects } from '../model/register-page-side-effects/register-page-side-effects';
 
 export const InvitationPage: ReactPageWithSideEffects = () => {
   const [
     invitation,
-    isGetInvitationPending,
-    isGetInvitationError,
-    isAcceptInvitationPending,
+    isInvitationPending,
+    hasInvitationError,
+    isInvitationAcceptancePending,
     acceptInvitation,
   ] = useUnit([
     $invitation,
     getInvitationFx.pending,
-    $isGetInvitationError,
-    $isAcceptInvitationPending,
+    $hasInvitationError,
+    $isInvitationAcceptancePending,
     acceptInvitationFx,
   ]);
 
@@ -80,7 +77,7 @@ export const InvitationPage: ReactPageWithSideEffects = () => {
   const fullName = getUserFullName({ firstName, lastName });
   const initials = getUserInitials({ firstName, lastName });
 
-  if (isGetInvitationError) {
+  if (hasInvitationError) {
     return (
       <Center h="100vh" bg="dark.9" p={10}>
         <Paper w={360} p="xl" radius="lg">
@@ -127,7 +124,7 @@ export const InvitationPage: ReactPageWithSideEffects = () => {
               </Group>
               <Group gap="xs">
                 <Avatar size={36} radius="xl" color="green">
-                  {isGetInvitationPending ? (
+                  {isInvitationPending ? (
                     <Loader size="xs" color="green" />
                   ) : (
                     initials
@@ -148,21 +145,21 @@ export const InvitationPage: ReactPageWithSideEffects = () => {
                 {...register('login')}
                 label="Логин"
                 placeholder="Придумайте логин"
-                disabled={isAcceptInvitationPending || !invitation}
+                disabled={isInvitationAcceptancePending || !invitation}
                 error={errors.login?.message}
               />
               <PasswordInput
                 {...register('password')}
                 label="Пароль"
                 placeholder="Придумайте пароль"
-                disabled={isAcceptInvitationPending || !invitation}
+                disabled={isInvitationAcceptancePending || !invitation}
                 error={errors.password?.message}
               />
               <PasswordInput
                 {...register('passwordConfirm')}
                 label="Подтверждение пароля"
                 placeholder="Повторите пароль"
-                disabled={isAcceptInvitationPending || !invitation}
+                disabled={isInvitationAcceptancePending || !invitation}
                 error={errors.passwordConfirm?.message}
               />
               <Button
@@ -170,7 +167,7 @@ export const InvitationPage: ReactPageWithSideEffects = () => {
                 fullWidth
                 mt="xs"
                 color="green"
-                loading={isAcceptInvitationPending}
+                loading={isInvitationAcceptancePending}
                 disabled={!invitation}
               >
                 Принять приглашение

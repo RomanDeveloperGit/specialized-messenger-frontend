@@ -12,7 +12,7 @@ import {
   joinConversationFx,
   leaveConversationFx,
   sendMessageFx,
-} from '../register-page-side-effect/socket.store';
+} from '../register-page-side-effects/socket.store';
 import { getConversationFx } from './get-conversation.effect';
 
 type Controller = OperationInfo<'ChatController_getConversationByPublicId_v1'>;

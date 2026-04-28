@@ -1,26 +1,32 @@
-import { sample } from 'effector';
-import { redirect } from 'atomic-router';
+import { createEffect, sample } from 'effector';
 
 import { showSuccessNotificationFx } from '@/shared/lib/show-notification';
-import { DEFAULT_PROTECTED_ROUTE_CONFIG } from '@/shared/router';
+import {
+  DEFAULT_PROTECTED_ROUTE_CONFIG,
+  getRouteByConfig,
+} from '@/shared/router';
 
-import { baseSignInEffectsFactory } from '@/entities/auth/model';
+import {
+  signInEffectsFactory,
+  type SignInSuccessFxParams,
+  type SignInSuccessFxResult,
+} from '@/entities/auth/model';
 
-export const { baseSignInFx: signInFx, baseSignInDoneFx: signInDoneFx } =
-  baseSignInEffectsFactory();
+const factory = signInEffectsFactory();
+
+export const signInFx = factory.signInFx;
+
+const signInSuccessFx = createEffect<
+  SignInSuccessFxParams,
+  SignInSuccessFxResult
+>(async (params) => {
+  await factory.signInSuccessFx(params);
+
+  getRouteByConfig(DEFAULT_PROTECTED_ROUTE_CONFIG).open();
+  showSuccessNotificationFx({ message: 'Вы успешно вошли в аккаунт' });
+});
 
 sample({
   clock: signInFx.doneData,
-  target: signInDoneFx,
-});
-
-redirect({
-  clock: signInDoneFx.done,
-  route: DEFAULT_PROTECTED_ROUTE_CONFIG.route,
-});
-
-sample({
-  clock: signInDoneFx.done,
-  fn: () => ({ message: 'Вы успешно вошли в аккаунт' }),
-  target: showSuccessNotificationFx,
+  target: signInSuccessFx,
 });

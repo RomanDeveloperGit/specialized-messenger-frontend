@@ -13,17 +13,21 @@ type Path = Controller['path'];
 type Body = Controller['body'];
 type Response = Controller['response'];
 
-type BaseSignInParams = {
+export type SignInFxParams = {
   body: Body;
 };
 
-type BaseSignInResult = {
+export type SignInFxResult = {
   user: Response;
   credentials: Credentials;
 };
 
-export const baseSignInEffectsFactory = () => {
-  const baseSignInFx = createEffect<BaseSignInParams, BaseSignInResult>(
+export type SignInSuccessFxParams = SignInFxResult;
+
+export type SignInSuccessFxResult = void;
+
+export const signInEffectsFactory = () => {
+  const signInFx = createEffect<SignInFxParams, SignInFxResult>(
     async ({ body }) => {
       const user = await unauthorizedHttpClient
         .post<Response>('/api/v1/auth/sign-in' satisfies Path, {
@@ -38,16 +42,17 @@ export const baseSignInEffectsFactory = () => {
     },
   );
 
-  const baseSignInDoneFx = createEffect<BaseSignInResult, void>(
-    async ({ user, credentials }) => {
-      saveCredentialsInLocalStorage(credentials);
+  const signInSuccessFx = createEffect<
+    SignInSuccessFxParams,
+    SignInSuccessFxResult
+  >(async ({ user, credentials }) => {
+    saveCredentialsInLocalStorage(credentials);
 
-      authorizedUserApi.userAuthorized(user);
-    },
-  );
+    authorizedUserApi.set(user);
+  });
 
   return {
-    baseSignInFx,
-    baseSignInDoneFx,
+    signInFx,
+    signInSuccessFx,
   };
 };

@@ -8,6 +8,7 @@ import {
   showSuccessNotificationFx,
 } from '@/shared/lib/show-notification';
 
+import { isInvitationAcceptancePendingApi } from './accept-invitation.store';
 import { acceptedInvitationSignInFx } from './accepted-invitation-sign-in.effect';
 
 type Controller = OperationInfo<'InvitationController_acceptByPublicId_v1'>;
@@ -16,14 +17,22 @@ type Query = Controller['search'];
 type Body = Controller['body'];
 type Response = Controller['response'];
 
+type AcceptInvitationFxParams = {
+  id: string;
+  query: Query;
+  body: Body;
+};
+
+type AcceptInvitationFxResult = {
+  credentials: Body;
+};
+
 export const acceptInvitationFx = createEffect<
-  {
-    id: string;
-    query: Query;
-    body: Body;
-  },
-  { credentials: Body }
+  AcceptInvitationFxParams,
+  AcceptInvitationFxResult
 >(async ({ id, query, body }) => {
+  isInvitationAcceptancePendingApi.set(true);
+
   await unauthorizedHttpClient.post<Response>(
     `/api/v1/invitations/${id}/accept` satisfies Path,
     {
@@ -35,20 +44,25 @@ export const acceptInvitationFx = createEffect<
   return { credentials: body };
 });
 
-sample({
-  clock: acceptInvitationFx.done,
-  fn: () => ({ message: 'Вы успешно приняли приглашение' }),
-  target: showSuccessNotificationFx,
+const acceptInvitationSuccessFx = createEffect<AcceptInvitationFxResult, void>(
+  async ({ credentials }) => {
+    acceptedInvitationSignInFx({ body: credentials });
+    showSuccessNotificationFx({ message: 'Вы успешно приняли приглашение' });
+  },
+);
+
+const acceptInvitationFailFx = createEffect<void, void>(async () => {
+  isInvitationAcceptancePendingApi.reset();
+
+  showErrorNotificationFx({ message: 'Accept invitation error' });
 });
 
 sample({
   clock: acceptInvitationFx.doneData,
-  fn: (clock) => ({ body: clock.credentials }),
-  target: acceptedInvitationSignInFx,
+  target: acceptInvitationSuccessFx,
 });
 
 sample({
   clock: acceptInvitationFx.fail,
-  fn: () => ({ message: 'Accept invitation error' }),
-  target: showErrorNotificationFx,
+  target: acceptInvitationFailFx,
 });

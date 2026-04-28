@@ -1,2 +1,2 @@
 export * from './authorized-user.store';
-export * from './base-sign-in-effects.factory';
+export * from './sign-in-effects.factory';

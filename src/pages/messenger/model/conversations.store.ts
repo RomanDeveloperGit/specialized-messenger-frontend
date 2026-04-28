@@ -1,6 +1,6 @@
 import { createEvent, createStore, restore, sample } from 'effector';
 
-import { getConversationsFx } from './register-page-side-effect/get-conversations.effect';
+import { getConversationsFx } from './register-page-side-effects/get-conversations.effect';
 
 export const updateConversations = createEvent();
 export const $conversations = restore(getConversationsFx.doneData, []);

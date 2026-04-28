@@ -1,21 +1,19 @@
-import { createStore, restore } from 'effector';
+import { createApi, createStore } from 'effector';
 
-import { acceptInvitationFx } from './accept-invitation/accept-invitation.effect';
-import { acceptedInvitationSignInFx } from './accept-invitation/accepted-invitation-sign-in.effect';
-import { getInvitationFx } from './register-page-side-effect/get-invitation.effect';
+import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-export const $invitation = restore(getInvitationFx.doneData, null).reset(
-  acceptedInvitationSignInFx.done,
-  acceptedInvitationSignInFx.fail,
-);
-export const $isGetInvitationError = createStore(false)
-  .on(getInvitationFx.done, () => false)
-  .on(getInvitationFx.fail, () => true);
+type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
+type Response = Controller['response'];
 
-export const $isAcceptInvitationPending = createStore(false)
-  .on(acceptInvitationFx, () => true)
-  .reset(
-    acceptInvitationFx.fail,
-    acceptedInvitationSignInFx.done,
-    acceptedInvitationSignInFx.fail,
-  );
+export const $invitation = createStore<Response | null>(null);
+export const $hasInvitationError = createStore(false);
+
+export const invitationApi = createApi($invitation, {
+  set: (_, invitation: Response) => invitation,
+  reset: () => null,
+});
+
+export const hasInvitationErrorApi = createApi($hasInvitationError, {
+  set: (_, hasInvitationError: boolean) => hasInvitationError,
+  reset: () => false,
+});

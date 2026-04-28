@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
 import { $activeConversation } from '../model/active-conversation/active-conversation.store';
-import { registerPageSideEffects } from '../model/register-page-side-effect/register-page-side-effect';
+import { registerPageSideEffects } from '../model/register-page-side-effects/register-page-side-effects';
 import { ActiveConversation } from './active-conversation';
 import { ConversationsSidebar } from './conversations-sidebar';
 

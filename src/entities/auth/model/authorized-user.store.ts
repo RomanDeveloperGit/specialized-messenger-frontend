@@ -15,5 +15,5 @@ export const $isAdmin = $authorizedUser.map(
 );
 
 export const authorizedUserApi = createApi($authorizedUser, {
-  userAuthorized: (_, user: Response) => user,
+  set: (_, user: Response) => user,
 });

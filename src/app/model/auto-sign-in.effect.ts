@@ -1,13 +1,12 @@
 import { sample } from 'effector';
 
-import { baseSignInEffectsFactory } from '@/entities/auth/model';
+import { signInEffectsFactory } from '@/entities/auth/model';
 
-export const {
-  baseSignInFx: autoSignInFx,
-  baseSignInDoneFx: autoSignInDoneFx,
-} = baseSignInEffectsFactory();
+const { signInFx, signInSuccessFx } = signInEffectsFactory();
+
+export const autoSignInFx = signInFx;
 
 sample({
   clock: autoSignInFx.doneData,
-  target: autoSignInDoneFx,
+  target: signInSuccessFx,
 });

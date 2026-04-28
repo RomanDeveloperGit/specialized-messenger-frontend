@@ -1,6 +1,6 @@
 import { createEvent, createStore } from 'effector';
 
-import { getConversationsFx } from './register-page-side-effect/get-conversations.effect';
+import { getConversationsFx } from './register-page-side-effects/get-conversations.effect';
 
 export const setIsInitMessengerPending = createEvent<boolean>();
 export const $isInitMessengerPending = createStore(false)
