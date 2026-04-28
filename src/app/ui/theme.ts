@@ -13,16 +13,12 @@ const green: MantineColorsTuple = [
   '#0b1f14',
 ];
 
-export const theme = createTheme({
-  // Акцентный цвет
+export const THEME = createTheme({
   primaryColor: 'green',
   primaryShade: { light: 4, dark: 4 },
   colors: { green },
-
-  // Базовые цвета
   white: '#e8e8ea',
   black: '#1c1c1e',
-
   fontSizes: {
     xs: '11px',
     sm: '13px',
@@ -30,8 +26,6 @@ export const theme = createTheme({
     lg: '16px',
     xl: '18px',
   },
-
-  // Скругления
   defaultRadius: 'md',
   radius: {
     xs: '4px',
@@ -40,8 +34,6 @@ export const theme = createTheme({
     lg: '12px',
     xl: '20px',
   },
-
-  // Отступы
   spacing: {
     xs: '6px',
     sm: '10px',
@@ -49,8 +41,6 @@ export const theme = createTheme({
     lg: '20px',
     xl: '28px',
   },
-
-  // Тени (мягкие, под тёмный фон)
   shadows: {
     xs: '0 1px 4px rgba(0,0,0,0.4)',
     sm: '0 2px 8px rgba(0,0,0,0.45)',
@@ -58,11 +48,7 @@ export const theme = createTheme({
     lg: '0 8px 32px rgba(0,0,0,0.55)',
     xl: '0 16px 48px rgba(0,0,0,0.6)',
   },
-
-  // Курсор
   cursorType: 'pointer',
-
-  // Переопределения компонентов
   components: {
     Button: {
       defaultProps: { radius: 'md' },
@@ -73,7 +59,6 @@ export const theme = createTheme({
         },
       },
     },
-
     Input: {
       styles: {
         input: {
@@ -89,7 +74,6 @@ export const theme = createTheme({
         },
       },
     },
-
     Paper: {
       defaultProps: { radius: 'lg' },
       styles: {
@@ -99,7 +83,6 @@ export const theme = createTheme({
         },
       },
     },
-
     NavLink: {
       styles: {
         root: {
@@ -111,20 +94,17 @@ export const theme = createTheme({
         },
       },
     },
-
     Badge: {
       styles: {
         root: { fontWeight: 500, letterSpacing: '0.02em' },
       },
     },
-
     Tooltip: {
       defaultProps: {
         color: 'dark',
         withArrow: true,
       },
     },
-
     Modal: {
       styles: {
         content: { backgroundColor: '#242426' },

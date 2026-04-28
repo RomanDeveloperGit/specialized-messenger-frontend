@@ -5,9 +5,9 @@ import { attachReduxDevTools } from '@effector/redux-devtools-adapter';
 
 import { LoadingOverlay } from '@mantine/core';
 
-import { startInitialVisitGuard } from './model';
 import { createRouter } from './router';
-import { App } from './ui/app';
+import { startInitialVisitGuard } from './start-initial-visit-guard';
+import { App } from './ui';
 
 export const initApp = () => {
   if (import.meta.env.DEV) {
@@ -27,26 +27,30 @@ export const initApp = () => {
     </StrictMode>,
   );
 
-  startInitialVisitGuard().then(() => {
-    const {
-      historyRouter,
-      registerPageSideEffects,
-      applyBrowserHistory,
-      UI: { AppRouterProvider, RoutesView },
-    } = createRouter();
+  startInitialVisitGuard()
+    .then(() => {
+      const {
+        historyRouter,
+        registerPageSideEffects,
+        applyBrowserHistory,
+        UI: { AppRouterProvider, RoutesView },
+      } = createRouter();
 
-    registerPageSideEffects();
-    applyBrowserHistory();
+      registerPageSideEffects();
+      applyBrowserHistory();
 
-    root.render(
-      <StrictMode>
-        <App>
-          <AppRouterProvider
-            router={historyRouter}
-            routesView={<RoutesView />}
-          />
-        </App>
-      </StrictMode>,
-    );
-  });
+      root.render(
+        <StrictMode>
+          <App>
+            <AppRouterProvider
+              router={historyRouter}
+              routesView={<RoutesView />}
+            />
+          </App>
+        </StrictMode>,
+      );
+    })
+    .catch((error) => {
+      console.error('Unexpected error of init app', error);
+    });
 };

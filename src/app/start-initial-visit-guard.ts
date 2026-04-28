@@ -7,9 +7,7 @@ import {
   PUBLIC_ROUTE_CONFIGS,
 } from '@/shared/router';
 
-import { baseSignInFx } from '@/entities/auth/model/base-sign-in.effect';
-
-import { showApp } from './is-app-visible.store';
+import { baseSignInFx } from '@/entities/auth/model';
 
 export const startInitialVisitGuard = async () => {
   const isPublicRoute = isPathnameInArray(
@@ -38,6 +36,4 @@ export const startInitialVisitGuard = async () => {
   } else if (!isAuthorized && !isPublicRoute) {
     globalThis.history.replaceState({}, '', DEFAULT_PUBLIC_ROUTE_CONFIG.path);
   }
-
-  showApp();
 };

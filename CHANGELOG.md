@@ -1,10 +1,9 @@
 # [1.7.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.6.0...v1.7.0) (2026-04-26)
 
-
 ### Features
 
-* add dirty creating conversation ([cf86c01](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/cf86c0175d8cbdc4bb069b07a53c7a1230f09a4d))
-* add dirty creating invitation ([0eaca01](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/0eaca016a4acc2a5c82a59bdd8aecd436ba1b1da))
+- add dirty creating conversation ([cf86c01](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/cf86c0175d8cbdc4bb069b07a53c7a1230f09a4d))
+- add dirty creating invitation ([0eaca01](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/0eaca016a4acc2a5c82a59bdd8aecd436ba1b1da))
 
 # [1.6.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.5.0...v1.6.0) (2026-04-26)
 
