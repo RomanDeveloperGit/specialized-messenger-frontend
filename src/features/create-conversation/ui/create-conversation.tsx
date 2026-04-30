@@ -28,7 +28,7 @@ import {
   createConversationSchema,
 } from '../model/create-conversation.schema';
 import { createConversationFx } from '../model/create-conversation.store';
-import { $users } from '../model/users.store';
+import { $users, getUsersFx } from '../model/users.store';
 
 const inputStyles = {
   label: {
@@ -66,8 +66,9 @@ export const CreateConversation = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [step, setStep] = useState<1 | 2>(1);
 
-  const [users, createConversation, isPending] = useUnit([
+  const [users, getUsers, createConversation, isPending] = useUnit([
     $users,
+    getUsersFx,
     createConversationFx,
     createConversationFx.pending,
   ]);
@@ -87,6 +88,11 @@ export const CreateConversation = () => {
       groupName: '',
     },
   });
+
+  const handleOpen = () => {
+    getUsers();
+    open();
+  };
 
   const selectedUserIds = watch('selectedUserIds');
   const isGroup = selectedUserIds.length > 1;
@@ -142,7 +148,7 @@ export const CreateConversation = () => {
       <Tooltip label="Новое сообщение" position="bottom" withArrow>
         <UnstyledButton
           p={7}
-          onClick={open}
+          onClick={handleOpen}
           style={(theme) => ({
             'borderRadius': theme.radius.md,
             'color': theme.colors.dark[2],

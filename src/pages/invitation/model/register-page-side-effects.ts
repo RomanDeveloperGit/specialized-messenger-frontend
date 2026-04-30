@@ -4,7 +4,7 @@ import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { invitationRouteConfig } from '@/shared/router';
 
-import { getInvitationFx } from './get-invitation.effect';
+import { getInvitationFx } from './invitation/get-invitation.effect';
 
 type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
 type Query = Controller['search'];

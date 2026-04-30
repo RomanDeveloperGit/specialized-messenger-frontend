@@ -1,10 +1,10 @@
-import { createEffect, sample } from 'effector';
+import { createEffect } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { authorizedHttpClient } from '@/shared/api';
 import {
-  showErrorNotificationFx,
+  showDefaultErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/lib/show-notification';
 
@@ -13,29 +13,31 @@ type Path = Controller['path'];
 type Body = Controller['body'];
 type Response = Controller['response'];
 
+type CreateInvitationFxParams = {
+  body: Body;
+};
+
+type CreateInvitationFxResult = {
+  invitation: Response;
+};
+
 export const createInvitationFx = createEffect<
-  {
-    body: Body;
-  },
-  Response
+  CreateInvitationFxParams,
+  CreateInvitationFxResult
 >(async ({ body }) => {
-  return await authorizedHttpClient
-    .post<Response>(`/api/v1/invitations` satisfies Path, {
-      json: body,
-    })
-    .json();
-});
+  try {
+    const invitation = await authorizedHttpClient
+      .post<Response>(`/api/v1/invitations` satisfies Path, {
+        json: body,
+      })
+      .json();
 
-sample({
-  clock: createInvitationFx.done,
-  fn: () => ({ message: 'Вы успешно создали приглашение' }),
-  target: showSuccessNotificationFx,
-});
+    showSuccessNotificationFx({ message: 'Вы успешно создали приглашение' });
 
-sample({
-  clock: createInvitationFx.fail,
-  fn: () => ({ message: 'Create invitation error' }),
-  target: showErrorNotificationFx,
-});
+    return { invitation };
+  } catch (error) {
+    showDefaultErrorNotificationFx({ type: 'tryAgain' });
 
-// подкидывать данные в стор: Фамилию, имя, ссылку
+    throw error;
+  }
+});

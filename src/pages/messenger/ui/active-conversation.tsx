@@ -35,16 +35,18 @@ import { getMessageText } from '../lib/get-message-text';
 import { isSystemMessage } from '../lib/is-system-message';
 import {
   $activeConversation,
-  resetActiveConversation,
-  sendMessage as _sendMessage,
+  activeConversationApi,
 } from '../model/active-conversation/active-conversation.store';
+import { sendMessage as rawSendMessage } from '../model/socket/push-events/send-message.effect';
 
 export const ActiveConversation = () => {
-  const [conversation, authorizedUserId, sendMessage] = useUnit([
-    $activeConversation,
-    $authorizedUserId,
-    _sendMessage,
-  ]);
+  const [conversation, authorizedUserId, sendMessage, resetActiveConversation] =
+    useUnit([
+      $activeConversation,
+      $authorizedUserId,
+      rawSendMessage,
+      activeConversationApi.reset,
+    ]);
 
   const [message, setMessage] = useState('');
   const viewport = useRef<HTMLDivElement>(null);
@@ -74,7 +76,9 @@ export const ActiveConversation = () => {
     setMessage('');
 
     sendMessage({
-      content: message,
+      data: {
+        content: message,
+      },
     });
   };
 

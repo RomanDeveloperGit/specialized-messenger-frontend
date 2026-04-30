@@ -1,32 +1,27 @@
-import { combine, createEffect, restore, sample } from 'effector';
+import { combine, createApi, createStore } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
-
-import { authorizedHttpClient } from '@/shared/api';
-import { showErrorNotificationFx } from '@/shared/lib/show-notification';
 
 import { $authorizedUser } from '@/entities/auth/model';
 
 type Controller = OperationInfo<'UserController_getAll_v1'>;
-type Path = Controller['path'];
 type Response = Controller['response'];
 
-export const getUsersFx = createEffect<void, Response>(async () => {
-  return await authorizedHttpClient
-    .get<Response>(`/api/v1/users` satisfies Path)
-    .json();
-});
-
-sample({
-  clock: getUsersFx.fail,
-  fn: () => ({ message: 'Get users error' }),
-  target: showErrorNotificationFx,
-});
-
-const $rawUsers = restore(getUsersFx.doneData, []);
+export const $rawUsers = createStore<Response>([]);
 export const $users = combine(
   $rawUsers,
   $authorizedUser,
   (users, authorizedUser) =>
     users.filter((user) => user.id !== authorizedUser?.id),
 );
+
+export const usersApi = createApi($rawUsers, {
+  set: (_, users: Response) => users,
+  reset: () => [],
+});
+
+export const $hasUsersError = createStore(false);
+export const hasUsersErrorApi = createApi($hasUsersError, {
+  set: (_, hasUsersError: boolean) => hasUsersError,
+  reset: () => false,
+});

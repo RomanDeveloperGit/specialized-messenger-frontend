@@ -14,7 +14,10 @@ import {
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { getConversationFullName } from '@/shared/lib/get-conversation-full-name';
 
-import { $authorizedUserId, $isAdmin } from '@/entities/auth/model';
+import {
+  $authorizedUserId,
+  $isAuthorizedUserAdmin,
+} from '@/entities/auth/model';
 
 import { CreateConversation } from '@/features/create-conversation';
 import { CreateInvitation } from '@/features/create-invitation';
@@ -22,12 +25,10 @@ import { CreateInvitation } from '@/features/create-invitation';
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
 import { getLastMessageText } from '@/pages/messenger/lib/get-last-message-text';
 
-import {
-  $activeConversation,
-  setActiveConversationByPublicId as _setActiveConversationByPublicId,
-} from '../model/active-conversation/active-conversation.store';
-import { $conversations } from '../model/conversations.store';
-import { $isInitMessengerPending } from '../model/is-init-messenger-pending.store';
+import { $activeConversation } from '../model/active-conversation/active-conversation.store';
+import { openConversation as rawOpenConversation } from '../model/active-conversation/open-conversation.effect';
+import { $conversations } from '../model/conversations/conversations.store';
+import { $isMessengerPagePending } from '../model/register-page-side-effects/is-messenger-page-pending.store';
 
 const SkeletonItem = ({
   widths,
@@ -122,22 +123,22 @@ const ConversationsSidebarSkeleton = () => (
 
 export const ConversationsSidebar = () => {
   const [
-    isInitMessengerPending,
+    isMessengerPagePending,
     conversations,
     activeConversation,
     authorizedUserId,
-    isAdmin,
-    setActiveConversationByPublicId,
+    isAuthorizedUserAdmin,
+    openConversation,
   ] = useUnit([
-    $isInitMessengerPending,
+    $isMessengerPagePending,
     $conversations,
     $activeConversation,
     $authorizedUserId,
-    $isAdmin,
-    _setActiveConversationByPublicId,
+    $isAuthorizedUserAdmin,
+    rawOpenConversation,
   ]);
 
-  if (isInitMessengerPending) return <ConversationsSidebarSkeleton />;
+  if (isMessengerPagePending) return <ConversationsSidebarSkeleton />;
 
   return (
     <Stack
@@ -187,8 +188,8 @@ export const ConversationsSidebar = () => {
             </Box>
           </Group>
           <Group gap={2}>
-            {isAdmin && <CreateInvitation />}
-            {isAdmin && <CreateConversation />}
+            {isAuthorizedUserAdmin && <CreateInvitation />}
+            {isAuthorizedUserAdmin && <CreateConversation />}
           </Group>
         </Group>
       </Box>
@@ -219,9 +220,7 @@ export const ConversationsSidebar = () => {
                 key={conv.id}
                 py={9}
                 onClick={() => {
-                  if (conv.publicId !== activeConversation?.publicId) {
-                    setActiveConversationByPublicId(conv.publicId);
-                  }
+                  openConversation({ publicId: conv.publicId });
                 }}
                 style={(theme) => ({
                   'borderRadius': theme.radius.md,

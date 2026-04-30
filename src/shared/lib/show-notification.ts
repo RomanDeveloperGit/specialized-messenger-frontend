@@ -31,9 +31,19 @@ export const showErrorNotificationFx = createEffect<
   });
 });
 
-export const showDefaultErrorNotificationFx = createEffect<void, void>(() => {
+const DEFAULT_ERROR_MESSAGE_BY_TYPE = {
+  somethingWentWrong: 'Что-то пошло не так',
+  tryAgain: 'Произошло ошибка. Попробуйте ещё раз',
+};
+
+export const showDefaultErrorNotificationFx = createEffect<
+  {
+    type: keyof typeof DEFAULT_ERROR_MESSAGE_BY_TYPE;
+  },
+  void
+>(({ type }) => {
   showNotification({
-    message: 'Что-то пошло не так',
+    message: DEFAULT_ERROR_MESSAGE_BY_TYPE[type],
     color: 'red',
   });
 });

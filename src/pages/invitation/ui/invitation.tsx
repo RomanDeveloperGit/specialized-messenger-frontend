@@ -28,10 +28,13 @@ import {
   type AcceptInvitationSchema,
   acceptInvitationSchema,
 } from '../model/accept-invitation/accept-invitation.schema';
-import { $isInvitationAcceptancePending } from '../model/accept-invitation/accept-invitation.store';
-import { $hasInvitationError, $invitation } from '../model/invitation.store';
-import { getInvitationFx } from '../model/register-page-side-effects/get-invitation.effect';
-import { registerPageSideEffects } from '../model/register-page-side-effects/register-page-side-effects';
+import { $isInvitationAcceptancePending } from '../model/accept-invitation/is-invitation-acceptance-pending.store';
+import { getInvitationFx } from '../model/invitation/get-invitation.effect';
+import {
+  $hasInvitationError,
+  $invitation,
+} from '../model/invitation/invitation.store';
+import { registerPageSideEffects } from '../model/register-page-side-effects';
 
 export const InvitationPage: ReactPageWithSideEffects = () => {
   const [

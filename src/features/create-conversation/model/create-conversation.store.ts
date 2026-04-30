@@ -1,10 +1,10 @@
-import { createEffect, sample } from 'effector';
+import { createEffect } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { authorizedHttpClient } from '@/shared/api';
 import {
-  showErrorNotificationFx,
+  showDefaultErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/lib/show-notification';
 
@@ -13,27 +13,31 @@ type Path = Controller['path'];
 type Body = Controller['body'];
 type Response = Controller['response'];
 
+type CreateConversationFxParams = {
+  body: Body;
+};
+
+type CreateConversationFxResult = {
+  conversation: Response;
+};
+
 export const createConversationFx = createEffect<
-  {
-    body: Body;
-  },
-  Response
+  CreateConversationFxParams,
+  CreateConversationFxResult
 >(async ({ body }) => {
-  return await authorizedHttpClient
-    .post<Response>(`/api/v1/chat/conversations` satisfies Path, {
-      json: body,
-    })
-    .json();
-});
+  try {
+    const conversation = await authorizedHttpClient
+      .post<Response>(`/api/v1/chat/conversations` satisfies Path, {
+        json: body,
+      })
+      .json();
 
-sample({
-  clock: createConversationFx.done,
-  fn: () => ({ message: 'Вы успешно создали чат' }),
-  target: showSuccessNotificationFx,
-});
+    showSuccessNotificationFx({ message: 'Вы успешно создали чат' });
 
-sample({
-  clock: createConversationFx.fail,
-  fn: () => ({ message: 'Create conversation error' }),
-  target: showErrorNotificationFx,
+    return { conversation };
+  } catch (error) {
+    showDefaultErrorNotificationFx({ type: 'tryAgain' });
+
+    throw error;
+  }
 });

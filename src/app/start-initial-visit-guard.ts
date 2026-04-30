@@ -7,7 +7,7 @@ import {
   PUBLIC_ROUTE_CONFIGS,
 } from '@/shared/router';
 
-import { autoSignInFx } from './model/auto-sign-in.effect';
+import { signInFx } from '@/entities/auth/model';
 
 export const startInitialVisitGuard = async () => {
   const isPublicRoute = isPathnameInArray(
@@ -23,7 +23,7 @@ export const startInitialVisitGuard = async () => {
 
   const isAuthorized =
     !!credentials &&
-    (await autoSignInFx({ body: credentials })
+    (await signInFx({ body: credentials })
       .then(() => true)
       .catch(() => false));
 
