@@ -28,7 +28,8 @@ import {
   createConversationSchema,
 } from '../model/create-conversation.schema';
 import { createConversationFx } from '../model/create-conversation.store';
-import { $users, getUsersFx } from '../model/users.store';
+import { getUsersFx } from '../model/get-users.effect';
+import { $users } from '../model/users.store';
 
 const inputStyles = {
   label: {

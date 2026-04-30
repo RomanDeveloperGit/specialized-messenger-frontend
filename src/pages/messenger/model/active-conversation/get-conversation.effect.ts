@@ -35,7 +35,9 @@ export const getConversationFx = createEffect<
 
     return { conversation };
   } catch (error) {
-    showDefaultErrorNotificationFx({ type: 'somethingWentWrong' });
+    if (!(error instanceof DOMException && error.name === 'AbortError')) {
+      showDefaultErrorNotificationFx({ type: 'somethingWentWrong' });
+    }
 
     throw error;
   }
