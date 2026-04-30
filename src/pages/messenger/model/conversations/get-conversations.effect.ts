@@ -30,7 +30,7 @@ export const getConversationsFx = createEffect<void, GetConversationsFxResult>(
 
       return { conversations };
     } catch (error) {
-      hasConversationsErrorApi.set(true);
+      hasConversationsErrorApi.init();
 
       throw error;
     }

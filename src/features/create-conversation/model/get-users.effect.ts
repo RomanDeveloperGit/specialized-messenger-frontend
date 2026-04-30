@@ -26,7 +26,7 @@ export const getUsersFx = createEffect<void, getUsersFxResult>(async () => {
 
     return { users };
   } catch (error) {
-    hasUsersErrorApi.set(true);
+    hasUsersErrorApi.init();
 
     throw error;
   }

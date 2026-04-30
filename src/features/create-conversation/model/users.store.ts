@@ -14,7 +14,6 @@ export const $users = combine(
   (users, authorizedUser) =>
     users.filter((user) => user.id !== authorizedUser?.id),
 );
-
 export const usersApi = createApi($rawUsers, {
   set: (_, users: Response) => users,
   reset: () => [],
@@ -22,6 +21,6 @@ export const usersApi = createApi($rawUsers, {
 
 export const $hasUsersError = createStore(false);
 export const hasUsersErrorApi = createApi($hasUsersError, {
-  set: (_, hasUsersError: boolean) => hasUsersError,
+  init: () => true,
   reset: () => false,
 });

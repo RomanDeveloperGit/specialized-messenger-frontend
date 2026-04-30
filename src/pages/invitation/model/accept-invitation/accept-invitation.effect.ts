@@ -17,7 +17,6 @@ import {
 import { signInFx as rawSignInFx } from '@/entities/auth/model';
 
 import { invitationApi } from '../invitation/invitation.store';
-import { isInvitationAcceptancePendingApi } from './is-invitation-acceptance-pending.store';
 
 type Controller = OperationInfo<'InvitationController_acceptByPublicId_v1'>;
 type Path = Controller['path'];
@@ -65,8 +64,6 @@ const signInWithStaticErrorFx = createEffect<
 export const acceptInvitationFx = createEffect<AcceptInvitationFxParams, void>(
   async (params) => {
     try {
-      isInvitationAcceptancePendingApi.set(true);
-
       await acceptInvitationWithStaticErrorFx(params);
       await signInWithStaticErrorFx({ body: params.body });
 
@@ -96,8 +93,6 @@ export const acceptInvitationFx = createEffect<AcceptInvitationFxParams, void>(
       }
 
       throw error;
-    } finally {
-      isInvitationAcceptancePendingApi.reset();
     }
   },
 );

@@ -28,7 +28,7 @@ import { getLastMessageText } from '@/pages/messenger/lib/get-last-message-text'
 import { $activeConversation } from '../model/active-conversation/active-conversation.store';
 import { openConversation as rawOpenConversation } from '../model/active-conversation/open-conversation.effect';
 import { $conversations } from '../model/conversations/conversations.store';
-import { $isMessengerPagePending } from '../model/register-page-side-effects/is-messenger-page-pending.store';
+import { initMessengerPageFx } from '../model/register-page-side-effects/init-messenger-page.effect';
 
 const SkeletonItem = ({
   widths,
@@ -123,14 +123,14 @@ const ConversationsSidebarSkeleton = () => (
 
 export const ConversationsSidebar = () => {
   const [
-    isMessengerPagePending,
+    isInitMessengerPending,
     conversations,
     activeConversation,
     authorizedUserId,
     isAuthorizedUserAdmin,
     openConversation,
   ] = useUnit([
-    $isMessengerPagePending,
+    initMessengerPageFx.pending,
     $conversations,
     $activeConversation,
     $authorizedUserId,
@@ -138,7 +138,7 @@ export const ConversationsSidebar = () => {
     rawOpenConversation,
   ]);
 
-  if (isMessengerPagePending) return <ConversationsSidebarSkeleton />;
+  if (isInitMessengerPending) return <ConversationsSidebarSkeleton />;
 
   return (
     <Stack

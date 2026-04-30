@@ -13,6 +13,6 @@ export const conversationsApi = createApi($conversations, {
 
 export const $hasConversationsError = createStore(false);
 export const hasConversationsErrorApi = createApi($hasConversationsError, {
-  set: (_, hasConversationsError: boolean) => hasConversationsError,
+  init: () => true,
   reset: () => false,
 });

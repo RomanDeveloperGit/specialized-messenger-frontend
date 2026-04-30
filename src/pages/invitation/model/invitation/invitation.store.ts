@@ -14,6 +14,6 @@ export const invitationApi = createApi($invitation, {
 });
 
 export const hasInvitationErrorApi = createApi($hasInvitationError, {
-  set: (_, hasInvitationError: boolean) => hasInvitationError,
+  init: () => true,
   reset: () => false,
 });

@@ -83,7 +83,7 @@ export const CreateInvitation = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const invitation = await createInvitation({
+      const { invitation } = await createInvitation({
         body: data,
       });
 

@@ -28,7 +28,6 @@ import {
   type AcceptInvitationSchema,
   acceptInvitationSchema,
 } from '../model/accept-invitation/accept-invitation.schema';
-import { $isInvitationAcceptancePending } from '../model/accept-invitation/is-invitation-acceptance-pending.store';
 import { getInvitationFx } from '../model/invitation/get-invitation.effect';
 import {
   $hasInvitationError,
@@ -47,7 +46,7 @@ export const InvitationPage: ReactPageWithSideEffects = () => {
     $invitation,
     getInvitationFx.pending,
     $hasInvitationError,
-    $isInvitationAcceptancePending,
+    acceptInvitationFx.pending,
     acceptInvitationFx,
   ]);
 

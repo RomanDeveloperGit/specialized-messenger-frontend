@@ -37,7 +37,7 @@ export const getInvitationFx = createEffect<
 
     return { invitation };
   } catch (error) {
-    hasInvitationErrorApi.set(true);
+    hasInvitationErrorApi.init();
 
     throw error;
   }
