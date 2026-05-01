@@ -1,8 +1,8 @@
 import { createEffect, createEvent, sample, type StoreValue } from 'effector';
 
 import { $conversations } from '../conversations/conversations.store';
-import { joinConversationFx } from '../socket/push-events/join-conversation.effect';
-import { leaveConversationFx } from '../socket/push-events/leave-conversation.effect';
+import { joinConversationFx } from '../socket/emit-events/join-conversation.effect';
+import { leaveConversationFx } from '../socket/emit-events/leave-conversation.effect';
 import { $socket, type Socket } from '../socket/socket.store';
 import {
   $activeConversationPublicId,

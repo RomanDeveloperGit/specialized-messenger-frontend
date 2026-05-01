@@ -3,11 +3,11 @@ import { createApi, createStore } from 'effector';
 import { Socket as RawSocket } from 'socket.io-client';
 
 import type {
-  WSClientToServerEvents,
-  WSServerToClientEvents,
-} from '@specialized-messenger/api/constants/chat.constants';
+  SocketEmitEventsMap,
+  SocketListenEventsMap,
+} from '../../lib/socket-events.interface';
 
-export type Socket = RawSocket<WSServerToClientEvents, WSClientToServerEvents>;
+export type Socket = RawSocket<SocketListenEventsMap, SocketEmitEventsMap>;
 
 export const $socket = createStore<Socket | null>(null);
 export const socketApi = createApi($socket, {

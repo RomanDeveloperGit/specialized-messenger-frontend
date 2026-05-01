@@ -20,16 +20,17 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { getUserFullName } from '@/shared/lib/get-user-full-name';
+
+import { getColorSchemaByFullName } from '@/pages/messenger/lib/get-color-schema-by-full-name';
 
 import {
   type CreateConversationSchema,
   createConversationSchema,
-} from '../model/create-conversation.schema';
-import { createConversationFx } from '../model/create-conversation.store';
-import { getUsersFx } from '../model/get-users.effect';
-import { $users } from '../model/users.store';
+} from '../../model/create-conversation/create-conversation.schema';
+import { createConversationFx } from '../../model/create-conversation/create-conversation.store';
+import { getUsersFx } from '../../model/create-conversation/get-users.effect';
+import { $users } from '../../model/create-conversation/users.store';
 
 const inputStyles = {
   label: {
@@ -305,7 +306,7 @@ export const CreateConversation = () => {
                         user.publicId,
                       );
                       const fullName = getUserFullName(user);
-                      const color = getColorSchemaByText(fullName);
+                      const color = getColorSchemaByFullName(fullName);
 
                       return (
                         <UnstyledButton

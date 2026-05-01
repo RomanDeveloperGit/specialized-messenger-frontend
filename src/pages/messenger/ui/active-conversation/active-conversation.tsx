@@ -22,22 +22,23 @@ import {
   Textarea,
 } from '@mantine/core';
 
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
-import { getConversationFullName } from '@/shared/lib/get-conversation-full-name';
 import { getUserFullName } from '@/shared/lib/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/get-user-initials';
 
 import { $authorizedUserId } from '@/entities/auth/model';
 
+import { getColorSchemaByFullName } from '@/pages/messenger/lib/get-color-schema-by-full-name';
+import { getConversationFullName } from '@/pages/messenger/lib/get-conversation-full-name';
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
 
-import { getMessageText } from '../lib/get-message-text';
-import { isSystemMessage } from '../lib/is-system-message';
+import { isSystemConversationCreatedMessage } from '../../lib/message-checker/is-system-conversation-created-message';
+import { isSystemUserJoinedMessage } from '../../lib/message-checker/is-system-user-joined-message';
+import { prepareMessageForActiveConversation } from '../../lib/prepare-message-for-active-conversation/prepare-message-for-active-conversation';
 import {
   $activeConversation,
   activeConversationApi,
-} from '../model/active-conversation/active-conversation.store';
-import { sendMessage as rawSendMessage } from '../model/socket/push-events/send-message.effect';
+} from '../../model/active-conversation/active-conversation.store';
+import { sendMessage as rawSendMessage } from '../../model/socket/emit-events/send-message.effect';
 
 export const ActiveConversation = () => {
   const [conversation, authorizedUserId, sendMessage, resetActiveConversation] =
@@ -64,7 +65,7 @@ export const ActiveConversation = () => {
     conversation,
     viewerUserId: authorizedUserId!,
   });
-  const color = getColorSchemaByText(fullName);
+  const color = getColorSchemaByFullName(fullName);
   const initials = getConversationInitials({
     conversation,
     viewerUserId: authorizedUserId!,
@@ -206,9 +207,12 @@ export const ActiveConversation = () => {
               ? getUserFullName(sender.user)
               : 'Служебное сообщение';
             const senderInitials = sender ? getUserInitials(sender.user) : 'CC';
-            const senderColor = getColorSchemaByText(senderFullName);
+            const senderColor = getColorSchemaByFullName(senderFullName);
 
-            if (isSystemMessage(msg)) {
+            if (
+              isSystemConversationCreatedMessage(msg) ||
+              isSystemUserJoinedMessage(msg)
+            ) {
               const dateLabel = new Date(msg.createdAt).toLocaleDateString(
                 'ru-RU',
                 {
@@ -257,9 +261,9 @@ export const ActiveConversation = () => {
                       c="dark.1"
                       style={{ fontSize: 12, lineHeight: 1.4 }}
                     >
-                      {getMessageText({
+                      {prepareMessageForActiveConversation({
                         message: msg,
-                        participants: conversation.participants,
+                        conversation,
                       })}
                     </Text>
                   </Box>
@@ -335,9 +339,9 @@ export const ActiveConversation = () => {
                         c={isOwn ? 'green.1' : 'gray.2'}
                         style={{ lineHeight: 1.5, wordBreak: 'break-word' }}
                       >
-                        {getMessageText({
+                        {prepareMessageForActiveConversation({
                           message: msg,
-                          participants: conversation.participants,
+                          conversation,
                         })}
                       </Text>
                       <Text

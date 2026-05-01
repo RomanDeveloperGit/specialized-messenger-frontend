@@ -1,5 +1,4 @@
 import { getCredentialsFromLocalStorage } from '@/shared/lib/auth';
-import { isPathnameInArray } from '@/shared/lib/is-pathname-in-array';
 import {
   DEFAULT_PROTECTED_ROUTE_CONFIG,
   DEFAULT_PUBLIC_ROUTE_CONFIG,
@@ -8,6 +7,8 @@ import {
 } from '@/shared/router';
 
 import { signInFx } from '@/entities/auth/model';
+
+import { isPathnameInArray } from './lib/is-pathname-in-array';
 
 export const startInitialVisitGuard = async () => {
   const isPublicRoute = isPathnameInArray(

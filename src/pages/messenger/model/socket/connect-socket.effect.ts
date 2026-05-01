@@ -7,8 +7,8 @@ import {
   getBase64CredentialsFromLocalStorage,
 } from '@/shared/lib/auth';
 
-import { receiveMessageFx } from './pull-events/receive-message.effect';
-import { updateConversationsFx } from './pull-events/update-conversations.effect';
+import { receiveMessageFx } from './listen-events/receive-message.effect';
+import { updateConversationsFx } from './listen-events/update-conversations.effect';
 import { type Socket, socketApi } from './socket.store';
 
 export const connectSocketFx = createEffect<void, Socket>(() => {

@@ -27,12 +27,12 @@ import { useClipboard, useDisclosure } from '@mantine/hooks';
 
 import { getUserFullName } from '@/shared/lib/get-user-full-name';
 
-import { createInvitationLink } from '../lib/create-invitation-link';
+import { createInvitationLink } from '../../lib/create-invitation-link';
 import {
   type CreateInvitationSchema,
   createInvitationSchema,
-} from '../model/create-invitation.schema';
-import { createInvitationFx } from '../model/create-invitation.store';
+} from '../../model/create-invitation/create-invitation.schema';
+import { createInvitationFx } from '../../model/create-invitation/create-invitation.store';
 
 const inputStyles = {
   label: {

@@ -1,12 +1,12 @@
 import { createEffect, createEvent, sample } from 'effector';
 
-import type { WSClientToServerEvents } from '@specialized-messenger/api/constants/chat.constants';
+import type { SocketEmitEventData } from '@/pages/messenger/lib/socket-events.interface';
 
 import { $socket, type Socket } from '../socket.store';
 
 type SendMessageFxParams = {
   socket: Socket;
-  data: Parameters<WSClientToServerEvents['from-client:message.new']>[0];
+  data: SocketEmitEventData<'from-client:message.new'>;
 };
 
 export const sendMessage = createEvent<Pick<SendMessageFxParams, 'data'>>();

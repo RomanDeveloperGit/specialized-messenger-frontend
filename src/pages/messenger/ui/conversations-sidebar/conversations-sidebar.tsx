@@ -11,9 +11,6 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
-import { getConversationFullName } from '@/shared/lib/get-conversation-full-name';
-
 import {
   $authorizedUserId,
   $isAuthorizedUserAdmin,
@@ -22,8 +19,10 @@ import {
 import { CreateConversation } from '@/features/create-conversation';
 import { CreateInvitation } from '@/features/create-invitation';
 
+import { getColorSchemaByFullName } from '@/pages/messenger/lib/get-color-schema-by-full-name';
+import { getConversationFullName } from '@/pages/messenger/lib/get-conversation-full-name';
 import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
-import { getLastMessageText } from '@/pages/messenger/lib/get-last-message-text';
+import { prepareLastMessageForConversationList } from '@/pages/messenger/lib/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
 
 import { $activeConversation } from '../model/active-conversation/active-conversation.store';
 import { openConversation as rawOpenConversation } from '../model/active-conversation/open-conversation.effect';
@@ -213,7 +212,7 @@ export const ConversationsSidebar = () => {
               conversation: conv,
               viewerUserId: authorizedUserId!,
             });
-            const color = getColorSchemaByText(fullName);
+            const color = getColorSchemaByFullName(fullName);
 
             return (
               <UnstyledButton
@@ -292,10 +291,7 @@ export const ConversationsSidebar = () => {
                         c={isActive ? 'dark.1' : 'dark.2'}
                         truncate
                       >
-                        {getLastMessageText({
-                          message: conv.messages.at(-1)!,
-                          participants: conv.participants,
-                        })}
+                        {prepareLastMessageForConversationList(conv)}
                       </Text>
                       {/* {conv.unread && (
                         <Box

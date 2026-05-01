@@ -1,7 +1,8 @@
 import { type Dto } from '@specialized-messenger/api/specs';
 
-import { getUserInitials } from '../../../shared/lib/get-user-initials';
-import { isGroupConversation } from '../../../shared/lib/is-group-conversation';
+import { getUserInitials } from '@/shared/lib/get-user-initials';
+
+import { isGroupConversation } from './is-group-conversation';
 
 export const getConversationInitials = ({
   conversation,
