@@ -1,8 +1,8 @@
 import { createEffect } from 'effector';
 
-import type { SocketListenEventData } from '@/pages/messenger/lib/socket-events.interface';
+import type { SocketListenEventData } from '@/pages/messenger/model/socket/lib/socket-events.interface';
 
-import { activeConversationApi } from '../../active-conversation/active-conversation.store';
+import { activeConversationApi } from '../../../modules/active-conversation/model/active-conversation.store';
 
 type ReceiveMessageFxParams = {
   data: SocketListenEventData<'from-server:message.new'>;
