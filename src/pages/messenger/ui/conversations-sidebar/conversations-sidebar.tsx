@@ -11,23 +11,22 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 
+import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
+import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { prepareLastMessageForConversationList } from '@/shared/lib/message/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
+
 import {
   $authorizedUserId,
   $isAuthorizedUserAdmin,
 } from '@/entities/auth/model';
 
-import { CreateConversation } from '@/features/create-conversation';
-import { CreateInvitation } from '@/features/create-invitation';
-
-import { getColorSchemaByFullName } from '@/pages/messenger/lib/get-color-schema-by-full-name';
-import { getConversationFullName } from '@/pages/messenger/lib/get-conversation-full-name';
-import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
-import { prepareLastMessageForConversationList } from '@/pages/messenger/lib/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
-
-import { $activeConversation } from '../model/active-conversation/active-conversation.store';
-import { openConversation as rawOpenConversation } from '../model/active-conversation/open-conversation.effect';
-import { $conversations } from '../model/conversations/conversations.store';
-import { initMessengerPageFx } from '../model/register-page-side-effects/init-messenger-page.effect';
+import { $activeConversation } from '../../model/active-conversation/active-conversation.store';
+import { openConversation as rawOpenConversation } from '../../model/active-conversation/open-conversation.effect';
+import { $conversations } from '../../model/conversations/conversations.store';
+import { initMessengerPageFx } from '../../model/register-page-side-effects/init-messenger-page.effect';
+import { CreateConversation } from './create-conversation';
+import { CreateInvitation } from './create-invitation';
 
 const SkeletonItem = ({
   widths,
@@ -212,7 +211,7 @@ export const ConversationsSidebar = () => {
               conversation: conv,
               viewerUserId: authorizedUserId!,
             });
-            const color = getColorSchemaByFullName(fullName);
+            const color = getColorSchemaByText(fullName);
 
             return (
               <UnstyledButton

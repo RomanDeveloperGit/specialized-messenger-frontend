@@ -9,8 +9,8 @@ const COLOR_SCHEMAS: Array<{ backgroundColor: string; color: string }> = [
   { backgroundColor: '#3b1c2e', color: '#e599f7' },
 ];
 
-export const getColorSchemaByFullName = (name: string) => {
-  const hash = name.split('').reduce((acc, char) => {
+export const getColorSchemaByText = (text: string) => {
+  const hash = text.split('').reduce((acc, char) => {
     return acc + char.charCodeAt(0) + ((acc << 5) - acc);
   }, 0);
 

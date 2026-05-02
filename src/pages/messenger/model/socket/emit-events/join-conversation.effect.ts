@@ -1,6 +1,6 @@
 import { createEffect } from 'effector';
 
-import type { SocketEmitEventData } from '@/pages/messenger/lib/socket-events.interface';
+import type { SocketEmitEventData } from '@/shared/lib/socket/events';
 
 import type { Socket } from '../socket.store';
 

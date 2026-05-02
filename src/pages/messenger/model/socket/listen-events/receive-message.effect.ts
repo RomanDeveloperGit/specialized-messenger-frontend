@@ -1,6 +1,6 @@
 import { createEffect } from 'effector';
 
-import type { SocketListenEventData } from '@/pages/messenger/lib/socket-events.interface';
+import type { SocketListenEventData } from '@/shared/lib/socket/events';
 
 import { activeConversationApi } from '../../active-conversation/active-conversation.store';
 

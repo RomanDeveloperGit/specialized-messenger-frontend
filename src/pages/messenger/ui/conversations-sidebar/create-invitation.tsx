@@ -25,9 +25,9 @@ import {
 } from '@mantine/core';
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 
-import { getUserFullName } from '@/shared/lib/get-user-full-name';
+import { createInvitationLink } from '@/shared/lib/invitation/create-invitation-link';
+import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 
-import { createInvitationLink } from '../../lib/create-invitation-link';
 import {
   type CreateInvitationSchema,
   createInvitationSchema,

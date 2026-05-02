@@ -1,6 +1,6 @@
 import { type Dto } from '@specialized-messenger/api/specs';
 
-import { getUserFullName } from '@/shared/lib/get-user-full-name';
+import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 
 import { isGroupConversation } from './is-group-conversation';
 

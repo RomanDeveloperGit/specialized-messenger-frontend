@@ -22,18 +22,17 @@ import {
   Textarea,
 } from '@mantine/core';
 
-import { getUserFullName } from '@/shared/lib/get-user-full-name';
-import { getUserInitials } from '@/shared/lib/get-user-initials';
+import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
+import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { isSystemConversationCreatedMessage } from '@/shared/lib/message/message-checker/is-system-conversation-created-message';
+import { isSystemUserJoinedMessage } from '@/shared/lib/message/message-checker/is-system-user-joined-message';
+import { prepareMessageForActiveConversation } from '@/shared/lib/message/prepare-message-for-active-conversation/prepare-message-for-active-conversation';
+import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
+import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
 import { $authorizedUserId } from '@/entities/auth/model';
 
-import { getColorSchemaByFullName } from '@/pages/messenger/lib/get-color-schema-by-full-name';
-import { getConversationFullName } from '@/pages/messenger/lib/get-conversation-full-name';
-import { getConversationInitials } from '@/pages/messenger/lib/get-conversation-initials';
-
-import { isSystemConversationCreatedMessage } from '../../lib/message-checker/is-system-conversation-created-message';
-import { isSystemUserJoinedMessage } from '../../lib/message-checker/is-system-user-joined-message';
-import { prepareMessageForActiveConversation } from '../../lib/prepare-message-for-active-conversation/prepare-message-for-active-conversation';
 import {
   $activeConversation,
   activeConversationApi,
@@ -65,7 +64,7 @@ export const ActiveConversation = () => {
     conversation,
     viewerUserId: authorizedUserId!,
   });
-  const color = getColorSchemaByFullName(fullName);
+  const color = getColorSchemaByText(fullName);
   const initials = getConversationInitials({
     conversation,
     viewerUserId: authorizedUserId!,
@@ -207,7 +206,7 @@ export const ActiveConversation = () => {
               ? getUserFullName(sender.user)
               : 'Служебное сообщение';
             const senderInitials = sender ? getUserInitials(sender.user) : 'CC';
-            const senderColor = getColorSchemaByFullName(senderFullName);
+            const senderColor = getColorSchemaByText(senderFullName);
 
             if (
               isSystemConversationCreatedMessage(msg) ||
@@ -340,8 +339,8 @@ export const ActiveConversation = () => {
                         style={{ lineHeight: 1.5, wordBreak: 'break-word' }}
                       >
                         {prepareMessageForActiveConversation({
-                          message: msg,
                           conversation,
+                          message: msg,
                         })}
                       </Text>
                       <Text

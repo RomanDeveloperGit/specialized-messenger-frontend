@@ -19,9 +19,9 @@ import {
   ThemeIcon,
 } from '@mantine/core';
 
-import { getUserFullName } from '@/shared/lib/get-user-full-name';
-import { getUserInitials } from '@/shared/lib/get-user-initials';
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
+import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
+import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
 import { acceptInvitationFx } from '../model/accept-invitation/accept-invitation.effect';
 import {

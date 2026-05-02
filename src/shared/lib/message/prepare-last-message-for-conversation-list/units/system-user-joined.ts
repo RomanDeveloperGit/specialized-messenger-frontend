@@ -1,4 +1,4 @@
-import { getUserFullName } from '@/shared/lib/get-user-full-name';
+import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 
 import { isSystemUserJoinedMessage } from '../../message-checker/is-system-user-joined-message';
 import { UNDEFINED_USER } from '../../undefined-user';

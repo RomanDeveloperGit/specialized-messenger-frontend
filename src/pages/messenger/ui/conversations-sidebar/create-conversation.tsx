@@ -20,9 +20,8 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { getUserFullName } from '@/shared/lib/get-user-full-name';
-
-import { getColorSchemaByFullName } from '@/pages/messenger/lib/get-color-schema-by-full-name';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 
 import {
   type CreateConversationSchema,
@@ -306,7 +305,7 @@ export const CreateConversation = () => {
                         user.publicId,
                       );
                       const fullName = getUserFullName(user);
-                      const color = getColorSchemaByFullName(fullName);
+                      const color = getColorSchemaByText(fullName);
 
                       return (
                         <UnstyledButton
