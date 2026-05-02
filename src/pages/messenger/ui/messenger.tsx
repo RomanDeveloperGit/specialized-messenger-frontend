@@ -5,13 +5,13 @@ import { useMediaQuery } from '@mantine/hooks';
 
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
-import { $activeConversation } from '../model/active-conversation/active-conversation.store';
+import { $hasActiveConversation } from '../model/active-conversation/active-conversation.store';
 import { registerPageSideEffects } from '../model/register-page-side-effects/register-page-side-effects';
-import { ActiveConversation } from './active-conversation';
-import { ConversationsSidebar } from './conversations-sidebar';
+import { ActiveConversation } from './active-conversation/active-conversation';
+import { Sidebar } from './sidebar/sidebar';
 
 export const MessengerPage: ReactPageWithSideEffects = () => {
-  const [activeConversation] = useUnit([$activeConversation]);
+  const [hasActiveConversation] = useUnit([$hasActiveConversation]);
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   return (
@@ -20,21 +20,21 @@ export const MessengerPage: ReactPageWithSideEffects = () => {
         style={{
           width: isMobile ? '100%' : 320,
           flexShrink: 0,
-          display: isMobile && activeConversation ? 'none' : 'flex',
+          display: isMobile && hasActiveConversation ? 'none' : 'flex',
           flexDirection: 'column',
         }}
       >
-        <ConversationsSidebar />
+        <Sidebar />
       </Box>
       <Box
         flex={1}
         style={{
-          display: isMobile && !activeConversation ? 'none' : 'flex',
+          display: isMobile && !hasActiveConversation ? 'none' : 'flex',
           flexDirection: 'column',
           minWidth: 0,
         }}
       >
-        {activeConversation ? (
+        {hasActiveConversation ? (
           <ActiveConversation />
         ) : (
           <Center flex={1}>

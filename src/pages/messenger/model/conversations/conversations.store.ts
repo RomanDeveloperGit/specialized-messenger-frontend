@@ -6,6 +6,9 @@ type Controller = OperationInfo<'ChatController_getConversations_v1'>;
 type Response = Controller['response'];
 
 export const $conversations = createStore<Response>([]);
+export const $conversationsCount = $conversations.map(
+  (conversations) => conversations.length,
+);
 export const conversationsApi = createApi($conversations, {
   set: (_, conversations: Response) => conversations,
   reset: () => [],

@@ -6,6 +6,7 @@ type Controller = OperationInfo<'ChatController_getConversationByPublicId_v1'>;
 type Response = Controller['response'];
 
 export const $activeConversation = createStore<Response | null>(null);
+export const $hasActiveConversation = $activeConversation.map(Boolean);
 export const $activeConversationPublicId = $activeConversation.map(
   (conversation) => conversation?.publicId || null,
 );
