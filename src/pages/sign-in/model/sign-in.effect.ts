@@ -6,7 +6,7 @@ import {
   getRouteByConfig,
 } from '@/shared/router';
 
-import { signInFx as rawSignInFx } from '@/modules/auth';
+import { signInFx as rawSignInFx } from '@/entities/auth/model';
 
 export const signInFx = createEffect<EffectParams<typeof rawSignInFx>, void>(
   async (params) => {
