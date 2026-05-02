@@ -5,10 +5,10 @@ import { useMediaQuery } from '@mantine/hooks';
 
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
-import { $activeConversation } from '../model/active-conversation/active-conversation.store';
+import { ConversationsSidebar } from '../conversations/ui/conversations-sidebar';
 import { registerPageSideEffects } from '../model/register-page-side-effects/register-page-side-effects';
-import { ActiveConversation } from './active-conversation';
-import { ConversationsSidebar } from './conversations-sidebar';
+import { $activeConversation } from '../modules/active-conversation/model/active-conversation.store';
+import { ActiveConversation } from './active-conversation/active-conversation';
 
 export const MessengerPage: ReactPageWithSideEffects = () => {
   const [activeConversation] = useUnit([$activeConversation]);

@@ -6,7 +6,7 @@ import {
   PUBLIC_ROUTE_CONFIGS,
 } from '@/shared/router';
 
-import { signInFx } from '@/entities/auth/model';
+import { signInFx } from '@/modules/auth';
 
 import { isPathnameInArray } from './lib/is-pathname-in-array';
 
