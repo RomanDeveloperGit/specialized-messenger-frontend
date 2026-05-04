@@ -2,7 +2,7 @@ import { useUnit } from 'effector-react';
 
 import { Stack } from '@mantine/core';
 
-import { initMessengerPageFx } from '../../model/register-page-side-effects/init-messenger-page.effect';
+import { initMessengerPageFx } from '../../model/init-messenger-page.effect';
 import { ConversationList } from './conversation-list';
 import { Header } from './header';
 

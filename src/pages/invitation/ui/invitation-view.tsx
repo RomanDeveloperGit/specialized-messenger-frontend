@@ -15,8 +15,7 @@ import {
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import { getInvitationFx } from '../model/invitation/get-invitation.effect';
-import { $invitation } from '../model/invitation/invitation.store';
+import { $invitation, getInvitationFx } from '@/entities/invitation';
 
 export const InvitationView = () => {
   const [invitation, isInvitationPending] = useUnit([
@@ -39,7 +38,6 @@ export const InvitationView = () => {
           Приглашение
         </Text>
       </Group>
-
       <Paper bg="dark.6" p="md" radius="md">
         <Stack gap="xs" align="center">
           <Group gap="xs">

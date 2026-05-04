@@ -1,7 +1,7 @@
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
+import { UNDEFINED_USER } from '@/shared/lib/user/undefined-user';
 
 import { isSystemUserJoinedMessage } from '../../message-checker/is-system-user-joined-message';
-import { UNDEFINED_USER } from '../../undefined-user';
 import type { Preparer } from '../config.interface';
 
 export const prepareSystemUserJoinedMessage: Preparer = (

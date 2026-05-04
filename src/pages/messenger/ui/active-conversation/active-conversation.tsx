@@ -1,26 +1,14 @@
-// selected-conversation.tsx
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useUnit } from 'effector-react';
 import {
   IconArrowLeft,
   IconDotsVertical,
-  IconMoodSmile,
-  IconPaperclip,
   IconPhone,
-  IconSend,
   IconVideo,
 } from '@tabler/icons-react';
 
-import {
-  ActionIcon,
-  Box,
-  Group,
-  ScrollArea,
-  Stack,
-  Text,
-  Textarea,
-} from '@mantine/core';
+import { ActionIcon, Box, Group, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
@@ -31,24 +19,21 @@ import { prepareMessageForActiveConversation } from '@/shared/lib/message/prepar
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import { $authorizedUserId } from '@/entities/auth/model';
-
 import {
   $activeConversation,
   activeConversationApi,
-} from '../../model/active-conversation/active-conversation.store';
-import { sendMessage as rawSendMessage } from '../../model/socket/emit-events/send-message.effect';
+} from '@/entities/active-conversation';
+import { $authorizedUserId } from '@/entities/auth';
+
+import { SendMessage } from '@/features/send-message';
 
 export const ActiveConversation = () => {
-  const [conversation, authorizedUserId, sendMessage, resetActiveConversation] =
-    useUnit([
-      $activeConversation,
-      $authorizedUserId,
-      rawSendMessage,
-      activeConversationApi.reset,
-    ]);
+  const [conversation, authorizedUserId, resetActiveConversation] = useUnit([
+    $activeConversation,
+    $authorizedUserId,
+    activeConversationApi.reset,
+  ]);
 
-  const [message, setMessage] = useState('');
   const viewport = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -69,25 +54,6 @@ export const ActiveConversation = () => {
     conversation,
     viewerUserId: authorizedUserId!,
   });
-
-  const handleSend = () => {
-    if (!message.trim()) return;
-    // TODO: dispatch send message event
-    setMessage('');
-
-    sendMessage({
-      data: {
-        content: message,
-      },
-    });
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
 
   return (
     <Stack gap={0} h="100%" style={{ overflow: 'hidden' }}>
@@ -363,96 +329,7 @@ export const ActiveConversation = () => {
           })}
         </Stack>
       </ScrollArea>
-
-      {/* ── Input ── */}
-      <Box
-        px="md"
-        py="sm"
-        style={{
-          borderTop: '1px solid var(--mantine-color-dark-6)',
-          background: 'var(--mantine-color-dark-8)',
-          flexShrink: 0,
-        }}
-      >
-        <Group gap={8} align="flex-end" wrap="nowrap">
-          <ActionIcon
-            variant="subtle"
-            color="dark.2"
-            size="lg"
-            style={{ flexShrink: 0, marginBottom: 2 }}
-            styles={{
-              root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-            }}
-          >
-            <IconMoodSmile size={20} stroke={1.6} />
-          </ActionIcon>
-
-          <ActionIcon
-            variant="subtle"
-            color="dark.2"
-            size="lg"
-            style={{ flexShrink: 0, marginBottom: 2 }}
-            styles={{
-              root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-            }}
-          >
-            <IconPaperclip size={19} stroke={1.6} />
-          </ActionIcon>
-
-          <Textarea
-            flex={1}
-            placeholder="Сообщение..."
-            value={message}
-            onChange={(e) => setMessage(e.currentTarget.value)}
-            onKeyDown={handleKeyDown}
-            autosize
-            minRows={1}
-            maxRows={5}
-            styles={{
-              input: {
-                'background': 'var(--mantine-color-dark-6)',
-                'border': '1px solid var(--mantine-color-dark-5)',
-                'borderRadius': 12,
-                'color': 'var(--mantine-color-gray-2)',
-                'fontSize': 14,
-                'padding': '8px 12px',
-                'resize': 'none',
-                'transition': 'border-color 0.15s',
-                '&:focus': {
-                  borderColor: 'var(--mantine-color-green-7)',
-                },
-                '&::placeholder': {
-                  color: 'var(--mantine-color-dark-3)',
-                },
-              },
-            }}
-          />
-          <ActionIcon
-            size="lg"
-            radius="xl"
-            onClick={handleSend}
-            disabled={!message.trim()}
-            style={{
-              flexShrink: 0,
-              marginBottom: 2,
-              background: message.trim()
-                ? 'linear-gradient(135deg, var(--mantine-color-green-7) 0%, var(--mantine-color-green-8) 100%)'
-                : 'var(--mantine-color-dark-6)',
-              color: message.trim() ? 'white' : 'var(--mantine-color-dark-3)',
-              transition: 'background 0.2s, transform 0.1s',
-              boxShadow: message.trim()
-                ? '0 2px 8px rgba(47, 158, 68, 0.35)'
-                : 'none',
-            }}
-          >
-            <IconSend
-              size={16}
-              stroke={1.8}
-              style={{ transform: 'translateX(1px)' }}
-            />
-          </ActionIcon>
-        </Group>
-      </Box>
+      <SendMessage />
     </Stack>
   );
 };

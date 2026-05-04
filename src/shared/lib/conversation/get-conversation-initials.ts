@@ -2,7 +2,7 @@ import { type Dto } from '@specialized-messenger/api/specs';
 
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import { isGroupConversation } from '../../../pages/messenger/lib/is-group-conversation';
+import { isGroupConversation } from './is-group-conversation';
 
 export const getConversationInitials = ({
   conversation,

@@ -11,10 +11,10 @@ import { getConversationInitials } from '@/shared/lib/conversation/get-conversat
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { prepareLastMessageForConversationList } from '@/shared/lib/message/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
 
-import { $authorizedUserId } from '@/entities/auth/model';
+import { $activeConversation } from '@/entities/active-conversation';
+import { $authorizedUserId } from '@/entities/auth';
 
-import { $activeConversation } from '../../model/active-conversation/active-conversation.store';
-import { openConversation as rawOpenConversation } from '../../model/active-conversation/open-conversation.effect';
+import { openConversation as rawOpenConversation } from '@/features/open-conversation';
 
 export const ConversationItem: FC<{
   conversation: Dto['Conversation'];

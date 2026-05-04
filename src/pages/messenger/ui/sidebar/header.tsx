@@ -3,11 +3,11 @@ import { IconMessage2 } from '@tabler/icons-react';
 
 import { Box, Group, Text } from '@mantine/core';
 
-import { $isAuthorizedUserAdmin } from '@/entities/auth/model';
+import { $isAuthorizedUserAdmin } from '@/entities/auth';
+import { $conversationsCount } from '@/entities/conversations';
 
-import { $conversationsCount } from '../../model/conversations/conversations.store';
-import { CreateConversation } from './create-conversation';
-import { CreateInvitation } from './create-invitation';
+import { CreateConversation } from '@/features/create-conversation';
+import { CreateInvitation } from '@/features/create-invitation';
 
 export const Header = () => {
   const [conversationsCount, isAuthorizedUserAdmin] = useUnit([

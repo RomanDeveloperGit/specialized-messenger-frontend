@@ -2,7 +2,7 @@ import { useUnit } from 'effector-react';
 
 import { Box, ScrollArea, Stack, Text } from '@mantine/core';
 
-import { $conversations } from '../../model/conversations/conversations.store';
+import { $conversations } from '../../../../entities/conversations/model/conversations.store';
 import { ConversationItem } from './conversation-item';
 
 export const ConversationList = () => {
