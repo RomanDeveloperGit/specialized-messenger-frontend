@@ -5,14 +5,14 @@ import { IconMoodSmile, IconPaperclip, IconSend } from '@tabler/icons-react';
 
 import { ActionIcon, Box, Group, Textarea } from '@mantine/core';
 
-import { sendMessage as rawSendMessage } from '@/shared/api/socket';
-
 import { $hasActiveConversation } from '@/entities/active-conversation';
+
+import { sendMessageFx } from '../model/send-message.effect';
 
 export const SendMessage = () => {
   const [hasActiveConversation, sendMessage] = useUnit([
     $hasActiveConversation,
-    rawSendMessage,
+    sendMessageFx,
   ]);
 
   const [message, setMessage] = useState('');
