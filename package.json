@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "ts:check": "tsc --noEmit",
+    "ts:check": "tsc -b --noEmit",
     "lint:check": "eslint",
     "stylelint:check": "stylelint .",
     "format": "prettier . --write && concurrently \"eslint --fix\" \"stylelint . --fix\"",
