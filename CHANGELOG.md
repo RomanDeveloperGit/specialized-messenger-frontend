@@ -1,3 +1,10 @@
+## [1.7.1](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.7.0...v1.7.1) (2026-05-04)
+
+
+### Bug Fixes
+
+* apply FSD architecture with my notes ([1321f12](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/1321f122fcbe0811016fb08051cb2ae38498daa6))
+
 # [1.7.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.6.0...v1.7.0) (2026-04-26)
 
 ### Features
