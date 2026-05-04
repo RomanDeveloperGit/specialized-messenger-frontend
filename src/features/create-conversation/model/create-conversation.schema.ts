@@ -15,4 +15,5 @@ export const createConversationSchema = z.discriminatedUnion('isGroup', [
       .max(64, 'Максимум 64 символа'),
   }),
 ]);
+
 export type CreateConversationSchema = z.infer<typeof createConversationSchema>;

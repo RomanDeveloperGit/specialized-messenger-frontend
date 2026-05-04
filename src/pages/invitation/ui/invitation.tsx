@@ -4,8 +4,10 @@ import { Center, Paper, Stack } from '@mantine/core';
 
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
-import { $hasInvitationError } from '../../../entities/invitation/model/invitation.store';
-import { AcceptInvitation } from '../../../features/accept-invitation/ui/accept-invitation';
+import { $hasInvitationError } from '@/entities/invitation';
+
+import { AcceptInvitation } from '@/features/accept-invitation';
+
 import { registerPageSideEffects } from '../model/register-page-side-effects';
 import { InvitationError } from './invitation-error';
 import { InvitationView } from './invitation-view';

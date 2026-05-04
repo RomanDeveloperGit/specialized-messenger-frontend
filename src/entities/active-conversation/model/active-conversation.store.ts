@@ -2,11 +2,6 @@ import { createApi, createStore } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
-// добавляем вручную импорты (для регистрации сэмплов, связанными с ивентами сокетов),
-// т.к. бандлер не включает эти файлы
-// (потому что не импортируются никуда, а лишь регистрацию ивента на эффект производит)
-import './receive-message.effect';
-
 type Controller = OperationInfo<'ChatController_getConversationByPublicId_v1'>;
 type Response = Controller['response'];
 

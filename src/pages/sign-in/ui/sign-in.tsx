@@ -22,7 +22,7 @@ import {
 import {
   type SignInSchema,
   signInSchema,
-} from '@/pages/sign-in/model/sign-in.schema';
+} from '@/entities/auth/model/sign-in.schema';
 
 import { signInFx } from '../model/sign-in.effect';
 
