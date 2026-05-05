@@ -1,20 +1,12 @@
-import { combine, createApi, createStore } from 'effector';
+import { createApi, createStore } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
-
-import { $authorizedUser } from '@/entities/auth';
 
 type Controller = OperationInfo<'UserController_getAll_v1'>;
 type Response = Controller['response'];
 
-export const $rawUsers = createStore<Response>([]);
-export const $users = combine(
-  $rawUsers,
-  $authorizedUser,
-  (users, authorizedUser) =>
-    users.filter((user) => user.id !== authorizedUser?.id),
-);
-export const usersApi = createApi($rawUsers, {
+export const $users = createStore<Response>([]);
+export const usersApi = createApi($users, {
   set: (_, users: Response) => users,
   reset: () => [],
 });

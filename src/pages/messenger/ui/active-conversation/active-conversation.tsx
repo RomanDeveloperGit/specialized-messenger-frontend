@@ -102,9 +102,6 @@ export const ActiveConversation = () => {
               <Text size="sm" fw={600} c="gray.1" lh={1.2}>
                 {fullName}
               </Text>
-              <Text size="xs" c="green.6" lh={1.3}>
-                Статус разрабатывается
-              </Text>
             </Box>
           </Group>
 

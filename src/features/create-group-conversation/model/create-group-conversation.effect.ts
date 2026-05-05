@@ -13,17 +13,17 @@ type Path = Controller['path'];
 type Body = Controller['body'];
 type Response = Controller['response'];
 
-type CreateConversationFxParams = {
+type CreateGroupConversationFxParams = {
   body: Body;
 };
 
-type CreateConversationFxResult = {
+type CreateGroupConversationFxResult = {
   conversation: Response;
 };
 
-export const createConversationFx = createEffect<
-  CreateConversationFxParams,
-  CreateConversationFxResult
+export const createGroupConversationFx = createEffect<
+  CreateGroupConversationFxParams,
+  CreateGroupConversationFxResult
 >(async ({ body }) => {
   try {
     const conversation = await authorizedHttpClient

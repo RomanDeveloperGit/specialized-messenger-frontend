@@ -6,7 +6,7 @@ import { Box, Group, Text } from '@mantine/core';
 import { $isAuthorizedUserAdmin } from '@/entities/auth';
 import { $conversationsCount } from '@/entities/conversations';
 
-import { CreateConversation } from '@/features/create-conversation';
+import { CreateGroupConversation } from '@/features/create-group-conversation';
 import { CreateInvitation } from '@/features/create-invitation';
 
 export const Header = () => {
@@ -55,7 +55,7 @@ export const Header = () => {
         </Group>
         <Group gap={2}>
           {isAuthorizedUserAdmin && <CreateInvitation />}
-          {isAuthorizedUserAdmin && <CreateConversation />}
+          {isAuthorizedUserAdmin && <CreateGroupConversation />}
         </Group>
       </Group>
     </Box>

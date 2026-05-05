@@ -1,4 +1,4 @@
-import { chainRoute } from 'atomic-router';
+import { sample } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
@@ -10,14 +10,9 @@ type Controller = OperationInfo<'InvitationController_getByPublicId_v1'>;
 type Query = Controller['search'];
 
 export const registerPageSideEffects = () => {
-  chainRoute({
-    route: invitationRouteConfig.route,
-    beforeOpen: {
-      effect: getInvitationFx,
-      mapParams: ({ params, query }) => ({
-        id: params.id,
-        query: query as Query,
-      }),
-    },
+  sample({
+    clock: invitationRouteConfig.route.opened,
+    fn: (clock) => ({ id: clock.params.id, query: clock.query as Query }),
+    target: getInvitationFx,
   });
 };

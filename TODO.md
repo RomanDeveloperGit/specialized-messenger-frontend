@@ -34,9 +34,8 @@
 22. фарфетчед внедрить?
 
 23. registerPageSideEffects: сделать интерейс такой, что принимает туда onOpen, onClose аргументы в виде эффектов тоже
-24. chainRoute -> sample 'opened'
 
-25. В ридми:
+24. В ридми:
 
     25.1. FSD + pages first
 

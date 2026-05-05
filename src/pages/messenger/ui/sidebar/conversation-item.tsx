@@ -108,25 +108,6 @@ export const ConversationItem: FC<{
             <Text size="xs" c={isActive ? 'dark.1' : 'dark.2'} truncate>
               {prepareLastMessageForConversationList(conversation)}
             </Text>
-            {/* {conversation.unread && (
-                        <Box
-                          style={{
-                            minWidth: 18,
-                            height: 18,
-                            borderRadius: 9,
-                            background: 'var(--mantine-color-green-7)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            flexShrink: 0,
-                            padding: '0 5px',
-                          }}
-                        >
-                          <Text size="xs" fw={500} c="white" lh={1}>
-                            {conversation.unread}
-                          </Text>
-                        </Box>
-                      )} */}
           </Group>
         </Box>
       </Group>

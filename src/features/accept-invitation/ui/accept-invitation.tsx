@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useUnit } from 'effector-react';
@@ -20,13 +20,15 @@ export const AcceptInvitation = () => {
     acceptInvitationFx,
   ]);
 
+  const methods = useForm<AcceptInvitationSchema>({
+    resolver: zodResolver(acceptInvitationSchema),
+  });
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<AcceptInvitationSchema>({
-    resolver: zodResolver(acceptInvitationSchema),
-  });
+  } = methods;
 
   const onSubmit = handleSubmit((data) => {
     if (!invitation) return;
@@ -45,40 +47,42 @@ export const AcceptInvitation = () => {
   });
 
   return (
-    <form onSubmit={onSubmit}>
-      <Stack gap="sm">
-        <TextInput
-          {...register('login')}
-          label="Логин"
-          placeholder="Придумайте логин"
-          disabled={isAcceptInvitationPending || !invitation}
-          error={errors.login?.message}
-        />
-        <PasswordInput
-          {...register('password')}
-          label="Пароль"
-          placeholder="Придумайте пароль"
-          disabled={isAcceptInvitationPending || !invitation}
-          error={errors.password?.message}
-        />
-        <PasswordInput
-          {...register('passwordConfirm')}
-          label="Подтверждение пароля"
-          placeholder="Повторите пароль"
-          disabled={isAcceptInvitationPending || !invitation}
-          error={errors.passwordConfirm?.message}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          mt="xs"
-          color="green"
-          loading={isAcceptInvitationPending}
-          disabled={!invitation}
-        >
-          Принять приглашение
-        </Button>
-      </Stack>
-    </form>
+    <FormProvider {...methods}>
+      <form onSubmit={onSubmit}>
+        <Stack gap="sm">
+          <TextInput
+            {...register('login')}
+            label="Логин"
+            placeholder="Придумайте логин"
+            disabled={isAcceptInvitationPending || !invitation}
+            error={errors.login?.message}
+          />
+          <PasswordInput
+            {...register('password')}
+            label="Пароль"
+            placeholder="Придумайте пароль"
+            disabled={isAcceptInvitationPending || !invitation}
+            error={errors.password?.message}
+          />
+          <PasswordInput
+            {...register('passwordConfirm')}
+            label="Подтверждение пароля"
+            placeholder="Повторите пароль"
+            disabled={isAcceptInvitationPending || !invitation}
+            error={errors.passwordConfirm?.message}
+          />
+          <Button
+            type="submit"
+            fullWidth
+            mt="xs"
+            color="green"
+            loading={isAcceptInvitationPending}
+            disabled={!invitation}
+          >
+            Принять приглашение
+          </Button>
+        </Stack>
+      </form>
+    </FormProvider>
   );
 };

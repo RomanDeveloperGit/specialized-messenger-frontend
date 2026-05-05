@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useUnit } from 'effector-react';
@@ -29,13 +29,15 @@ import { signInFx } from '../model/sign-in.effect';
 export const SignInPage: FC = () => {
   const [isPending, signIn] = useUnit([signInFx.pending, signInFx]);
 
+  const methods = useForm<SignInSchema>({
+    resolver: zodResolver(signInSchema),
+  });
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<SignInSchema>({
-    resolver: zodResolver(signInSchema),
-  });
+  } = methods;
 
   const onSubmit = handleSubmit((data) => {
     signIn({
@@ -55,33 +57,35 @@ export const SignInPage: FC = () => {
               Авторизация
             </Text>
           </Group>
-          <form onSubmit={onSubmit}>
-            <Stack gap="sm">
-              <TextInput
-                {...register('login')}
-                label="Логин"
-                placeholder="Введите логин"
-                disabled={isPending}
-                error={errors.login?.message}
-              />
-              <PasswordInput
-                {...register('password')}
-                label="Пароль"
-                placeholder="Введите пароль"
-                disabled={isPending}
-                error={errors.password?.message}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                mt="xs"
-                color="green"
-                loading={isPending}
-              >
-                Войти
-              </Button>
-            </Stack>
-          </form>
+          <FormProvider {...methods}>
+            <form onSubmit={onSubmit}>
+              <Stack gap="sm">
+                <TextInput
+                  {...register('login')}
+                  label="Логин"
+                  placeholder="Введите логин"
+                  disabled={isPending}
+                  error={errors.login?.message}
+                />
+                <PasswordInput
+                  {...register('password')}
+                  label="Пароль"
+                  placeholder="Введите пароль"
+                  disabled={isPending}
+                  error={errors.password?.message}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  mt="xs"
+                  color="green"
+                  loading={isPending}
+                >
+                  Войти
+                </Button>
+              </Stack>
+            </form>
+          </FormProvider>
           <Divider />
           <Text size="xs" c="dimmed" ta="center" lh={1.6}>
             Нет доступа?{' '}

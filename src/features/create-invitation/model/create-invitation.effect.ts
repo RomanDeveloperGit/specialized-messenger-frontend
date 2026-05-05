@@ -3,10 +3,13 @@ import { createEffect } from 'effector';
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { authorizedHttpClient } from '@/shared/api/http';
+import { createInvitationLink } from '@/shared/lib/invitation/create-invitation-link';
 import {
   showDefaultErrorNotificationFx,
   showSuccessNotificationFx,
 } from '@/shared/lib/show-notification';
+
+import { invitationLinkApi } from './invitation-link.store';
 
 type Controller = OperationInfo<'InvitationController_create_v1'>;
 type Path = Controller['path'];
@@ -31,6 +34,8 @@ export const createInvitationFx = createEffect<
         json: body,
       })
       .json();
+
+    invitationLinkApi.set(createInvitationLink(invitation));
 
     showSuccessNotificationFx({ message: 'Вы успешно создали приглашение' });
 
