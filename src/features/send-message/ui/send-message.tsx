@@ -1,21 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useUnit } from 'effector-react';
 import { IconMoodSmile, IconPaperclip, IconSend } from '@tabler/icons-react';
 
 import { ActionIcon, Box, Group, Textarea } from '@mantine/core';
 
-import { $hasActiveConversation } from '@/entities/active-conversation';
+import {
+  $activeConversationPublicId,
+  $hasActiveConversation,
+} from '@/entities/active-conversation';
 
 import { sendMessageFx } from '../model/send-message.effect';
 
 export const SendMessage = () => {
-  const [hasActiveConversation, sendMessage] = useUnit([
-    $hasActiveConversation,
-    sendMessageFx,
-  ]);
+  const [hasActiveConversation, activeConversationPublicId, sendMessage] =
+    useUnit([
+      $hasActiveConversation,
+      $activeConversationPublicId,
+      sendMessageFx,
+    ]);
 
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMessage('');
+  }, [activeConversationPublicId, setMessage]);
 
   const handleSend = () => {
     if (!hasActiveConversation) return;

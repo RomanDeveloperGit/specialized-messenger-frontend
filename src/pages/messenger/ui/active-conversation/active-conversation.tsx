@@ -8,7 +8,16 @@ import {
   IconVideo,
 } from '@tabler/icons-react';
 
-import { ActionIcon, Box, Group, ScrollArea, Stack, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  Center,
+  Group,
+  Loader,
+  ScrollArea,
+  Stack,
+  Text,
+} from '@mantine/core';
 
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
@@ -17,6 +26,7 @@ import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import {
   $activeConversation,
   activeConversationApi,
+  getConversationFx,
 } from '@/entities/active-conversation';
 import { $authorizedUserId } from '@/entities/auth';
 
@@ -25,20 +35,45 @@ import { SendMessage } from '@/features/send-message';
 import { MessageItem } from './message-item';
 
 export const ActiveConversation = () => {
-  const [conversation, authorizedUserId, resetActiveConversation] = useUnit([
+  const [
+    conversation,
+    isConversationPending,
+    authorizedUserId,
+    resetActiveConversation,
+  ] = useUnit([
     $activeConversation,
+    getConversationFx.pending,
     $authorizedUserId,
     activeConversationApi.reset,
   ]);
 
-  const viewport = useRef<HTMLDivElement>(null);
+  const savedScrollDataBeforeDataLoaded = useRef<{
+    scrollHeight: number;
+    scrollTop: number;
+  } | null>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    viewport.current?.scrollTo({
-      top: viewport.current.scrollHeight,
-      behavior: 'smooth',
-    });
-  }, [conversation?.messages]);
+    if (isConversationPending) {
+      savedScrollDataBeforeDataLoaded.current = {
+        scrollHeight: viewportRef.current?.scrollHeight || 0,
+        scrollTop: viewportRef.current?.scrollTop || 0,
+      };
+
+      return;
+    }
+
+    if (savedScrollDataBeforeDataLoaded.current) {
+      viewportRef.current?.scrollTo({
+        top:
+          savedScrollDataBeforeDataLoaded.current.scrollTop +
+          (viewportRef.current?.scrollHeight ||
+            0 - savedScrollDataBeforeDataLoaded.current.scrollHeight),
+      });
+
+      savedScrollDataBeforeDataLoaded.current = null;
+    }
+  }, [isConversationPending]);
 
   if (!conversation) return null;
 
@@ -141,7 +176,7 @@ export const ActiveConversation = () => {
       {/* ── Messages ── */}
       <ScrollArea
         flex={1}
-        viewportRef={viewport}
+        viewportRef={viewportRef}
         scrollbarSize={3}
         style={{
           background:
@@ -149,6 +184,11 @@ export const ActiveConversation = () => {
         }}
       >
         <Stack gap={2} px="md" py="md">
+          {isConversationPending && (
+            <Center py="sm">
+              <Loader size="xs" color="dark.2" type="dots" />
+            </Center>
+          )}
           {conversation.messages.map((msg, i) => (
             <MessageItem message={msg} index={i} key={msg.id} />
           ))}

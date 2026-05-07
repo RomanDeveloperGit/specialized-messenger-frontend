@@ -10,6 +10,5 @@ const updateConversationsFx = createEffect<void, void>(() => {
 
 sample({
   clock: updateConversations,
-  fn: (data) => ({ data }),
   target: updateConversationsFx,
 });

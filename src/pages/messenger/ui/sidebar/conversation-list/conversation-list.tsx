@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { useUnit } from 'effector-react';
 
 import {
@@ -7,8 +9,8 @@ import {
 } from '@/entities/conversations';
 
 import { ConversationItem } from './conversation-item';
-import { ConversationItemSkeleton } from './conversation-item-skeleton';
 import { ConversationListError } from './conversation-list-error';
+import { ConversationListLoader } from './conversation-list-loader';
 import { ConversationListWrapper } from './conversation-list-wrapper';
 
 export const ConversationList = () => {
@@ -19,24 +21,24 @@ export const ConversationList = () => {
       $conversations,
     ]);
 
+  const savedScrollY = useRef(0);
+
+  const onScroll = (y: number) => {
+    savedScrollY.current = y;
+  };
+
   switch (true) {
     case isConversationsPending:
-      return (
-        <ConversationListWrapper>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <ConversationItemSkeleton key={index} />
-          ))}
-        </ConversationListWrapper>
-      );
+      return <ConversationListLoader />;
     case hasConversationsError:
-      return (
-        <ConversationListWrapper>
-          <ConversationListError />
-        </ConversationListWrapper>
-      );
+      return <ConversationListError />;
     default:
       return (
-        <ConversationListWrapper>
+        <ConversationListWrapper
+          // eslint-disable-next-line react-hooks/refs
+          scrollYPosition={savedScrollY.current}
+          onScroll={onScroll}
+        >
           {conversations.map((conversation) => (
             <ConversationItem
               conversation={conversation}

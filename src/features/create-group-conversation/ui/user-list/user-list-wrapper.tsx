@@ -14,7 +14,14 @@ export const UserListWrapper: FC<{ children: React.ReactNode }> = ({
   } = useFormContext<CreateGroupConversationSchema>();
 
   return (
-    <Box>
+    <Box
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: 0,
+        flex: 1,
+      }}
+    >
       <Text
         size="11px"
         fw={500}
