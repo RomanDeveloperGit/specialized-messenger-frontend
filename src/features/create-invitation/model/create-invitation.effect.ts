@@ -31,7 +31,7 @@ export const createInvitationFx = createEffect<
   try {
     const invitation = await authorizedHttpClient
       .post<Response>(`/api/v1/invitations` satisfies Path, {
-        json: body,
+        json: body satisfies Body,
       })
       .json();
 

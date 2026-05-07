@@ -8,9 +8,10 @@ import {
 } from '@/shared/lib/auth';
 
 import { receiveMessage } from './listen-events/receive-message.event';
+import { reconnectSocket } from './listen-events/reconnect-socket.event';
 import { updateConversations } from './listen-events/update-conversations.event';
 import type { Socket } from './socket.interface';
-import { socketApi } from './socket.store';
+import { isSocketConnectedApi, socketApi } from './socket.store';
 
 export const connectSocketFx = createEffect<void, Socket>(() => {
   const socket: Socket = io(import.meta.env.APP_WS_ORIGIN, {
@@ -24,12 +25,17 @@ export const connectSocketFx = createEffect<void, Socket>(() => {
   return new Promise((resolve) => {
     socket.on('connect', () => {
       socketApi.set(socket);
+      isSocketConnectedApi.set(true);
 
       resolve(socket);
     });
 
+    socket.io.on('reconnect', () => {
+      reconnectSocket();
+    });
+
     socket.on('disconnect', () => {
-      socketApi.reset();
+      isSocketConnectedApi.set(false);
     });
 
     socket.on('from-server:message.new', (data) => {

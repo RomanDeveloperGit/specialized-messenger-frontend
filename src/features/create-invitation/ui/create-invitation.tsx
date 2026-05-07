@@ -77,6 +77,7 @@ export const CreateInvitation = () => {
       <Modal
         opened={opened}
         onClose={handleClose}
+        closeOnClickOutside={false}
         withCloseButton={false}
         centered
         size={400}

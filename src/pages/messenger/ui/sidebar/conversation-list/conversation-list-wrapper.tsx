@@ -1,14 +1,10 @@
-import { useUnit } from 'effector-react';
+import type { FC } from 'react';
 
 import { Box, ScrollArea, Stack, Text } from '@mantine/core';
 
-import { $conversations } from '@/entities/conversations';
-
-import { ConversationItem } from './conversation-item';
-
-export const ConversationList = () => {
-  const [conversations] = useUnit([$conversations]);
-
+export const ConversationListWrapper: FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   return (
     <Box>
       <Text
@@ -24,12 +20,7 @@ export const ConversationList = () => {
       </Text>
       <ScrollArea flex={1} scrollbarSize={3}>
         <Stack gap={1} px={6} pb="xs">
-          {conversations.map((conversation) => (
-            <ConversationItem
-              conversation={conversation}
-              key={conversation.id}
-            />
-          ))}
+          {children}
         </Stack>
       </ScrollArea>
     </Box>

@@ -8,7 +8,7 @@ import { getConversationsFx } from '@/entities/conversations';
 import { getUsersFx } from '@/entities/users';
 
 type InitMessengerPageFxParams = {
-  authorizedUser: StoreValue<typeof $authorizedUser>;
+  authorizedUser: NonNullable<StoreValue<typeof $authorizedUser>>;
 };
 
 export const initMessengerPage = createEvent();
@@ -19,8 +19,12 @@ export const initMessengerPageFx = createEffect<
 >(async ({ authorizedUser }) => {
   try {
     await connectSocketFx();
+
     await getConversationsFx();
-    await getUsersFx({ excludeUserId: authorizedUser?.id });
+
+    if (authorizedUser.role.name === 'ADMIN') {
+      await getUsersFx({ excludeUserId: authorizedUser.id });
+    }
   } catch (error) {
     showDefaultErrorNotificationFx({ type: 'somethingWentWrong' });
 
@@ -31,6 +35,6 @@ export const initMessengerPageFx = createEffect<
 sample({
   clock: initMessengerPage,
   source: $authorizedUser,
-  fn: (source) => ({ authorizedUser: source }),
+  fn: (source) => ({ authorizedUser: source! }),
   target: initMessengerPageFx,
 });

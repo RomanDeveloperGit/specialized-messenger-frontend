@@ -12,7 +12,7 @@ import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import { type CreateGroupConversationSchema } from '../model/create-group-conversation.schema';
+import type { CreateGroupConversationSchema } from '../../model/create-group-conversation.schema';
 
 export const UserItem: FC<{
   user: Dto['User'];

@@ -9,7 +9,6 @@ import {
   Button,
   Group,
   Modal,
-  ScrollArea,
   Stack,
   Text,
   TextInput,
@@ -18,14 +17,12 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { $users } from '@/entities/users';
-
 import { createGroupConversationFx } from '../model/create-group-conversation.effect';
 import {
   type CreateGroupConversationSchema,
   createGroupConversationSchema,
 } from '../model/create-group-conversation.schema';
-import { UserItem } from './user-item';
+import { UserList } from './user-list/user-list';
 
 const inputStyles = {
   label: {
@@ -52,8 +49,7 @@ const inputStyles = {
 export const CreateGroupConversation = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
-  const [users, createGroupConversation, isPending] = useUnit([
-    $users,
+  const [createGroupConversation, isPending] = useUnit([
     createGroupConversationFx,
     createGroupConversationFx.pending,
   ]);
@@ -85,7 +81,6 @@ export const CreateGroupConversation = () => {
   const onSubmit = handleSubmit(async (data) => {
     await createGroupConversation({
       body: {
-        type: 'GROUP' as never,
         name: data.groupName,
         participantUserIds: data.selectedUserPublicIds,
       },
@@ -120,6 +115,7 @@ export const CreateGroupConversation = () => {
         opened={opened}
         onClose={handleClose}
         withCloseButton={false}
+        closeOnClickOutside={false}
         centered
         size={400}
         padding={0}
@@ -210,37 +206,7 @@ export const CreateGroupConversation = () => {
                   styles={inputStyles}
                 />
 
-                <Box>
-                  <Text
-                    size="11px"
-                    fw={500}
-                    c="dark.3"
-                    mb={6}
-                    style={{
-                      letterSpacing: '0.5px',
-                      textTransform: 'uppercase',
-                    }}
-                  >
-                    Участники
-                  </Text>
-                  {errors.selectedUserPublicIds && (
-                    <Text size="xs" c="red.5">
-                      {errors.selectedUserPublicIds.message}
-                    </Text>
-                  )}
-                  <ScrollArea h={200} scrollbarSize={3}>
-                    <Stack gap={1}>
-                      {users.length === 0 && (
-                        <Text size="sm" c="dark.3" ta="center" py="lg">
-                          Пользователи не найдены
-                        </Text>
-                      )}
-                      {users.map((user) => (
-                        <UserItem user={user} key={user.id} />
-                      ))}
-                    </Stack>
-                  </ScrollArea>
-                </Box>
+                <UserList />
 
                 <Group justify="flex-end" gap={8} mt={4}>
                   <Button

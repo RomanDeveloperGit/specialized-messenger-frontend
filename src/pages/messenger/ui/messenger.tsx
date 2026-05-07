@@ -1,19 +1,30 @@
 import { useUnit } from 'effector-react';
 
-import { Box, Center, Stack, Text } from '@mantine/core';
+import { Box, Center, LoadingOverlay, Stack, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 
+import { $isSocketConnected } from '@/shared/api/socket';
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
 
 import { $hasActiveConversation } from '@/entities/active-conversation';
 
+import { initMessengerPageFx } from '../model/init-messenger-page.effect';
 import { registerPageSideEffects } from '../model/register-page-side-effects';
 import { ActiveConversation } from './active-conversation/active-conversation';
 import { Sidebar } from './sidebar/sidebar';
 
 export const MessengerPage: ReactPageWithSideEffects = () => {
-  const [hasActiveConversation] = useUnit([$hasActiveConversation]);
+  const [hasActiveConversation, isSocketConnected, isInitMessengerPagePending] =
+    useUnit([
+      $hasActiveConversation,
+      $isSocketConnected,
+      initMessengerPageFx.pending,
+    ]);
   const isMobile = useMediaQuery('(max-width: 767px)');
+
+  if (isInitMessengerPagePending || !isSocketConnected) {
+    return <LoadingOverlay visible={true} />;
+  }
 
   return (
     <Box h="100vh" bg="dark.9" style={{ display: 'flex', overflow: 'hidden' }}>

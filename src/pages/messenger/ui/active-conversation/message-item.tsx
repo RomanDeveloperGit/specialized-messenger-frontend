@@ -16,9 +16,6 @@ import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 import { $activeConversation } from '@/entities/active-conversation';
 import { $authorizedUserId } from '@/entities/auth';
 
-// Разделять на SystemMessageItem, UserMessageItem
-// убрать использование стора activeConversation здесь
-
 export const MessageItem: FC<{
   message: Dto['Message'];
   index: number;

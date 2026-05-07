@@ -19,7 +19,7 @@ type SignInFxParams = {
 export const signInFx = createEffect<SignInFxParams, void>(async ({ body }) => {
   const user = await unauthorizedHttpClient
     .post<Response>('/api/v1/auth/sign-in' satisfies Path, {
-      json: body,
+      json: body satisfies Body,
     })
     .json();
 

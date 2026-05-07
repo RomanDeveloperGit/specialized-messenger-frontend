@@ -7,3 +7,8 @@ export const socketApi = createApi($socket, {
   set: (_, socket: Socket) => socket,
   reset: () => null,
 });
+
+export const $isSocketConnected = createStore<boolean>(false);
+export const isSocketConnectedApi = createApi($isSocketConnected, {
+  set: (_, isSocketConnected: boolean) => isSocketConnected,
+});

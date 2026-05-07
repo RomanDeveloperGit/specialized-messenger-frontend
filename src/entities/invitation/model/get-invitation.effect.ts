@@ -29,7 +29,7 @@ export const getInvitationFx = createEffect<
 
     const invitation = await unauthorizedHttpClient
       .get<Response>(`/api/v1/invitations/${id}` satisfies Path, {
-        searchParams: query,
+        searchParams: query satisfies Query,
       })
       .json();
 

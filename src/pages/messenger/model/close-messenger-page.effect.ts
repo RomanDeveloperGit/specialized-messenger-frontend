@@ -1,23 +1,25 @@
 import { createEffect, createEvent, sample } from 'effector';
 
-import { $socket, type Socket } from '@/shared/api/socket';
+import { $socket, type Socket, socketApi } from '@/shared/api/socket';
 
 type CloseMessengerPageFxParams = {
-  socket: Socket | null;
+  socket: Socket;
 };
 
 export const closeMessengerPage = createEvent();
 
 const closeMessengerPageFx = createEffect<CloseMessengerPageFxParams, void>(
   async ({ socket }) => {
-    socket?.off();
-    socket?.disconnect();
+    socket.off();
+    socket.disconnect();
+
+    socketApi.reset();
   },
 );
 
 sample({
   clock: closeMessengerPage,
   source: $socket,
-  fn: (source) => ({ socket: source }),
+  fn: (source) => ({ socket: source! }),
   target: closeMessengerPageFx,
 });

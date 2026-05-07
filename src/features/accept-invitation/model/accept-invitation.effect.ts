@@ -41,8 +41,8 @@ const acceptInvitationWithStaticErrorFx = createEffect<
     await unauthorizedHttpClient.post<Response>(
       `/api/v1/invitations/${id}/accept` satisfies Path,
       {
-        searchParams: query,
-        json: body,
+        searchParams: query satisfies Query,
+        json: body satisfies Body,
       },
     );
   } catch {

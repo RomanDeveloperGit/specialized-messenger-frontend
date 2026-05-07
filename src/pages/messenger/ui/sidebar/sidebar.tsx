@@ -1,16 +1,9 @@
-import { useUnit } from 'effector-react';
-
 import { Stack } from '@mantine/core';
 
-import { initMessengerPageFx } from '../../model/init-messenger-page.effect';
-import { ConversationList } from './conversation-list';
+import { ConversationList } from './conversation-list/conversation-list';
 import { Header } from './header';
 
 export const Sidebar = () => {
-  const [isInitMessengerPending] = useUnit([initMessengerPageFx.pending]);
-
-  if (isInitMessengerPending) return 'Загрузка...';
-
   return (
     <Stack
       gap={0}

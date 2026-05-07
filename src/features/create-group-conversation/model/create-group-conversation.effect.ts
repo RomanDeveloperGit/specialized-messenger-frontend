@@ -14,7 +14,7 @@ type Body = Controller['body'];
 type Response = Controller['response'];
 
 type CreateGroupConversationFxParams = {
-  body: Body;
+  body: Omit<Body, 'type'>;
 };
 
 type CreateGroupConversationFxResult = {
@@ -28,7 +28,10 @@ export const createGroupConversationFx = createEffect<
   try {
     const conversation = await authorizedHttpClient
       .post<Response>(`/api/v1/chat/conversations` satisfies Path, {
-        json: body,
+        json: {
+          ...body,
+          type: 'GROUP' as never, // из-за типизации спеки
+        } satisfies Body,
       })
       .json();
 
