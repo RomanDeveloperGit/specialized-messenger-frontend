@@ -39,7 +39,7 @@ export const UserListWrapper: FC<{ children: React.ReactNode }> = ({
           {errors.selectedUserPublicIds.message}
         </Text>
       )}
-      <ScrollArea h={200} scrollbarSize={3}>
+      <ScrollArea h={200} scrollbarSize={6}>
         <Stack gap={1}>{children}</Stack>
       </ScrollArea>
     </Box>

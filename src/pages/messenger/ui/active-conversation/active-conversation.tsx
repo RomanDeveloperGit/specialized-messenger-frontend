@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 import { useUnit } from 'effector-react';
 import {
@@ -8,16 +8,7 @@ import {
   IconVideo,
 } from '@tabler/icons-react';
 
-import {
-  ActionIcon,
-  Box,
-  Center,
-  Group,
-  Loader,
-  ScrollArea,
-  Stack,
-  Text,
-} from '@mantine/core';
+import { ActionIcon, Box, Group, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
@@ -35,47 +26,30 @@ import { SendMessage } from '@/features/send-message';
 import { MessageItem } from './message-item';
 
 export const ActiveConversation = () => {
-  const [
-    conversation,
-    isConversationPending,
-    authorizedUserId,
-    resetActiveConversation,
-  ] = useUnit([
-    $activeConversation,
-    getConversationFx.pending,
-    $authorizedUserId,
-    activeConversationApi.reset,
-  ]);
-
-  const savedScrollDataBeforeDataLoaded = useRef<{
-    scrollHeight: number;
-    scrollTop: number;
-  } | null>(null);
+  const conversation = useUnit($activeConversation)!;
+  const [isConversationPending, authorizedUserId, resetActiveConversation] =
+    useUnit([
+      getConversationFx.pending,
+      $authorizedUserId,
+      activeConversationApi.reset,
+    ]);
   const viewportRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (isConversationPending) {
-      savedScrollDataBeforeDataLoaded.current = {
-        scrollHeight: viewportRef.current?.scrollHeight || 0,
-        scrollTop: viewportRef.current?.scrollTop || 0,
-      };
+  useLayoutEffect(() => {
+    if (isConversationPending) return;
 
-      return;
-    }
-
-    if (savedScrollDataBeforeDataLoaded.current) {
-      viewportRef.current?.scrollTo({
-        top:
-          savedScrollDataBeforeDataLoaded.current.scrollTop +
-          (viewportRef.current?.scrollHeight ||
-            0 - savedScrollDataBeforeDataLoaded.current.scrollHeight),
-      });
-
-      savedScrollDataBeforeDataLoaded.current = null;
-    }
+    viewportRef.current?.scrollTo({
+      top: viewportRef.current.scrollHeight,
+    });
   }, [isConversationPending]);
 
-  if (!conversation) return null;
+  useLayoutEffect(() => {
+    if (conversation.messages.at(-1)?.author?.id === authorizedUserId) {
+      viewportRef.current?.scrollTo({
+        top: viewportRef.current.scrollHeight,
+      });
+    }
+  }, [conversation.messages, authorizedUserId]);
 
   const fullName = getConversationFullName({
     conversation,
@@ -89,7 +63,6 @@ export const ActiveConversation = () => {
 
   return (
     <Stack gap={0} h="100%" style={{ overflow: 'hidden' }}>
-      {/* ── Header ── */}
       <Box
         px="md"
         py="sm"
@@ -103,7 +76,6 @@ export const ActiveConversation = () => {
       >
         <Group justify="space-between" wrap="nowrap">
           <Group gap={10} wrap="nowrap">
-            {/* Back button — visible on mobile */}
             <ActionIcon
               variant="subtle"
               color="dark.2"
@@ -112,8 +84,6 @@ export const ActiveConversation = () => {
             >
               <IconArrowLeft size={18} stroke={1.7} />
             </ActionIcon>
-
-            {/* Avatar */}
             <Box
               style={{
                 width: 38,
@@ -132,14 +102,12 @@ export const ActiveConversation = () => {
             >
               {initials}
             </Box>
-
             <Box>
               <Text size="sm" fw={600} c="gray.1" lh={1.2}>
                 {fullName}
               </Text>
             </Box>
           </Group>
-
           <Group gap={2}>
             <ActionIcon
               variant="subtle"
@@ -172,23 +140,16 @@ export const ActiveConversation = () => {
           </Group>
         </Group>
       </Box>
-
-      {/* ── Messages ── */}
       <ScrollArea
         flex={1}
         viewportRef={viewportRef}
-        scrollbarSize={3}
+        scrollbarSize={6}
         style={{
           background:
             'radial-gradient(ellipse at 20% 50%, color-mix(in srgb, var(--mantine-color-green-9) 8%, transparent) 0%, transparent 60%), var(--mantine-color-dark-9)',
         }}
       >
         <Stack gap={2} px="md" py="md">
-          {isConversationPending && (
-            <Center py="sm">
-              <Loader size="xs" color="dark.2" type="dots" />
-            </Center>
-          )}
           {conversation.messages.map((msg, i) => (
             <MessageItem message={msg} index={i} key={msg.id} />
           ))}

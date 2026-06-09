@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 import { useUnit } from 'effector-react';
 import { IconMoodSmile, IconPaperclip, IconSend } from '@tabler/icons-react';
@@ -22,7 +22,7 @@ export const SendMessage = () => {
 
   const [message, setMessage] = useState('');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMessage('');
   }, [activeConversationPublicId, setMessage]);

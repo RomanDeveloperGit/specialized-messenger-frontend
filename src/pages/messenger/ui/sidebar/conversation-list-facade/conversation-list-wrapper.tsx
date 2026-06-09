@@ -1,23 +1,10 @@
-import { type FC, useLayoutEffect, useRef } from 'react';
+import { type FC } from 'react';
 
 import { Box, ScrollArea, Stack, Text } from '@mantine/core';
 
 export const ConversationListWrapper: FC<{
   children: React.ReactNode;
-  onScroll?: (y: number) => void;
-  scrollYPosition?: number;
-}> = ({ children, onScroll, scrollYPosition }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const handleScrollPositionChange = ({ y }: { y: number }) => {
-    onScroll?.(y);
-  };
-
-  useLayoutEffect(() => {
-    ref.current?.scrollTo({
-      top: scrollYPosition,
-    });
-  }, [scrollYPosition]);
-
+}> = ({ children }) => {
   return (
     <Box
       style={{
@@ -38,12 +25,7 @@ export const ConversationListWrapper: FC<{
       >
         Чаты
       </Text>
-      <ScrollArea
-        flex={1}
-        scrollbarSize={3}
-        viewportRef={ref}
-        onScrollPositionChange={handleScrollPositionChange}
-      >
+      <ScrollArea flex={1} scrollbarSize={6} scrollHideDelay={0}>
         <Stack gap={1} px={6} pb="xs">
           {children}
         </Stack>

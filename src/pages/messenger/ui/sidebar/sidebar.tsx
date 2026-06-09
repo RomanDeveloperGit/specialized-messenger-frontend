@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
 
-import { ConversationList } from './conversation-list/conversation-list';
+import { ConversationListFacade } from './conversation-list-facade/conversation-list-facade';
 import { Header } from './header';
 
 export const Sidebar = () => {
@@ -15,7 +15,7 @@ export const Sidebar = () => {
       }}
     >
       <Header />
-      <ConversationList />
+      <ConversationListFacade />
     </Stack>
   );
 };

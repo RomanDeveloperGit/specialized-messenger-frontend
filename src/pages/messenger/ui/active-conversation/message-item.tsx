@@ -35,15 +35,12 @@ export const MessageItem: FC<{
   const isLastInGroup =
     !nextMessage || nextMessage.author?.id !== message.author?.id;
 
-  // Find sender name for group chats
   const sender = conversation.participants.find(
     (p) => p.user.id === message.author?.id,
-  );
-  const senderFullName = sender
-    ? getUserFullName(sender.user)
-    : 'Служебное сообщение';
-  const senderInitials = sender ? getUserInitials(sender.user) : 'CC';
-  const senderColor = getColorSchemaByText(senderFullName);
+  )!;
+  const senderFullName = sender ? getUserFullName(sender.user) : '';
+  const senderInitials = sender ? getUserInitials(sender.user) : '';
+  const senderColorSchema = getColorSchemaByText(senderFullName);
 
   if (
     isSystemConversationCreatedMessage(message) ||
@@ -68,7 +65,6 @@ export const MessageItem: FC<{
           marginBottom: 4,
         }}
       >
-        {/* Дата */}
         <Text
           size="xs"
           c="dark.3"
@@ -76,8 +72,6 @@ export const MessageItem: FC<{
         >
           {dateLabel}
         </Text>
-
-        {/* Системный текст-пилюля */}
         <Box
           style={{
             background: 'rgba(0, 0, 0, 0.25)',
@@ -122,13 +116,13 @@ export const MessageItem: FC<{
               width: 28,
               height: 28,
               borderRadius: '50%',
-              background: senderColor.backgroundColor,
+              background: senderColorSchema.backgroundColor,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 10,
               fontWeight: 500,
-              color: senderColor.color,
+              color: senderColorSchema.color,
               flexShrink: 0,
               letterSpacing: '0.4px',
             }}
@@ -155,7 +149,7 @@ export const MessageItem: FC<{
             {!isOwn && (
               <Text
                 size="sm"
-                c={senderColor.color}
+                c={senderColorSchema.color}
                 style={{ lineHeight: 1.5, wordBreak: 'break-word' }}
               >
                 {senderFullName}

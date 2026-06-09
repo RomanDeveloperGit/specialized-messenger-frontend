@@ -32,7 +32,10 @@ const openConversationFx = createEffect<OpenConversationFxParams, void>(
     );
 
     if (preloadConversation) {
-      activeConversationApi.set(preloadConversation);
+      activeConversationApi.set({
+        ...preloadConversation,
+        messages: [],
+      });
     }
 
     if (hasActiveConversation) {

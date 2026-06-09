@@ -22,7 +22,7 @@ import {
   type CreateGroupConversationSchema,
   createGroupConversationSchema,
 } from '../model/create-group-conversation.schema';
-import { UserList } from './user-list/user-list';
+import { UserListFacade } from './user-list-facade/user-list-facade';
 
 const inputStyles = {
   label: {
@@ -206,7 +206,7 @@ export const CreateGroupConversation = () => {
                   styles={inputStyles}
                 />
 
-                <UserList />
+                <UserListFacade />
 
                 <Group justify="flex-end" gap={8} mt={4}>
                   <Button

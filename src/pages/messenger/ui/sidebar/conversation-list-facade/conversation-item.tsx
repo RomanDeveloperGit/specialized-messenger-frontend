@@ -58,7 +58,6 @@ export const ConversationItem: FC<{
       })}
     >
       <Group gap={11} wrap="nowrap">
-        {/* Avatar with Telegram-style online dot */}
         <Box style={{ position: 'relative', flexShrink: 0 }}>
           <Box
             style={{
