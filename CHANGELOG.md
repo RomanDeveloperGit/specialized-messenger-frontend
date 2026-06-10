@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.7.3...v1.8.0) (2026-06-10)
+
+
+### Features
+
+* add online/offline statuses ([8c2dda2](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/8c2dda209f326c1f444510d69df52ffe0ceb0fc8))
+
 ## [1.7.3](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.7.2...v1.7.3) (2026-05-07)
 
 ### Bug Fixes
