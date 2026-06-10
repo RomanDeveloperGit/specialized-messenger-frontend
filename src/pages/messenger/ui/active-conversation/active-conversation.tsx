@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { Fragment, useLayoutEffect, useRef } from 'react';
 
 import { useUnit } from 'effector-react';
 import {
@@ -12,10 +12,12 @@ import { ActionIcon, Box, Group, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
+import { isDirectConversation } from '@/shared/lib/conversation/is-direct-conversation';
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 
 import {
   $activeConversation,
+  $activeConversationParticipantUsers,
   activeConversationApi,
   getConversationFx,
 } from '@/entities/active-conversation';
@@ -27,13 +29,20 @@ import { MessageItem } from './message-item';
 
 export const ActiveConversation = () => {
   const conversation = useUnit($activeConversation)!;
+  const conversationUsers = useUnit($activeConversationParticipantUsers)!;
   const [isConversationPending, authorizedUserId, resetActiveConversation] =
     useUnit([
       getConversationFx.pending,
       $authorizedUserId,
       activeConversationApi.reset,
     ]);
+
   const viewportRef = useRef<HTMLDivElement>(null);
+
+  const isDirect = isDirectConversation(conversation);
+  const directConversationPeerUser = conversationUsers.find(
+    (user) => user.id !== authorizedUserId,
+  );
 
   useLayoutEffect(() => {
     if (isConversationPending) return;
@@ -103,9 +112,27 @@ export const ActiveConversation = () => {
               {initials}
             </Box>
             <Box>
-              <Text size="sm" fw={600} c="gray.1" lh={1.2}>
+              <Text size="sm" fw={600} c="gray.1" lh={1.4}>
                 {fullName}
               </Text>
+              {isDirect &&
+                (directConversationPeerUser?.isOnline ||
+                  directConversationPeerUser?.lastSeenAt) && (
+                  <Fragment>
+                    {directConversationPeerUser?.isOnline ? (
+                      <Text size="xs" c="green.5" lh={1.4}>
+                        онлайн
+                      </Text>
+                    ) : (
+                      <Text size="xs" c="gray.6" lh={1.4}>
+                        был в сети{' '}
+                        {new Date(
+                          directConversationPeerUser.lastSeenAt,
+                        ).toLocaleTimeString()}
+                      </Text>
+                    )}
+                  </Fragment>
+                )}
             </Box>
           </Group>
           <Group gap={2}>

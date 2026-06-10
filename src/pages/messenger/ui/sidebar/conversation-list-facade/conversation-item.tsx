@@ -8,6 +8,7 @@ import type { Dto } from '@specialized-messenger/api/specs';
 
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
+import { isDirectConversation } from '@/shared/lib/conversation/is-direct-conversation';
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { prepareLastMessageForConversationList } from '@/shared/lib/message/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
 
@@ -32,6 +33,11 @@ export const ConversationItem: FC<{
     viewerUserId: authorizedUserId!,
   });
   const color = getColorSchemaByText(fullName);
+
+  const isDirect = isDirectConversation(conversation);
+  const directConversationPeerUser = conversation.participants.find(
+    (participant) => participant.user.id !== authorizedUserId,
+  );
 
   return (
     <UnstyledButton
@@ -59,26 +65,42 @@ export const ConversationItem: FC<{
     >
       <Group gap={11} wrap="nowrap">
         <Box style={{ position: 'relative', flexShrink: 0 }}>
-          <Box
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: '50%',
-              background: color.backgroundColor,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 14,
-              fontWeight: 500,
-              color: color.color,
-              flexShrink: 0,
-              letterSpacing: '0.5px',
-            }}
-          >
-            {getConversationInitials({
-              conversation: conversation,
-              viewerUserId: authorizedUserId!,
-            })}
+          <Box style={{ position: 'relative', flexShrink: 0 }}>
+            <Box
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: '50%',
+                background: color.backgroundColor,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 14,
+                fontWeight: 500,
+                color: color.color,
+                flexShrink: 0,
+                letterSpacing: '0.5px',
+              }}
+            >
+              {getConversationInitials({
+                conversation: conversation,
+                viewerUserId: authorizedUserId!,
+              })}
+            </Box>
+            {isDirect && directConversationPeerUser?.user.isOnline && (
+              <Box
+                style={{
+                  position: 'absolute',
+                  bottom: 1,
+                  right: 1,
+                  width: 11,
+                  height: 11,
+                  borderRadius: '50%',
+                  background: 'var(--mantine-color-green-5)',
+                  border: '2px solid var(--mantine-color-dark-8)',
+                }}
+              />
+            )}
           </Box>
         </Box>
         <Box flex={1} style={{ minWidth: 0 }}>

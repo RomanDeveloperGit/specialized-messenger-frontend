@@ -6,3 +6,4 @@ export * from './model/get-conversation.effect';
 // (потому что не импортируются никуда, а лишь регистрацию ивента на эффект производит)
 import './model/rejoin-conversation-on-reconnect-socket.effect';
 import './model/receive-message.effect';
+import './model/update-participant-network-status.effect';

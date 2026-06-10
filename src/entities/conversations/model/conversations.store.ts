@@ -11,6 +11,24 @@ export const $conversationsCount = $conversations.map(
 );
 export const conversationsApi = createApi($conversations, {
   set: (_, conversations: Response) => conversations,
+  updateParticipantUser: (
+    conversations,
+    user: Response[number]['participants'][number]['user'],
+  ) => {
+    return conversations.map((conversation) => ({
+      ...conversation,
+      participants: conversation.participants.map((participant) => {
+        if (participant.user.id === user.id) {
+          return {
+            ...participant,
+            user,
+          };
+        }
+
+        return participant;
+      }),
+    }));
+  },
   reset: () => [],
 });
 

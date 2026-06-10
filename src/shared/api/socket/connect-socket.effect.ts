@@ -7,9 +7,11 @@ import {
   getBase64CredentialsFromLocalStorage,
 } from '@/shared/lib/auth';
 
-import { receiveMessage } from './listen-events/receive-message.event';
+import { conversationsUpdate } from './listen-events/conversations-update.event';
+import { messageNew } from './listen-events/message-new.event';
 import { reconnectSocket } from './listen-events/reconnect-socket.event';
-import { updateConversations } from './listen-events/update-conversations.event';
+import { userOffline } from './listen-events/user-offline.event';
+import { userOnline } from './listen-events/user-online.event';
 import type { Socket } from './socket.interface';
 import { isSocketConnectedApi, socketApi } from './socket.store';
 
@@ -38,12 +40,20 @@ export const connectSocketFx = createEffect<void, Socket>(() => {
       isSocketConnectedApi.set(false);
     });
 
-    socket.on('from-server:message.new', (data) => {
-      receiveMessage(data);
+    socket.on('from-server:conversations.update', () => {
+      conversationsUpdate();
     });
 
-    socket.on('from-server:conversations.update', () => {
-      updateConversations();
+    socket.on('from-server:message.new', (data) => {
+      messageNew(data);
+    });
+
+    socket.on('from-server:user.online', (data) => {
+      userOnline(data);
+    });
+
+    socket.on('from-server:user.offline', (data) => {
+      userOffline(data);
     });
   });
 });

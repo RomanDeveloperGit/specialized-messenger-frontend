@@ -1,9 +1,6 @@
 import { createEffect, sample } from 'effector';
 
-import {
-  receiveMessage,
-  type SocketListenEventData,
-} from '@/shared/api/socket';
+import { messageNew, type SocketListenEventData } from '@/shared/api/socket';
 
 import { activeConversationApi } from './active-conversation.store';
 
@@ -18,7 +15,7 @@ const receiveMessageFx = createEffect<ReceiveMessageFxParams, void>(
 );
 
 sample({
-  clock: receiveMessage,
+  clock: messageNew,
   fn: (data) => ({ data }),
   target: receiveMessageFx,
 });

@@ -1,6 +1,6 @@
 import { createEffect, sample } from 'effector';
 
-import { updateConversations } from '@/shared/api/socket';
+import { conversationsUpdate } from '@/shared/api/socket';
 
 import { getConversationsFx } from './get-conversations.effect';
 
@@ -9,6 +9,6 @@ const updateConversationsFx = createEffect<void, void>(() => {
 });
 
 sample({
-  clock: updateConversations,
+  clock: conversationsUpdate,
   target: updateConversationsFx,
 });
