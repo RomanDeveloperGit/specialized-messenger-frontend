@@ -18,8 +18,7 @@ import { $authorizedUserId } from '@/entities/auth';
 
 export const MessageItem: FC<{
   message: Dto['Message'];
-  index: number;
-}> = ({ message, index }) => {
+}> = ({ message }) => {
   const [conversation, authorizedUserId] = useUnit([
     $activeConversation,
     $authorizedUserId,
@@ -28,13 +27,6 @@ export const MessageItem: FC<{
   if (!conversation) return null;
 
   const isOwn = message.author?.id === authorizedUserId;
-  const prevMessage = conversation.messages[index - 1];
-  const isFirstInGroup =
-    !prevMessage || prevMessage.author?.id !== message.author?.id;
-  const nextMessage = conversation.messages[index + 1];
-  const isLastInGroup =
-    !nextMessage || nextMessage.author?.id !== message.author?.id;
-
   const sender = conversation.participants.find(
     (p) => p.user.id === message.author?.id,
   )!;
@@ -42,18 +34,18 @@ export const MessageItem: FC<{
   const senderInitials = sender ? getUserInitials(sender.user) : '';
   const senderColorSchema = getColorSchemaByText(senderFullName);
 
+  const dateLabel = new Date(message.createdAt).toLocaleDateString('ru-RU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+
   if (
     isSystemConversationCreatedMessage(message) ||
     isSystemUserJoinedMessage(message)
   ) {
-    const dateLabel = new Date(message.createdAt).toLocaleDateString('ru-RU', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-    });
-
     return (
       <Box
         style={{
@@ -98,7 +90,7 @@ export const MessageItem: FC<{
       style={{
         display: 'flex',
         justifyContent: isOwn ? 'flex-end' : 'flex-start',
-        marginTop: isFirstInGroup ? 8 : 1,
+        marginTop: 8,
       }}
     >
       <Group
@@ -134,9 +126,7 @@ export const MessageItem: FC<{
           <Box
             style={{
               padding: '7px 11px',
-              borderRadius: isOwn
-                ? `12px 12px ${isLastInGroup ? 4 : 12}px 12px`
-                : `12px 12px 12px ${isLastInGroup ? 4 : 12}px`,
+              borderRadius: isOwn ? `12px 12px 4px 12px` : `12px 12px 12px 4px`,
               background: isOwn
                 ? 'linear-gradient(135deg, var(--mantine-color-green-8) 0%, var(--mantine-color-green-9) 100%)'
                 : 'var(--mantine-color-dark-6)',

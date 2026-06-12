@@ -1,19 +1,17 @@
 import { Fragment, useLayoutEffect, useRef } from 'react';
 
 import { useUnit } from 'effector-react';
-import {
-  IconArrowLeft,
-  IconDotsVertical,
-  IconPhone,
-  IconVideo,
-} from '@tabler/icons-react';
+import { IconArrowLeft, IconDotsVertical, IconUser } from '@tabler/icons-react';
 
 import { ActionIcon, Box, Group, ScrollArea, Stack, Text } from '@mantine/core';
 
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
+import { getPluralizedConversationParticipantsCount } from '@/shared/lib/conversation/get-pluralized-conversation-participants-count';
 import { isDirectConversation } from '@/shared/lib/conversation/is-direct-conversation';
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { isEqualDate } from '@/shared/lib/is-equal-date';
+import { getPreparedUserLastSeenDate } from '@/shared/lib/user/get-prepared-user-last-seen-date';
 
 import {
   $activeConversation,
@@ -115,45 +113,42 @@ export const ActiveConversation = () => {
               <Text size="sm" fw={600} c="gray.1" lh={1.4}>
                 {fullName}
               </Text>
-              {isDirect &&
+              {isDirect ? (
                 (directConversationPeerUser?.isOnline ||
                   directConversationPeerUser?.lastSeenAt) && (
                   <Fragment>
-                    {directConversationPeerUser?.isOnline ? (
+                    {directConversationPeerUser.isOnline ? (
                       <Text size="xs" c="green.5" lh={1.4}>
                         онлайн
                       </Text>
                     ) : (
                       <Text size="xs" c="gray.6" lh={1.4}>
-                        был в сети{' '}
-                        {new Date(
+                        был(а) в сети{' '}
+                        {getPreparedUserLastSeenDate(
                           directConversationPeerUser.lastSeenAt,
-                        ).toLocaleTimeString()}
+                        )}
                       </Text>
                     )}
                   </Fragment>
-                )}
+                )
+              ) : (
+                <Text size="xs" c="gray.6" lh={1.4}>
+                  {getPluralizedConversationParticipantsCount(
+                    conversationUsers.length,
+                  )}
+                </Text>
+              )}
             </Box>
           </Group>
           <Group gap={2}>
             <ActionIcon
               variant="subtle"
               color="dark.2"
-              style={{ transition: 'color 0.15s' }}
               styles={{
                 root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
               }}
             >
-              <IconPhone size={17} stroke={1.7} />
-            </ActionIcon>
-            <ActionIcon
-              variant="subtle"
-              color="dark.2"
-              styles={{
-                root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-              }}
-            >
-              <IconVideo size={18} stroke={1.7} />
+              <IconUser size={17} stroke={1.7} />
             </ActionIcon>
             <ActionIcon
               variant="subtle"
@@ -177,9 +172,45 @@ export const ActiveConversation = () => {
         }}
       >
         <Stack gap={2} px="md" py="md">
-          {conversation.messages.map((msg, i) => (
-            <MessageItem message={msg} index={i} key={msg.id} />
-          ))}
+          {conversation.messages.map((msg, i, messages) => {
+            const prevMessageDate = messages[i - 1]?.createdAt;
+            const currentMessageDate = msg.createdAt;
+
+            const currentDateLabel = new Date(msg.createdAt).toLocaleDateString(
+              'ru-RU',
+              {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+              },
+            );
+
+            return (
+              <Fragment key={msg.id}>
+                {prevMessageDate &&
+                  !isEqualDate(
+                    new Date(prevMessageDate),
+                    new Date(currentMessageDate),
+                  ) && (
+                    <Text
+                      size="xs"
+                      c="dark.3"
+                      style={{
+                        fontSize: 11,
+                        letterSpacing: '0.3px',
+                        textAlign: 'center',
+                        margin: '12px 0',
+                      }}
+                    >
+                      {currentDateLabel}
+                    </Text>
+                  )}
+                <MessageItem message={msg} />
+              </Fragment>
+            );
+          })}
         </Stack>
       </ScrollArea>
       <SendMessage />
