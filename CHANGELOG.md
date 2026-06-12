@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.8.0...v1.9.0) (2026-06-12)
+
+
+### Features
+
+* add more info of date and participants count ([1afed79](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/1afed7943f47c8462aacd6c325d1774433884824))
+
 # [1.8.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.7.3...v1.8.0) (2026-06-10)
 
 ### Features
