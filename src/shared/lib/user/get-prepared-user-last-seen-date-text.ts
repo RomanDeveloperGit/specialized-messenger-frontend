@@ -1,6 +1,10 @@
 import { isEqualDate } from '../is-equal-date';
 
-export const getPreparedUserLastSeenDate = (lastSeenDate: string): string => {
+const PREFIX = 'был(а) в сети';
+
+export const getPreparedUserLastSeenDateText = (
+  lastSeenDate: string,
+): string => {
   const date = new Date(lastSeenDate);
   const now = new Date();
 
@@ -17,11 +21,11 @@ export const getPreparedUserLastSeenDate = (lastSeenDate: string): string => {
   });
 
   if (isSameDay) {
-    return time;
+    return `${PREFIX} в ${time}`;
   }
 
   if (isYesterday) {
-    return `вчера в ${time}`;
+    return `${PREFIX} вчера в ${time}`;
   }
 
   if (date.getFullYear() === now.getFullYear()) {
@@ -30,13 +34,12 @@ export const getPreparedUserLastSeenDate = (lastSeenDate: string): string => {
       month: 'long',
     }).format(date);
 
-    return `${dayMonth} в ${time}`;
+    return `${PREFIX} ${dayMonth} в ${time}`;
   }
 
-  // Дата в формате DD.MM.YYYY
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
 
-  return `${day}.${month}.${year} в ${time}`;
+  return `${PREFIX} ${day}.${month}.${year} в ${time}`;
 };

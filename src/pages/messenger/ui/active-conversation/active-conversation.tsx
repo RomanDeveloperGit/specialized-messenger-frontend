@@ -1,7 +1,7 @@
-import { Fragment, useLayoutEffect, useRef } from 'react';
+import { Fragment, useLayoutEffect, useRef, useState } from 'react';
 
 import { useUnit } from 'effector-react';
-import { IconArrowLeft, IconDotsVertical, IconUser } from '@tabler/icons-react';
+import { IconArrowLeft, IconUser } from '@tabler/icons-react';
 
 import { ActionIcon, Box, Group, ScrollArea, Stack, Text } from '@mantine/core';
 
@@ -11,11 +11,11 @@ import { getPluralizedConversationParticipantsCount } from '@/shared/lib/convers
 import { isDirectConversation } from '@/shared/lib/conversation/is-direct-conversation';
 import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
 import { isEqualDate } from '@/shared/lib/is-equal-date';
-import { getPreparedUserLastSeenDate } from '@/shared/lib/user/get-prepared-user-last-seen-date';
+import { getPreparedUserLastSeenDateText } from '@/shared/lib/user/get-prepared-user-last-seen-date-text';
 
 import {
   $activeConversation,
-  $activeConversationParticipantUsers,
+  $activeConversationParticipants,
   activeConversationApi,
   getConversationFx,
 } from '@/entities/active-conversation';
@@ -24,10 +24,11 @@ import { $authorizedUserId } from '@/entities/auth';
 import { SendMessage } from '@/features/send-message';
 
 import { MessageItem } from './message-item';
+import { ParticipantsModal } from './participants-modal';
 
 export const ActiveConversation = () => {
   const conversation = useUnit($activeConversation)!;
-  const conversationUsers = useUnit($activeConversationParticipantUsers)!;
+  const conversationParticipants = useUnit($activeConversationParticipants)!;
   const [isConversationPending, authorizedUserId, resetActiveConversation] =
     useUnit([
       getConversationFx.pending,
@@ -37,10 +38,13 @@ export const ActiveConversation = () => {
 
   const viewportRef = useRef<HTMLDivElement>(null);
 
+  const [isParticipantsModalOpened, setIsParticipantsModalOpened] =
+    useState(false);
+
   const isDirect = isDirectConversation(conversation);
-  const directConversationPeerUser = conversationUsers.find(
+  const directConversationPeerUser = conversationParticipants.find(
     (user) => user.id !== authorizedUserId,
-  );
+  )?.user;
 
   useLayoutEffect(() => {
     if (isConversationPending) return;
@@ -123,8 +127,7 @@ export const ActiveConversation = () => {
                       </Text>
                     ) : (
                       <Text size="xs" c="gray.6" lh={1.4}>
-                        был(а) в сети{' '}
-                        {getPreparedUserLastSeenDate(
+                        {getPreparedUserLastSeenDateText(
                           directConversationPeerUser.lastSeenAt,
                         )}
                       </Text>
@@ -134,31 +137,27 @@ export const ActiveConversation = () => {
               ) : (
                 <Text size="xs" c="gray.6" lh={1.4}>
                   {getPluralizedConversationParticipantsCount(
-                    conversationUsers.length,
+                    conversationParticipants.length,
                   )}
                 </Text>
               )}
             </Box>
           </Group>
           <Group gap={2}>
-            <ActionIcon
-              variant="subtle"
-              color="dark.2"
-              styles={{
-                root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-              }}
-            >
-              <IconUser size={17} stroke={1.7} />
-            </ActionIcon>
-            <ActionIcon
-              variant="subtle"
-              color="dark.2"
-              styles={{
-                root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-              }}
-            >
-              <IconDotsVertical size={17} stroke={1.7} />
-            </ActionIcon>
+            {!isDirect && (
+              <ActionIcon
+                variant="subtle"
+                color="dark.2"
+                styles={{
+                  root: {
+                    '&:hover': { color: 'var(--mantine-color-green-5)' },
+                  },
+                }}
+                onClick={() => setIsParticipantsModalOpened(true)}
+              >
+                <IconUser size={17} stroke={1.7} />
+              </ActionIcon>
+            )}
           </Group>
         </Group>
       </Box>
@@ -214,6 +213,12 @@ export const ActiveConversation = () => {
         </Stack>
       </ScrollArea>
       <SendMessage />
+      <ParticipantsModal
+        isOpened={isParticipantsModalOpened}
+        onClose={() => setIsParticipantsModalOpened(false)}
+        participants={conversationParticipants}
+        viewerUserId={authorizedUserId!}
+      />
     </Stack>
   );
 };

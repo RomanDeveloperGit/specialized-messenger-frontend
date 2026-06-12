@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState } from 'react';
 
 import { useUnit } from 'effector-react';
-import { IconMoodSmile, IconPaperclip, IconSend } from '@tabler/icons-react';
+import { IconSend } from '@tabler/icons-react';
 
 import { ActionIcon, Box, Group, Textarea } from '@mantine/core';
 
@@ -52,30 +52,6 @@ export const SendMessage = () => {
       }}
     >
       <Group gap={8} align="flex-end" wrap="nowrap">
-        <ActionIcon
-          variant="subtle"
-          color="dark.2"
-          size="lg"
-          style={{ flexShrink: 0, marginBottom: 2 }}
-          styles={{
-            root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-          }}
-        >
-          <IconMoodSmile size={20} stroke={1.6} />
-        </ActionIcon>
-
-        <ActionIcon
-          variant="subtle"
-          color="dark.2"
-          size="lg"
-          style={{ flexShrink: 0, marginBottom: 2 }}
-          styles={{
-            root: { '&:hover': { color: 'var(--mantine-color-green-5)' } },
-          }}
-        >
-          <IconPaperclip size={19} stroke={1.6} />
-        </ActionIcon>
-
         <Textarea
           flex={1}
           placeholder="Сообщение..."

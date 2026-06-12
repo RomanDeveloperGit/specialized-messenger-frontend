@@ -10,10 +10,15 @@ export const $hasActiveConversation = $activeConversation.map(Boolean);
 export const $activeConversationPublicId = $activeConversation.map(
   (conversation) => conversation?.publicId || null,
 );
-export const $activeConversationParticipantUsers = $activeConversation.map(
-  (conversation) =>
-    conversation?.participants.map((participant) => participant.user) || null,
+export const $activeConversationParticipants = $activeConversation.map(
+  (conversation) => conversation?.participants || null,
 );
+export const $activeConversationOwnerUserId =
+  $activeConversationParticipants.map(
+    (participants) =>
+      participants?.find((participant) => participant.role.name === 'OWNER')
+        ?.user.id || null,
+  );
 
 export const activeConversationApi = createApi($activeConversation, {
   set: (_, conversation: Response) => conversation,
