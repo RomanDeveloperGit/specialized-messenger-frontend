@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.9.0...v1.10.0) (2026-06-12)
+
+
+### Features
+
+* **conversation:** add participants modal ([5b4b790](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/5b4b7903d54eb4490cb1bf28b8392957aa4076bd))
+
 # [1.9.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.8.0...v1.9.0) (2026-06-12)
 
 
