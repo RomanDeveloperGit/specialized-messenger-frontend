@@ -9,7 +9,7 @@ import type { Dto } from '@specialized-messenger/api/specs';
 import { getConversationFullName } from '@/shared/lib/conversation/get-conversation-full-name';
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
 import { isDirectConversation } from '@/shared/lib/conversation/is-direct-conversation';
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text/get-color-schema-by-text';
 import { prepareLastMessageForConversationList } from '@/shared/lib/message/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
 
 import { $activeConversation } from '@/entities/active-conversation';

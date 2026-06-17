@@ -2,7 +2,7 @@ import { useUnit } from 'effector-react';
 
 import { Center, Paper, Stack } from '@mantine/core';
 
-import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
+import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect/react-page-with-side-effect';
 
 import { $hasInvitationError } from '@/entities/invitation';
 

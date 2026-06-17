@@ -1,18 +1,11 @@
 import type { FC } from 'react';
 
-import { useFormContext } from 'react-hook-form';
-
 import { Box, ScrollArea, Stack, Text } from '@mantine/core';
 
-import type { CreateGroupConversationSchema } from '../../model/create-group-conversation.schema';
-
-export const UserListWrapper: FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const {
-    formState: { errors },
-  } = useFormContext<CreateGroupConversationSchema>();
-
+export const SelectableUserListWrapper: FC<{
+  children: React.ReactNode;
+  slot?: React.ReactNode;
+}> = ({ children, slot }) => {
   return (
     <Box
       style={{
@@ -32,13 +25,9 @@ export const UserListWrapper: FC<{ children: React.ReactNode }> = ({
           textTransform: 'uppercase',
         }}
       >
-        Участники
+        Пользователи
       </Text>
-      {errors.selectedUserPublicIds && (
-        <Text size="xs" c="red.5">
-          {errors.selectedUserPublicIds.message}
-        </Text>
-      )}
+      {slot}
       <ScrollArea h={200} scrollbarSize={6}>
         <Stack gap={1}>{children}</Stack>
       </ScrollArea>

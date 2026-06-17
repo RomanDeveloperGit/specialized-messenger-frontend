@@ -22,7 +22,7 @@ import {
   type CreateGroupConversationSchema,
   createGroupConversationSchema,
 } from '../model/create-group-conversation.schema';
-import { UserListFacade } from './user-list-facade/user-list-facade';
+import { UserList } from './user-list';
 
 const inputStyles = {
   label: {
@@ -56,6 +56,8 @@ export const CreateGroupConversation = () => {
 
   const methods = useForm<CreateGroupConversationSchema>({
     resolver: zodResolver(createGroupConversationSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
     defaultValues: {
       groupName: '',
       selectedUserPublicIds: [],
@@ -91,7 +93,7 @@ export const CreateGroupConversation = () => {
 
   return (
     <>
-      <Tooltip label="Новое сообщение" position="bottom" withArrow>
+      <Tooltip label="Создать группу" position="bottom" withArrow>
         <UnstyledButton
           p={7}
           onClick={handleOpen}
@@ -205,9 +207,7 @@ export const CreateGroupConversation = () => {
                   error={errors.groupName?.message}
                   styles={inputStyles}
                 />
-
-                <UserListFacade />
-
+                <UserList />
                 <Group justify="flex-end" gap={8} mt={4}>
                   <Button
                     variant="subtle"

@@ -7,7 +7,7 @@ import { createInvitationLink } from '@/shared/lib/invitation/create-invitation-
 import {
   showDefaultErrorNotificationFx,
   showSuccessNotificationFx,
-} from '@/shared/lib/show-notification';
+} from '@/shared/lib/show-notification/show-notification';
 
 import { invitationLinkApi } from './invitation-link.store';
 

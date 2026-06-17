@@ -1,6 +1,6 @@
 import { createEffect, type EffectParams } from 'effector';
 
-import { showSuccessNotificationFx } from '@/shared/lib/show-notification';
+import { showSuccessNotificationFx } from '@/shared/lib/show-notification/show-notification';
 import {
   DEFAULT_PROTECTED_ROUTE_CONFIG,
   getRouteByConfig,

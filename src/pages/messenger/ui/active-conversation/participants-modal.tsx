@@ -2,17 +2,15 @@ import { useUnit } from 'effector-react';
 import {
   IconCrown,
   IconUserCheck,
-  IconUserMinus,
-  IconUserPlus,
   IconUsers,
   IconX,
 } from '@tabler/icons-react';
 
 import {
-  ActionIcon,
   Badge,
   Box,
   Group,
+  Loader,
   Modal,
   ScrollArea,
   Stack,
@@ -23,31 +21,50 @@ import {
 import type { Dto } from '@specialized-messenger/api/specs';
 
 import { getPluralizedConversationParticipantsCount } from '@/shared/lib/conversation/get-pluralized-conversation-participants-count';
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text/get-color-schema-by-text';
 import { getPreparedUserLastSeenDateText } from '@/shared/lib/user/get-prepared-user-last-seen-date-text';
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import { $activeConversationOwnerUserId } from '@/entities/active-conversation';
+import {
+  $activeConversationOwnerUserId,
+  getConversationFx,
+} from '@/entities/active-conversation';
+import { $authorizedUserId, $isAuthorizedUserAdmin } from '@/entities/auth';
+
+import { AddConversationParticipants } from '@/features/add-conversation-participant';
+import { RemoveConversationParticipant } from '@/features/remove-conversation-participant/ui/remove-conversation-participant';
 
 export const ParticipantsModal = ({
   isOpened,
   onClose,
   participants,
-  viewerUserId,
 }: {
   isOpened: boolean;
   onClose: () => void;
   participants: Dto['ConversationParticipant'][];
-  viewerUserId: string;
 }) => {
-  const [ownerUserId] = useUnit([$activeConversationOwnerUserId]);
+  const [
+    ownerUserId,
+    authorizedUserId,
+    isAuthorizedUserAdmin,
+    isConversationPending,
+  ] = useUnit([
+    $activeConversationOwnerUserId,
+    $authorizedUserId,
+    $isAuthorizedUserAdmin,
+    getConversationFx.pending,
+  ]);
+
+  const hasChangeParticipantsPermissions =
+    isAuthorizedUserAdmin && authorizedUserId === ownerUserId;
 
   return (
     <Modal
       opened={isOpened}
       onClose={onClose}
       withCloseButton={false}
+      closeOnClickOutside={false}
       centered
       size={400}
       padding={0}
@@ -108,27 +125,9 @@ export const ParticipantsModal = ({
           </Group>
 
           <Group gap={6}>
-            <UnstyledButton
-              p={6}
-              style={(theme) => ({
-                'borderRadius': theme.radius.sm,
-                'color': theme.colors.green[4],
-                'display': 'flex',
-                'alignItems': 'center',
-                'background':
-                  'color-mix(in srgb, var(--mantine-color-green-9) 80%, transparent)',
-                'border':
-                  '1px solid color-mix(in srgb, var(--mantine-color-green-7) 60%, transparent)',
-                'transition': 'background 0.15s, border-color 0.15s',
-                '&:hover': {
-                  background:
-                    'color-mix(in srgb, var(--mantine-color-green-8) 80%, transparent)',
-                  borderColor: theme.colors.green[6],
-                },
-              })}
-            >
-              <IconUserPlus size={15} stroke={1.7} />
-            </UnstyledButton>
+            {hasChangeParticipantsPermissions && (
+              <AddConversationParticipants />
+            )}
             <UnstyledButton
               onClick={onClose}
               p={5}
@@ -152,8 +151,15 @@ export const ParticipantsModal = ({
       <Box p={12}>
         <ScrollArea.Autosize mah={420} scrollbarSize={4}>
           <Stack gap={2}>
-            {participants.map(({ user, role }) => {
-              const isCurrentUser = user.id === viewerUserId;
+            {isConversationPending && (
+              <Group justify="center" py={16}>
+                <Loader size="sm" color="green.6" type="dots" />
+              </Group>
+            )}
+            {participants.map((participant) => {
+              const { user, role } = participant;
+
+              const isCurrentUser = user.id === authorizedUserId;
               const isOwner = role.name === 'OWNER';
               const fullName = getUserFullName(user);
               const initials = getUserInitials(user);
@@ -271,37 +277,13 @@ export const ParticipantsModal = ({
                       >
                         {user.isOnline
                           ? 'онлайн'
-                          : user.lastSeenAt &&
-                            getPreparedUserLastSeenDateText(user.lastSeenAt)}
+                          : getPreparedUserLastSeenDateText(user.lastSeenAt)}
                       </Text>
                     </Box>
                   </Group>
 
-                  {!isCurrentUser && viewerUserId === ownerUserId && (
-                    <ActionIcon
-                      variant="subtle"
-                      color="red"
-                      size="sm"
-                      radius="sm"
-                      style={{
-                        flexShrink: 0,
-                        background:
-                          'color-mix(in srgb, var(--mantine-color-red-9) 80%, transparent)',
-                        border:
-                          '1px solid color-mix(in srgb, var(--mantine-color-red-7) 60%, transparent)',
-                      }}
-                      styles={{
-                        root: {
-                          '&:hover': {
-                            background:
-                              'color-mix(in srgb, var(--mantine-color-red-8) 80%, transparent)',
-                            borderColor: 'var(--mantine-color-red-6)',
-                          },
-                        },
-                      }}
-                    >
-                      <IconUserMinus size={14} stroke={1.7} />
-                    </ActionIcon>
+                  {!isCurrentUser && hasChangeParticipantsPermissions && (
+                    <RemoveConversationParticipant participant={participant} />
                   )}
                 </Group>
               );

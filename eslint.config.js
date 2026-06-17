@@ -65,7 +65,7 @@ export default defineConfig([
             ['effector', '@tabler', 'atomic-router'],
             ['^@?\\w'],
             ['@specialized-messenger/api'],
-            ['^@/shared'],
+            ['^@/shared', '@/shared/lib/effector'],
             ['^@/entities'],
             ['^@/features'],
             ['^@/widgets'],

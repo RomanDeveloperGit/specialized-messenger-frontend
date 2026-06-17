@@ -6,9 +6,8 @@ import { Box, Group, Text } from '@mantine/core';
 
 import type { Dto } from '@specialized-messenger/api/specs';
 
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
-import { isSystemConversationCreatedMessage } from '@/shared/lib/message/message-checker/is-system-conversation-created-message';
-import { isSystemUserJoinedMessage } from '@/shared/lib/message/message-checker/is-system-user-joined-message';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text/get-color-schema-by-text';
+import { isSystemMessage } from '@/shared/lib/message/message-checker/is-system-message';
 import { prepareMessageForActiveConversation } from '@/shared/lib/message/prepare-message-for-active-conversation/prepare-message-for-active-conversation';
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
@@ -34,18 +33,7 @@ export const MessageItem: FC<{
   const senderInitials = sender ? getUserInitials(sender.user) : '';
   const senderColorSchema = getColorSchemaByText(senderFullName);
 
-  const dateLabel = new Date(message.createdAt).toLocaleDateString('ru-RU', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-
-  if (
-    isSystemConversationCreatedMessage(message) ||
-    isSystemUserJoinedMessage(message)
-  ) {
+  if (isSystemMessage(message)) {
     return (
       <Box
         style={{
@@ -54,16 +42,8 @@ export const MessageItem: FC<{
           alignItems: 'center',
           gap: 6,
           marginTop: 12,
-          marginBottom: 4,
         }}
       >
-        <Text
-          size="xs"
-          c="dark.3"
-          style={{ fontSize: 11, letterSpacing: '0.3px' }}
-        >
-          {dateLabel}
-        </Text>
         <Box
           style={{
             background: 'rgba(0, 0, 0, 0.25)',
@@ -74,7 +54,7 @@ export const MessageItem: FC<{
             textAlign: 'center',
           }}
         >
-          <Text size="xs" c="dark.1" style={{ fontSize: 12, lineHeight: 1.4 }}>
+          <Text size="xs" c="dark.1" style={{ fontSize: 12, lineHeight: 1.6 }}>
             {prepareMessageForActiveConversation({
               conversation,
               message: message,

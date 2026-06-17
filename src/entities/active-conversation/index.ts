@@ -7,3 +7,5 @@ export * from './model/get-conversation.effect';
 import './model/rejoin-conversation-on-reconnect-socket.effect';
 import './model/receive-message.effect';
 import './model/update-participant-network-status.effect';
+import './model/update-active-conversation.effect';
+import './model/reset-active-conversation-on-remove.effect';

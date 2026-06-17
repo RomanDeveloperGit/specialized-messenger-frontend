@@ -11,7 +11,7 @@ type UpdateParticipantNetworkStatusFxParams = {
     | SocketListenEventData<'from-server:user.offline'>;
 };
 
-export const updateParticipantNetworkStatusFx = createEffect<
+const updateParticipantNetworkStatusFx = createEffect<
   UpdateParticipantNetworkStatusFxParams,
   void
 >(({ data }) => {
@@ -20,12 +20,12 @@ export const updateParticipantNetworkStatusFx = createEffect<
 
 sample({
   clock: userOnline,
-  fn: (data) => ({ data }),
+  fn: (clock) => ({ data: clock }),
   target: updateParticipantNetworkStatusFx,
 });
 
 sample({
   clock: userOffline,
-  fn: (data) => ({ data }),
+  fn: (clock) => ({ data: clock }),
   target: updateParticipantNetworkStatusFx,
 });

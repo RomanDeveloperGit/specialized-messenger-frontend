@@ -7,7 +7,7 @@ import {
   showDefaultErrorNotificationFx,
   showErrorNotificationFx,
   showSuccessNotificationFx,
-} from '@/shared/lib/show-notification';
+} from '@/shared/lib/show-notification/show-notification';
 import {
   DEFAULT_PROTECTED_ROUTE_CONFIG,
   DEFAULT_PUBLIC_ROUTE_CONFIG,

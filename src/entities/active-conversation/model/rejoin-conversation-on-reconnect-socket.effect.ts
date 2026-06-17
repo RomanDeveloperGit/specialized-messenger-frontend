@@ -3,15 +3,13 @@ import { createEffect, sample } from 'effector';
 import {
   $socket,
   joinConversation,
-  type Socket,
   type SocketEmitEventData,
 } from '@/shared/api/socket';
-import { reconnectSocket } from '@/shared/api/socket/listen-events/reconnect-socket.event';
+import { reconnectSocket } from '@/shared/api/socket';
 
 import { $activeConversationPublicId } from './active-conversation.store';
 
 type RejoinConversationOnReconnectSocketFxParams = {
-  socket: Socket;
   data: SocketEmitEventData<'from-client:conversation.join'>;
 };
 
@@ -30,7 +28,6 @@ sample({
   },
   filter: (source) => !!source.socket && !!source.activeConversationPublicId,
   fn: (source) => ({
-    socket: source.socket!,
     data: {
       conversationId: source.activeConversationPublicId!,
     },

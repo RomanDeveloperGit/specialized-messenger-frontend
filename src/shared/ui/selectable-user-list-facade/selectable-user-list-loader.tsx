@@ -1,10 +1,10 @@
 import { Box, Group, Skeleton } from '@mantine/core';
 
-import { UserListWrapper } from './user-list-wrapper';
+import { SelectableUserListWrapper } from './selectable-user-list-wrapper';
 
-export const UserListLoader = () => {
+export const SelectableUserListLoader = () => {
   return (
-    <UserListWrapper>
+    <SelectableUserListWrapper>
       {Array.from({ length: 5 }).map((_, index) => (
         <Box
           py={7}
@@ -25,6 +25,6 @@ export const UserListLoader = () => {
           </Group>
         </Box>
       ))}
-    </UserListWrapper>
+    </SelectableUserListWrapper>
   );
 };

@@ -1,7 +1,7 @@
 import { createEffect, createEvent, sample, type StoreValue } from 'effector';
 
 import { connectSocketFx } from '@/shared/api/socket';
-import { showDefaultErrorNotificationFx } from '@/shared/lib/show-notification';
+import { showDefaultErrorNotificationFx } from '@/shared/lib/show-notification/show-notification';
 
 import { $authorizedUser } from '@/entities/auth';
 import { getConversationsFx } from '@/entities/conversations';
@@ -23,7 +23,7 @@ export const initMessengerPageFx = createEffect<
     await getConversationsFx();
 
     if (authorizedUser.role.name === 'ADMIN') {
-      await getUsersFx({ excludeUserId: authorizedUser.id });
+      await getUsersFx();
     }
   } catch (error) {
     showDefaultErrorNotificationFx({ type: 'somethingWentWrong' });

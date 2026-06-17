@@ -16,6 +16,6 @@ const receiveMessageFx = createEffect<ReceiveMessageFxParams, void>(
 
 sample({
   clock: messageNew,
-  fn: (data) => ({ data }),
+  fn: (clock) => ({ data: clock }),
   target: receiveMessageFx,
 });

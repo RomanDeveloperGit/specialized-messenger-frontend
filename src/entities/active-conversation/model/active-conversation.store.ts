@@ -13,6 +13,11 @@ export const $activeConversationPublicId = $activeConversation.map(
 export const $activeConversationParticipants = $activeConversation.map(
   (conversation) => conversation?.participants || null,
 );
+export const $activeConversationParticipantUserIds = $activeConversation.map(
+  (conversation) =>
+    conversation?.participants.map((participant) => participant.user.id) ||
+    null,
+);
 export const $activeConversationOwnerUserId =
   $activeConversationParticipants.map(
     (participants) =>

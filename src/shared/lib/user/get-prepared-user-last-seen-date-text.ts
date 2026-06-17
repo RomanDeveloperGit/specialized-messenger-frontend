@@ -1,10 +1,15 @@
-import { isEqualDate } from '../is-equal-date';
+import { getLocalTime } from '../date/get-local-time';
+import { isEqualDate } from '../date/is-equal-date';
 
 const PREFIX = 'был(а) в сети';
 
 export const getPreparedUserLastSeenDateText = (
-  lastSeenDate: string,
+  lastSeenDate?: string,
 ): string => {
+  if (!lastSeenDate) {
+    return 'не заходил(а) в сеть';
+  }
+
   const date = new Date(lastSeenDate);
   const now = new Date();
 
@@ -15,10 +20,7 @@ export const getPreparedUserLastSeenDateText = (
 
   const isYesterday = isEqualDate(yesterday, date);
 
-  const time = date.toLocaleTimeString('ru-RU', {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const time = getLocalTime(date);
 
   if (isSameDay) {
     return `${PREFIX} в ${time}`;

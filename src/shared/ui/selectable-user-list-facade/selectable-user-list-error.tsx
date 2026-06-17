@@ -1,24 +1,16 @@
 import type { FC } from 'react';
 
-import { useUnit } from 'effector-react';
 import { IconRefresh } from '@tabler/icons-react';
 
 import { Box, Button, Stack, Text } from '@mantine/core';
 
-import { $authorizedUserId } from '@/entities/auth';
-import { getUsersFx } from '@/entities/users';
+import { SelectableUserListWrapper } from './selectable-user-list-wrapper';
 
-import { UserListWrapper } from './user-list-wrapper';
-
-export const UserListError: FC = () => {
-  const [getUsers, authorizedUserId] = useUnit([getUsersFx, $authorizedUserId]);
-
-  const onRetry = () => {
-    getUsers({ excludeUserId: authorizedUserId! });
-  };
-
+export const SelectableUserListError: FC<{
+  onRetry: () => void;
+}> = ({ onRetry }) => {
   return (
-    <UserListWrapper>
+    <SelectableUserListWrapper>
       <Box py="md">
         <Stack align="center" gap={8}>
           <Text size="xs" c="dark.3" ta="center">
@@ -45,6 +37,6 @@ export const UserListError: FC = () => {
           </Button>
         </Stack>
       </Box>
-    </UserListWrapper>
+    </SelectableUserListWrapper>
   );
 };

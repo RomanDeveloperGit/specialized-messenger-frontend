@@ -3,7 +3,7 @@ import { createRoutesView } from 'atomic-router-react';
 
 import { createBrowserHistory } from 'history';
 
-import { isReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
+import { isReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect/react-page-with-side-effect';
 
 import { allRouteFullConfigs } from './config';
 import { AppRouterProvider } from './ui/app-router-provider';

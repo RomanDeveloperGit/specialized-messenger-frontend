@@ -6,7 +6,7 @@ import { authorizedHttpClient } from '@/shared/api/http';
 import {
   showDefaultErrorNotificationFx,
   showSuccessNotificationFx,
-} from '@/shared/lib/show-notification';
+} from '@/shared/lib/show-notification/show-notification';
 
 type Controller = OperationInfo<'ChatController_createConversation_v1'>;
 type Path = Controller['path'];

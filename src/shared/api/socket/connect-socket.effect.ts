@@ -7,11 +7,8 @@ import {
   getBase64CredentialsFromLocalStorage,
 } from '@/shared/lib/auth';
 
-import { conversationsUpdate } from './listen-events/conversations-update.event';
-import { messageNew } from './listen-events/message-new.event';
+import { listenEventsConfig } from './listen-events/config';
 import { reconnectSocket } from './listen-events/reconnect-socket.event';
-import { userOffline } from './listen-events/user-offline.event';
-import { userOnline } from './listen-events/user-online.event';
 import type { Socket } from './socket.interface';
 import { isSocketConnectedApi, socketApi } from './socket.store';
 
@@ -40,20 +37,10 @@ export const connectSocketFx = createEffect<void, Socket>(() => {
       isSocketConnectedApi.set(false);
     });
 
-    socket.on('from-server:conversations.update', () => {
-      conversationsUpdate();
-    });
-
-    socket.on('from-server:message.new', (data) => {
-      messageNew(data);
-    });
-
-    socket.on('from-server:user.online', (data) => {
-      userOnline(data);
-    });
-
-    socket.on('from-server:user.offline', (data) => {
-      userOffline(data);
+    Object.entries(listenEventsConfig).forEach(([eventName, event]) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      socket.on(eventName, event);
     });
   });
 });

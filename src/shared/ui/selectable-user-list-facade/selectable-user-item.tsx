@@ -1,47 +1,31 @@
 import type { FC } from 'react';
 
-import { useFormContext, useWatch } from 'react-hook-form';
-
 import { IconCheck } from '@tabler/icons-react';
 
 import { Box, Group, Text, UnstyledButton } from '@mantine/core';
 
 import type { Dto } from '@specialized-messenger/api/specs';
 
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text/get-color-schema-by-text';
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import type { CreateGroupConversationSchema } from '../../model/create-group-conversation.schema';
-
-export const UserItem: FC<{
+export const SelectableUserItem: FC<{
   user: Dto['User'];
-}> = ({ user }) => {
-  const { setValue } = useFormContext<CreateGroupConversationSchema>();
-  const selectedUserPublicIds = useWatch<CreateGroupConversationSchema>({
-    name: 'selectedUserPublicIds',
-  }) as string[];
-
-  const toggleUser = (publicId: string) => {
-    const newUserPublicIds = selectedUserPublicIds.includes(publicId)
-      ? selectedUserPublicIds.filter(
-          (selectedPublicId) => selectedPublicId !== publicId,
-        )
-      : [...selectedUserPublicIds, publicId];
-
-    setValue('selectedUserPublicIds', newUserPublicIds, {
-      shouldValidate: true,
-    });
-  };
-
-  const isSelected = selectedUserPublicIds.includes(user.publicId);
+  isSelected: boolean;
+  onSelect: (user: Dto['User'], isSelected: boolean) => void;
+}> = ({ user, isSelected, onSelect }) => {
   const fullName = getUserFullName(user);
   const color = getColorSchemaByText(fullName);
+
+  const handleClick = () => {
+    onSelect(user, !isSelected);
+  };
 
   return (
     <UnstyledButton
       key={user.id}
-      onClick={() => toggleUser(user.publicId)}
+      onClick={handleClick}
       py={8}
       px={8}
       style={(theme) => ({

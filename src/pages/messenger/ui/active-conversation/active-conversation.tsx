@@ -9,8 +9,8 @@ import { getConversationFullName } from '@/shared/lib/conversation/get-conversat
 import { getConversationInitials } from '@/shared/lib/conversation/get-conversation-initials';
 import { getPluralizedConversationParticipantsCount } from '@/shared/lib/conversation/get-pluralized-conversation-participants-count';
 import { isDirectConversation } from '@/shared/lib/conversation/is-direct-conversation';
-import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text';
-import { isEqualDate } from '@/shared/lib/is-equal-date';
+import { isEqualDate } from '@/shared/lib/date/is-equal-date';
+import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text/get-color-schema-by-text';
 import { getPreparedUserLastSeenDateText } from '@/shared/lib/user/get-prepared-user-last-seen-date-text';
 
 import {
@@ -55,6 +55,8 @@ export const ActiveConversation = () => {
   }, [isConversationPending]);
 
   useLayoutEffect(() => {
+    // для всех других кейсов - сохраняем предыдущую позицию и остаемся на ней, но с пересчетом сдвигов
+
     if (conversation.messages.at(-1)?.author?.id === authorizedUserId) {
       viewportRef.current?.scrollTo({
         top: viewportRef.current.scrollHeight,
@@ -118,22 +120,19 @@ export const ActiveConversation = () => {
                 {fullName}
               </Text>
               {isDirect ? (
-                (directConversationPeerUser?.isOnline ||
-                  directConversationPeerUser?.lastSeenAt) && (
-                  <Fragment>
-                    {directConversationPeerUser.isOnline ? (
-                      <Text size="xs" c="green.5" lh={1.4}>
-                        онлайн
-                      </Text>
-                    ) : (
-                      <Text size="xs" c="gray.6" lh={1.4}>
-                        {getPreparedUserLastSeenDateText(
-                          directConversationPeerUser.lastSeenAt,
-                        )}
-                      </Text>
-                    )}
-                  </Fragment>
-                )
+                <Fragment>
+                  {directConversationPeerUser?.isOnline ? (
+                    <Text size="xs" c="green.5" lh={1.4}>
+                      онлайн
+                    </Text>
+                  ) : (
+                    <Text size="xs" c="gray.6" lh={1.4}>
+                      {getPreparedUserLastSeenDateText(
+                        directConversationPeerUser?.lastSeenAt,
+                      )}
+                    </Text>
+                  )}
+                </Fragment>
               ) : (
                 <Text size="xs" c="gray.6" lh={1.4}>
                   {getPluralizedConversationParticipantsCount(
@@ -171,42 +170,42 @@ export const ActiveConversation = () => {
         }}
       >
         <Stack gap={2} px="md" py="md">
-          {conversation.messages.map((msg, i, messages) => {
-            const prevMessageDate = messages[i - 1]?.createdAt;
-            const currentMessageDate = msg.createdAt;
+          {conversation.messages.map((message, i, messages) => {
+            const prevMessage = messages[i - 1] as typeof message | undefined;
+            const prevMessageDate = prevMessage?.createdAt;
+            const currentMessageDate = message.createdAt;
 
-            const currentDateLabel = new Date(msg.createdAt).toLocaleDateString(
-              'ru-RU',
-              {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-              },
-            );
+            const currentDateLabel = new Date(
+              message.createdAt,
+            ).toLocaleDateString('ru-RU', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            });
+
+            console.log({ prevMessageDate });
 
             return (
-              <Fragment key={msg.id}>
-                {prevMessageDate &&
+              <Fragment key={message.id}>
+                {(!prevMessageDate ||
                   !isEqualDate(
                     new Date(prevMessageDate),
                     new Date(currentMessageDate),
-                  ) && (
-                    <Text
-                      size="xs"
-                      c="dark.3"
-                      style={{
-                        fontSize: 11,
-                        letterSpacing: '0.3px',
-                        textAlign: 'center',
-                        margin: '12px 0',
-                      }}
-                    >
-                      {currentDateLabel}
-                    </Text>
-                  )}
-                <MessageItem message={msg} />
+                  )) && (
+                  <Text
+                    size="xs"
+                    c="dark.3"
+                    style={{
+                      fontSize: 11,
+                      letterSpacing: '0.3px',
+                      textAlign: 'center',
+                      marginTop: 24,
+                    }}
+                  >
+                    {currentDateLabel}
+                  </Text>
+                )}
+                <MessageItem message={message} />
               </Fragment>
             );
           })}
@@ -217,7 +216,6 @@ export const ActiveConversation = () => {
         isOpened={isParticipantsModalOpened}
         onClose={() => setIsParticipantsModalOpened(false)}
         participants={conversationParticipants}
-        viewerUserId={authorizedUserId!}
       />
     </Stack>
   );

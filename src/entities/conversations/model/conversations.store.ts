@@ -29,6 +29,11 @@ export const conversationsApi = createApi($conversations, {
       }),
     }));
   },
+  remove: (conversations, conversationPublicId: string) => {
+    return conversations.filter(
+      (conversation) => conversation.publicId !== conversationPublicId,
+    );
+  },
   reset: () => [],
 });
 

@@ -20,12 +20,12 @@ export const updateParticipantNetworkStatusFx = createEffect<
 
 sample({
   clock: userOnline,
-  fn: (data) => ({ data }),
+  fn: (clock) => ({ data: clock }),
   target: updateParticipantNetworkStatusFx,
 });
 
 sample({
   clock: userOffline,
-  fn: (data) => ({ data }),
+  fn: (clock) => ({ data: clock }),
   target: updateParticipantNetworkStatusFx,
 });

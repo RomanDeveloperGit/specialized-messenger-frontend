@@ -1,1 +1,1 @@
-export const UNDEFINED_USER = 'Неизвестный';
+export const UNDEFINED_USER = '[Неизвестный]';

@@ -3,7 +3,7 @@ import { createEffect } from 'effector';
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
 import { authorizedHttpClient } from '@/shared/api/http';
-import { showDefaultErrorNotificationFx } from '@/shared/lib/show-notification';
+import { showDefaultErrorNotificationFx } from '@/shared/lib/show-notification/show-notification';
 
 import { activeConversationApi } from './active-conversation.store';
 
@@ -13,7 +13,7 @@ type Response = Controller['response'];
 
 type GetConversationFxParams = {
   publicId: string;
-  abortController: AbortController;
+  abortController?: AbortController;
 };
 
 type GetConversationFxResult = {
@@ -27,7 +27,7 @@ export const getConversationFx = createEffect<
   try {
     const conversation = await authorizedHttpClient
       .get<Response>(`/api/v1/chat/conversations/${publicId}` satisfies Path, {
-        signal: abortController.signal,
+        signal: abortController?.signal,
       })
       .json();
 

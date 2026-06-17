@@ -14,9 +14,13 @@ export type SocketEmitEventData<T extends keyof SocketEmitEventsMap> =
 export interface SocketListenEventsMap {
   'from-server:message.new': (data: { message: Dto['Message'] }) => void;
   'from-server:conversations.update': (data: void) => void;
+  'from-server:activeConversation.update': (data: void) => void;
+  'from-server:conversations.remove': (data: {
+    conversationId: Dto['Conversation']['publicId'];
+  }) => void;
   'from-server:user.online': (data: { user: Dto['User'] }) => void;
   'from-server:user.offline': (data: { user: Dto['User'] }) => void;
-  'from-server:error': (data: void) => void;
+  // 'from-server:error': (data: void) => void;
 }
 
 export type SocketListenEventData<T extends keyof SocketListenEventsMap> =

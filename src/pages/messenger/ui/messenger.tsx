@@ -4,7 +4,7 @@ import { Box, Center, LoadingOverlay, Stack, Text } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 
 import { $isSocketConnected } from '@/shared/api/socket';
-import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect';
+import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect/react-page-with-side-effect';
 
 import { $hasActiveConversation } from '@/entities/active-conversation';
 
