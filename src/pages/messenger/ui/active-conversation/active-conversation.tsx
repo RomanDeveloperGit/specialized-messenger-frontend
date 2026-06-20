@@ -28,7 +28,7 @@ import { ParticipantsModal } from './participants-modal';
 
 export const ActiveConversation = () => {
   const conversation = useUnit($activeConversation)!;
-  const conversationParticipants = useUnit($activeConversationParticipants)!;
+  const conversationParticipants = useUnit($activeConversationParticipants);
   const [isConversationPending, authorizedUserId, resetActiveConversation] =
     useUnit([
       getConversationFx.pending,
@@ -37,6 +37,8 @@ export const ActiveConversation = () => {
     ]);
 
   const viewportRef = useRef<HTMLDivElement>(null);
+  const isConversationMounted = useRef<boolean>(false);
+  const prevScrollHeightRef = useRef<number>(0);
 
   const [isParticipantsModalOpened, setIsParticipantsModalOpened] =
     useState(false);
@@ -47,21 +49,33 @@ export const ActiveConversation = () => {
   )?.user;
 
   useLayoutEffect(() => {
-    if (isConversationPending) return;
+    const viewport = viewportRef.current;
 
-    viewportRef.current?.scrollTo({
-      top: viewportRef.current.scrollHeight,
+    if (isConversationPending || !viewport || isConversationMounted.current)
+      return;
+
+    isConversationMounted.current = true;
+    viewport.scrollTo({
+      top: viewport.scrollHeight,
     });
   }, [isConversationPending]);
 
   useLayoutEffect(() => {
-    // для всех других кейсов - сохраняем предыдущую позицию и остаемся на ней, но с пересчетом сдвигов
+    const viewport = viewportRef.current;
 
-    if (conversation.messages.at(-1)?.author?.id === authorizedUserId) {
-      viewportRef.current?.scrollTo({
-        top: viewportRef.current.scrollHeight,
-      });
+    if (!viewport) return;
+
+    const isLastMessageByAuthorizedUser =
+      conversation.messages.at(-1)?.author?.id === authorizedUserId;
+
+    const wasAtBottom =
+      viewport.scrollTop + viewport.clientHeight >= prevScrollHeightRef.current;
+
+    if (isLastMessageByAuthorizedUser || wasAtBottom) {
+      viewport.scrollTo({ top: viewport.scrollHeight });
     }
+
+    prevScrollHeightRef.current = viewport.scrollHeight;
   }, [conversation.messages, authorizedUserId]);
 
   const fullName = getConversationFullName({
@@ -182,8 +196,6 @@ export const ActiveConversation = () => {
               month: 'long',
               year: 'numeric',
             });
-
-            console.log({ prevMessageDate });
 
             return (
               <Fragment key={message.id}>

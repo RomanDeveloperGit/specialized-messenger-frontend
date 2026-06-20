@@ -6,13 +6,13 @@ import { isSystemUserLeftMessage } from '../../message-checker/is-system-user-le
 import { MESSAGE_PARSE_ERROR } from '../../message-parse-error';
 import type { Preparer } from '../config.interface';
 
-export const prepareSystemUserLeftMessage: Preparer = (
+export const prepareSystemUserLeftMessage: Preparer = ({
   message,
-  conversation,
-) => {
+  allParticipants,
+}) => {
   if (!isSystemUserLeftMessage(message)) return MESSAGE_PARSE_ERROR;
 
-  const leftParticipant = conversation.participants.find(
+  const leftParticipant = allParticipants.find(
     (participant) => participant.user.publicId === message.content.userPublicId,
   );
 

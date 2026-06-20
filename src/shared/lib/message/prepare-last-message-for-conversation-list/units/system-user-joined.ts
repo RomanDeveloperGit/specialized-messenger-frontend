@@ -5,14 +5,15 @@ import { isSystemUserJoinedMessage } from '../../message-checker/is-system-user-
 import { MESSAGE_PARSE_ERROR } from '../../message-parse-error';
 import type { Preparer } from '../config.interface';
 
-export const prepareSystemUserJoinedMessage: Preparer = (
-  message,
-  participants,
-) => {
-  if (!isSystemUserJoinedMessage(message)) return MESSAGE_PARSE_ERROR;
+export const prepareSystemUserJoinedMessage: Preparer = ({
+  lastMessage,
+  conversation,
+}) => {
+  if (!isSystemUserJoinedMessage(lastMessage)) return MESSAGE_PARSE_ERROR;
 
-  const joinedParticipant = participants.find(
-    (participant) => participant.user.publicId === message.content.userPublicId,
+  const joinedParticipant = conversation.participants.find(
+    (participant) =>
+      participant.user.publicId === lastMessage.content.userPublicId,
   );
 
   return `Пользователь ${joinedParticipant ? getUserFullName(joinedParticipant.user) : UNDEFINED_USER} присоединился`;

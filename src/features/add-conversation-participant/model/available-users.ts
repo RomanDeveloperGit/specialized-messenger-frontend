@@ -10,7 +10,7 @@ export const $availableUsers = combine(
   $authorizedUserId,
   (users, activeConversationParticipantUserIds, authorizedUserId) => {
     const excludeIds = new Set([
-      ...(activeConversationParticipantUserIds || []),
+      ...activeConversationParticipantUserIds,
       authorizedUserId,
     ]);
 

@@ -1,4 +1,4 @@
-import { createApi, createStore } from 'effector';
+import { combine, createApi, createStore } from 'effector';
 
 import type { OperationInfo } from '@specialized-messenger/api/specs';
 
@@ -11,12 +11,22 @@ export const $activeConversationPublicId = $activeConversation.map(
   (conversation) => conversation?.publicId || null,
 );
 export const $activeConversationParticipants = $activeConversation.map(
-  (conversation) => conversation?.participants || null,
+  (conversation) => conversation?.participants || [],
 );
 export const $activeConversationParticipantUserIds = $activeConversation.map(
   (conversation) =>
-    conversation?.participants.map((participant) => participant.user.id) ||
-    null,
+    conversation?.participants.map((participant) => participant.user.id) || [],
+);
+export const $activeConversationRemovedParticipants = $activeConversation.map(
+  (conversation) => conversation?.removedParticipants || [],
+);
+export const $activeConversationAllParticipants = combine(
+  $activeConversationParticipants,
+  $activeConversationRemovedParticipants,
+  (participants, removedParticipants) => [
+    ...participants,
+    ...removedParticipants,
+  ],
 );
 export const $activeConversationOwnerUserId =
   $activeConversationParticipants.map(

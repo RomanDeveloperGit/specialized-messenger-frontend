@@ -6,13 +6,13 @@ import { isSystemUserJoinedMessage } from '../../message-checker/is-system-user-
 import { MESSAGE_PARSE_ERROR } from '../../message-parse-error';
 import type { Preparer } from '../config.interface';
 
-export const prepareSystemUserJoinedMessage: Preparer = (
+export const prepareSystemUserJoinedMessage: Preparer = ({
   message,
-  conversation,
-) => {
+  allParticipants,
+}) => {
   if (!isSystemUserJoinedMessage(message)) return MESSAGE_PARSE_ERROR;
 
-  const joinedParticipant = conversation.participants.find(
+  const joinedParticipant = allParticipants.find(
     (participant) => participant.user.publicId === message.content.userPublicId,
   );
 

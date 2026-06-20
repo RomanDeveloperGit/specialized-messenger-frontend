@@ -1,13 +1,12 @@
-import type { Dto } from '@specialized-messenger/api/specs';
-
 import { CONFIG } from './config.implementation';
+import type { Preparer } from './config.interface';
 
-export const prepareMessageForActiveConversation = ({
+export const prepareMessageForActiveConversation: Preparer = ({
   message,
-  conversation,
-}: {
-  message: Dto['Message'];
-  conversation: Dto['Conversation'];
+  allParticipants,
 }) => {
-  return CONFIG[message.type.name](message, conversation);
+  return CONFIG[message.type.name]({
+    message,
+    allParticipants,
+  });
 };

@@ -1,9 +1,8 @@
 # [1.11.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.10.0...v1.11.0) (2026-06-17)
 
-
 ### Features
 
-* add adding and removing participants with socket sync ([1e74c11](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/1e74c11f1acdb0b6e0a0053344077e28d176bd6d))
+- add adding and removing participants with socket sync ([1e74c11](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/1e74c11f1acdb0b6e0a0053344077e28d176bd6d))
 
 # [1.10.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.9.0...v1.10.0) (2026-06-12)
 

@@ -12,23 +12,27 @@ import { prepareMessageForActiveConversation } from '@/shared/lib/message/prepar
 import { getUserFullName } from '@/shared/lib/user/get-user-full-name';
 import { getUserInitials } from '@/shared/lib/user/get-user-initials';
 
-import { $activeConversation } from '@/entities/active-conversation';
+import {
+  $activeConversationAllParticipants,
+  $hasActiveConversation,
+} from '@/entities/active-conversation';
 import { $authorizedUserId } from '@/entities/auth';
 
 export const MessageItem: FC<{
   message: Dto['Message'];
 }> = ({ message }) => {
-  const [conversation, authorizedUserId] = useUnit([
-    $activeConversation,
+  const [hasActiveConversation, allParticipants, authorizedUserId] = useUnit([
+    $hasActiveConversation,
+    $activeConversationAllParticipants,
     $authorizedUserId,
   ]);
 
-  if (!conversation) return null;
+  if (!hasActiveConversation) return null;
 
   const isOwn = message.author?.id === authorizedUserId;
-  const sender = conversation.participants.find(
-    (p) => p.user.id === message.author?.id,
-  )!;
+  const sender = allParticipants.find(
+    (participant) => participant.user.id === message.author?.id,
+  );
   const senderFullName = sender ? getUserFullName(sender.user) : '';
   const senderInitials = sender ? getUserInitials(sender.user) : '';
   const senderColorSchema = getColorSchemaByText(senderFullName);
@@ -56,8 +60,8 @@ export const MessageItem: FC<{
         >
           <Text size="xs" c="dark.1" style={{ fontSize: 12, lineHeight: 1.6 }}>
             {prepareMessageForActiveConversation({
-              conversation,
-              message: message,
+              message,
+              allParticipants,
             })}
           </Text>
         </Box>
@@ -131,8 +135,8 @@ export const MessageItem: FC<{
               style={{ lineHeight: 1.5, wordBreak: 'break-word' }}
             >
               {prepareMessageForActiveConversation({
-                conversation,
-                message: message,
+                message,
+                allParticipants,
               })}
             </Text>
             <Text

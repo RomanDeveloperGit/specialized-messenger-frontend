@@ -8,5 +8,5 @@ export const prepareLastMessageForConversationList = (
   const lastMessage = conversation.messages.at(-1);
   if (!lastMessage) return '';
 
-  return CONFIG[lastMessage.type.name](lastMessage, conversation.participants);
+  return CONFIG[lastMessage.type.name]({ lastMessage, conversation });
 };

@@ -6,7 +6,10 @@ import { useMediaQuery } from '@mantine/hooks';
 import { $isSocketConnected } from '@/shared/api/socket';
 import type { ReactPageWithSideEffects } from '@/shared/lib/react-page-with-side-effect/react-page-with-side-effect';
 
-import { $hasActiveConversation } from '@/entities/active-conversation';
+import {
+  $activeConversationPublicId,
+  $hasActiveConversation,
+} from '@/entities/active-conversation';
 
 import { initMessengerPageFx } from '../model/init-messenger-page.effect';
 import { registerPageSideEffects } from '../model/register-page-side-effects';
@@ -14,12 +17,17 @@ import { ActiveConversation } from './active-conversation/active-conversation';
 import { Sidebar } from './sidebar/sidebar';
 
 export const MessengerPage: ReactPageWithSideEffects = () => {
-  const [hasActiveConversation, isSocketConnected, isInitMessengerPagePending] =
-    useUnit([
-      $hasActiveConversation,
-      $isSocketConnected,
-      initMessengerPageFx.pending,
-    ]);
+  const [
+    hasActiveConversation,
+    activeConversationPublicId,
+    isSocketConnected,
+    isInitMessengerPagePending,
+  ] = useUnit([
+    $hasActiveConversation,
+    $activeConversationPublicId,
+    $isSocketConnected,
+    initMessengerPageFx.pending,
+  ]);
   const isMobile = useMediaQuery('(max-width: 767px)');
 
   if (isInitMessengerPagePending || !isSocketConnected) {
@@ -47,7 +55,7 @@ export const MessengerPage: ReactPageWithSideEffects = () => {
         }}
       >
         {hasActiveConversation ? (
-          <ActiveConversation />
+          <ActiveConversation key={activeConversationPublicId} />
         ) : (
           <Center flex={1}>
             <Stack align="center" gap={0}>
