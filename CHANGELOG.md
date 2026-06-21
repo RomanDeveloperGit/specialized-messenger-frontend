@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.11.0...v1.11.1) (2026-06-21)
+
+
+### Bug Fixes
+
+* fix active conversation view ([ad6fcec](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/ad6fcec270f8bc98a0116addcbfa891bd9944fa4))
+
 # [1.11.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.10.0...v1.11.0) (2026-06-17)
 
 ### Features
