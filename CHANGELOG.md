@@ -1,3 +1,10 @@
+# [1.12.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.11.1...v1.12.0) (2026-06-24)
+
+
+### Features
+
+* add sync push manager with backend ([56e201c](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/56e201c5161bd1d4368c33efce54a2301c74296c))
+
 ## [1.11.1](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.11.0...v1.11.1) (2026-06-21)
 
 
