@@ -1,6 +1,6 @@
 import { combine } from 'effector';
 
-import { $authorizedUserId } from '@/entities/auth';
+import { $authorizedUserId } from '@/entities/authorized-user';
 import { $users } from '@/entities/users';
 
 export const $availableUsers = combine(

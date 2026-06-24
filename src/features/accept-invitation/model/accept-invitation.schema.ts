@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { signInSchema } from '@/entities/auth/model/sign-in.schema';
+import { signInSchema } from '@/entities/authorized-user';
 
 export const acceptInvitationSchema = signInSchema
   .extend({

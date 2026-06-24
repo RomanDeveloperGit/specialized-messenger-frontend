@@ -2263,10 +2263,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@specialized-messenger/api@npm:^1.16.0":
-  version: 1.16.0
-  resolution: "@specialized-messenger/api@npm:1.16.0"
-  checksum: 10c0/abe4fadaf1e766d1f1a1db85f6f9a0c80a7c5cdf464bb448a9a3e998fcd9e906d7d0d9fff3143dd725d6ba20d63ec9aa92dcba9ac47587594a655b4683a8639e
+"@specialized-messenger/api@npm:^1.20.3":
+  version: 1.20.3
+  resolution: "@specialized-messenger/api@npm:1.20.3"
+  checksum: 10c0/c791944afe81496ae48f48a64effff5bdb47c3cf70ab8e75f31014719132a3f8835bef74667a5df94eb8acd56afb0607307b8ca91b618b0f7c03289cd6bbc084
   languageName: node
   linkType: hard
 
@@ -8015,7 +8015,7 @@ __metadata:
     "@semantic-release/github": "npm:^10.0.3"
     "@semantic-release/npm": "npm:^12.0.1"
     "@semantic-release/release-notes-generator": "npm:^13.0.0"
-    "@specialized-messenger/api": "npm:^1.16.0"
+    "@specialized-messenger/api": "npm:^1.20.3"
     "@tabler/icons-react": "npm:^3.41.1"
     "@types/babel__core": "npm:^7.20.5"
     "@types/node": "npm:^25.6.0"

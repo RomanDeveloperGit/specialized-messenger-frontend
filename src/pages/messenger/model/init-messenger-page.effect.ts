@@ -3,7 +3,7 @@ import { createEffect, createEvent, sample, type StoreValue } from 'effector';
 import { connectSocketFx } from '@/shared/api/socket';
 import { showDefaultErrorNotificationFx } from '@/shared/lib/show-notification/show-notification';
 
-import { $authorizedUser } from '@/entities/auth';
+import { $authorizedUser } from '@/entities/authorized-user';
 import { getConversationsFx } from '@/entities/conversations';
 import { getUsersFx } from '@/entities/users';
 

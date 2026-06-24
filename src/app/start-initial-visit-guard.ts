@@ -37,4 +37,6 @@ export const startInitialVisitGuard = async () => {
   } else if (!isAuthorized && !isPublicRoute) {
     globalThis.history.replaceState({}, '', DEFAULT_PUBLIC_ROUTE_CONFIG.path);
   }
+
+  return isAuthorized;
 };

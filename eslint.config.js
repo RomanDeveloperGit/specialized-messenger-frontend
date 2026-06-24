@@ -13,6 +13,7 @@ import globals from 'globals';
 export default defineConfig([
   globalIgnores([
     'dist',
+    'public',
     '.yarn',
     'node_modules',
     'commitlint.config.js',

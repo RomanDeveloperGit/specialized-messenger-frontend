@@ -13,7 +13,7 @@ import { getColorSchemaByText } from '@/shared/lib/get-color-schema-by-text/get-
 import { prepareLastMessageForConversationList } from '@/shared/lib/message/prepare-last-message-for-conversation-list/prepare-last-message-for-conversation-list';
 
 import { $activeConversation } from '@/entities/active-conversation';
-import { $authorizedUserId } from '@/entities/auth';
+import { $authorizedUserId } from '@/entities/authorized-user';
 
 import { openConversation as rawOpenConversation } from '@/features/open-conversation';
 

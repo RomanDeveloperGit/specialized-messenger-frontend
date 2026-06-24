@@ -19,7 +19,7 @@ import {
   activeConversationApi,
   getConversationFx,
 } from '@/entities/active-conversation';
-import { $authorizedUserId } from '@/entities/auth';
+import { $authorizedUserId } from '@/entities/authorized-user';
 
 import { SendMessage } from '@/features/send-message';
 

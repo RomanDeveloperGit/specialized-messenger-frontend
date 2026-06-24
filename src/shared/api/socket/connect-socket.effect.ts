@@ -34,6 +34,7 @@ export const connectSocketFx = createEffect<void, Socket>(() => {
     });
 
     socket.on('disconnect', () => {
+      socketApi.reset();
       isSocketConnectedApi.set(false);
     });
 

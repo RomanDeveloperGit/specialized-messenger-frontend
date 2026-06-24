@@ -9,6 +9,9 @@ export const $authorizedUser = createStore<Response | null>(null);
 export const $authorizedUserId = $authorizedUser.map(
   (user) => user?.id || null,
 );
+export const $isNotificationsEnabled = $authorizedUser.map(
+  (user) => user?.isNotificationsEnabled || false,
+);
 export const $isAuthorized = $authorizedUser.map(Boolean);
 export const $isAuthorizedUserAdmin = $authorizedUser.map(
   (user) => user?.role.name === 'ADMIN',
@@ -16,4 +19,5 @@ export const $isAuthorizedUserAdmin = $authorizedUser.map(
 
 export const authorizedUserApi = createApi($authorizedUser, {
   set: (_, user: Response) => user,
+  reset: () => null,
 });

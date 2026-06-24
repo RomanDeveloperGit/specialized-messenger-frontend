@@ -5,6 +5,8 @@ import { attachReduxDevTools } from '@effector/redux-devtools-adapter';
 
 import { LoadingOverlay } from '@mantine/core';
 
+import { registerServiceWorker } from '@/shared/service-worker';
+
 import { createRouter } from './router';
 import { startInitialVisitGuard } from './start-initial-visit-guard';
 import { App } from './ui';
@@ -26,6 +28,8 @@ export const initApp = () => {
       </App>
     </StrictMode>,
   );
+
+  registerServiceWorker();
 
   startInitialVisitGuard()
     .then(() => {

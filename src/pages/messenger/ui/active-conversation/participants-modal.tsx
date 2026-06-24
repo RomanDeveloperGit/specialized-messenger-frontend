@@ -30,7 +30,10 @@ import {
   $activeConversationOwnerUserId,
   getConversationFx,
 } from '@/entities/active-conversation';
-import { $authorizedUserId, $isAuthorizedUserAdmin } from '@/entities/auth';
+import {
+  $authorizedUserId,
+  $isAuthorizedUserAdmin,
+} from '@/entities/authorized-user';
 
 import { AddConversationParticipants } from '@/features/add-conversation-participant';
 import { RemoveConversationParticipant } from '@/features/remove-conversation-participant/ui/remove-conversation-participant';

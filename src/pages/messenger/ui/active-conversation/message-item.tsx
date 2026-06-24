@@ -16,7 +16,7 @@ import {
   $activeConversationAllParticipants,
   $hasActiveConversation,
 } from '@/entities/active-conversation';
-import { $authorizedUserId } from '@/entities/auth';
+import { $authorizedUserId } from '@/entities/authorized-user';
 
 export const MessageItem: FC<{
   message: Dto['Message'];

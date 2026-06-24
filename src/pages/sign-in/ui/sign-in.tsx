@@ -19,10 +19,7 @@ import {
   ThemeIcon,
 } from '@mantine/core';
 
-import {
-  type SignInSchema,
-  signInSchema,
-} from '@/entities/auth/model/sign-in.schema';
+import { type SignInSchema, signInSchema } from '@/entities/authorized-user';
 
 import { signInFx } from '../model/sign-in.effect';
 

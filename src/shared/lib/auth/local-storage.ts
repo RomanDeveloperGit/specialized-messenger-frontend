@@ -33,3 +33,7 @@ export const saveCredentialsInLocalStorage = (credentials: Credentials) => {
     convertCredentialsToBase64(credentials),
   );
 };
+
+export const clearCredentialsInLocalStorage = () => {
+  localStorage.removeItem(LOCAL_STORAGE_CREDENTIALS_KEY);
+};

@@ -3,11 +3,13 @@ import { IconMessage2 } from '@tabler/icons-react';
 
 import { Box, Group, Text } from '@mantine/core';
 
-import { $isAuthorizedUserAdmin } from '@/entities/auth';
+import { $isAuthorizedUserAdmin } from '@/entities/authorized-user';
 import { $conversationsCount } from '@/entities/conversations';
 
 import { CreateGroupConversation } from '@/features/create-group-conversation';
 import { CreateInvitation } from '@/features/create-invitation';
+import { LogOut } from '@/features/log-out/ui/log-out';
+import { PushSubscriptionSettings } from '@/features/push-subscription-settings';
 
 export const Header = () => {
   const [conversationsCount, isAuthorizedUserAdmin] = useUnit([
@@ -54,8 +56,10 @@ export const Header = () => {
           </Box>
         </Group>
         <Group gap={2}>
+          <PushSubscriptionSettings />
           {isAuthorizedUserAdmin && <CreateInvitation />}
           {isAuthorizedUserAdmin && <CreateGroupConversation />}
+          <LogOut />
         </Group>
       </Group>
     </Box>

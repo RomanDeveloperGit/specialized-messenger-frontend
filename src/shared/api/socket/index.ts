@@ -1,4 +1,5 @@
 export * from './connect-socket.effect';
+export * from './disconnect-socket.effect';
 export * from './emit-events/join-conversation.effect';
 export * from './emit-events/leave-conversation.effect';
 export * from './emit-events/send-message.effect';
