@@ -1,3 +1,10 @@
+# [1.13.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.12.0...v1.13.0) (2026-06-26)
+
+
+### Features
+
+* add manifest ([2470353](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/commit/2470353e97d60f8f56fb72d424fd9e62545336ad))
+
 # [1.12.0](https://github.com/RomanDeveloperGit/specialized-messenger-frontend/compare/v1.11.1...v1.12.0) (2026-06-24)
 
 ### Features
