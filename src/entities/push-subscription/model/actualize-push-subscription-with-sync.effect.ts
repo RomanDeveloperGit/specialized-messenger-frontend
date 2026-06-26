@@ -23,7 +23,6 @@ export const actualizePushSubscriptionWithSyncFx = createEffect<
   void
 >(async ({ hasUserNotificationEnabled }) => {
   const currentSubscription = await getPushSubscription();
-  console.log({ currentSubscription });
 
   if (!hasUserNotificationEnabled && !currentSubscription) {
     isPushSubscriptionActivedApi.reset();

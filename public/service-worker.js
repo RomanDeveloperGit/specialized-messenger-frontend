@@ -1,5 +1,6 @@
 self.addEventListener('push', (event) => {
   let data = {};
+
   try {
     data = event.data ? event.data.json() : {};
   } catch (e) {
@@ -8,10 +9,8 @@ self.addEventListener('push', (event) => {
 
   const title = data.title || 'Новое уведомление';
   const options = {
-    body: data.body || '',
-    icon: data.icon || '/icon-192.png',
-    badge: data.badge || '/badge-72.png',
-    data: data.url ? { url: data.url } : {},
+    body: data.content || '',
+    icon: '/favicon.svg',
   };
 
   event.waitUntil(self.registration.showNotification(title, options));
